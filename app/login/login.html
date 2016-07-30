@@ -1,0 +1,17 @@
+<style>
+    input{
+        margin: 10px;
+    }
+</style>
+
+<p>This is the partial for {{pageName}}.</p>
+
+<input type="text" placeholder="Username" ng-model="username"><br>
+<input type="password" placeholder="Password" ng-model="password"><br>
+<input type="submit" value="Login" ng-click="checkLoginDetails()">
+<input type="submit" value="Logout" ng-click="logout()">
+
+<h1>Status: {{status}}</h1>
+
+<h1>{{username}}</h1>
+<h1>{{password}}</h1>
