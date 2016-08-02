@@ -35,6 +35,10 @@ angular.module('myApp.profile', ['ngRoute'])
             }).then(function () {
                 var images = [];
                 var user = Kinvey.getActiveUser();
+                if(!user){
+                    console.log("No active user");
+                    return;
+                }
                 var query = new $kinvey.Query();
                 query.equalTo('_acl.creator', user.id);
                 var promise = $kinvey.File.find(query);
@@ -52,8 +56,26 @@ angular.module('myApp.profile', ['ngRoute'])
             })
         };
 
+        function containsFile(array, obj) {
+            let i = array.length;
+            while (i--) {
+                if (array[i].name === obj.name) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         $scope.fileSelect = function (files) {
-            $scope.files = files;
+            if(!$scope.files) {
+                $scope.files = [];
+            }
+
+            for(let file of files){
+                if(!containsFile($scope.files, file)){
+                    $scope.files.push(file);
+                }
+            }
         };
 
         $scope.upload = function () {
@@ -69,15 +91,24 @@ angular.module('myApp.profile', ['ngRoute'])
 
                 var uploads = [];
 
-                for (var i = 0, length = $scope.files.length; i < length; i += 1) {
-                    var file = $scope.files[i];
+                $scope.files.forEach(function (file) {
                     uploads.push(Kinvey.File.upload(file, {
                         mimeType: "image/*",
                         size: file.size,
                         public: true,
                         isProfPic: false
                     }));
-                }
+                });
+
+                // for (var i = 0, length = $scope.files.length; i < length; i += 1) {
+                //     var file = $scope.files[i];
+                //     uploads.push(Kinvey.File.upload(file, {
+                //         mimeType: "image/*",
+                //         size: file.size,
+                //         public: true,
+                //         isProfPic: false
+                //     }));
+                // }
 
                 var promise = Kinvey.Defer.all(uploads);
                 promise.then(function (response) {
