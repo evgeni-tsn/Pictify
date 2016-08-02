@@ -16,7 +16,7 @@
 </head>
 <body>
   <h1>Pictify - FTW</h1>
-  <h2 ng-model="currentUser">{{currentUser}}</h2>
+  <h2 ng-model="currentUser" style="text-align: center; color: royalblue">{{currentUser.username}}</h2>
   <ul class="menu">
     <li><a href="#!/login">login</a></li>
     <li><a href="#!/register">register</a></li>
@@ -34,6 +34,7 @@
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
   -->
+
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
 
