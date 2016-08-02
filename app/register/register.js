@@ -9,8 +9,8 @@ angular.module('myApp.register', ['ngRoute'])
         });
     }])
 
-    .controller('RegisterCtrl', ['$scope', '$kinvey', 'kinveyConfig',
-        function ($scope, $kinvey, kinveyConfig) {
+    .controller('RegisterCtrl', ['$rootScope', '$scope', '$kinvey', 'kinveyConfig',
+        function ($rootScope, $scope, $kinvey, kinveyConfig) {
             $scope.pageName = "Register Page";
             $scope.username = "";
             $scope.password = "";
@@ -57,4 +57,21 @@ angular.module('myApp.register', ['ngRoute'])
                     }
                 })
             }
+
+            let init = function () {
+                $kinvey.init({
+                    appKey: kinveyConfig.appKey,
+                    appSecret: kinveyConfig.appSecret
+                }).then(function () {
+                    let user = Kinvey.getActiveUser();
+                    if(user) {
+                        $rootScope.currentUser = user;
+                    } else {
+                        $rootScope.currentUser = {};
+                        $rootScope.currentUser.username = 'No active user';
+                    }
+                });
+            };
+
+            init();
         }]);

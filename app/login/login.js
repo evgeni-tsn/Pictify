@@ -45,7 +45,8 @@ angular.module('myApp.login', ['ngRoute'])
                         promise.then(function () {
                             console.log("Successfully Logout");
                             $scope.status = "Successfully Logout";
-                            $rootScope.currentUser = null;
+                            $rootScope.currentUser = {};
+                            $rootScope.currentUser.username = "No active user";
                         }, function (err) {
                             console.log(err);
                             $scope.status = err.message;
