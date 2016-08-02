@@ -1,6 +1,28 @@
+<style>
+    img {
+        width: 25%;
+        height: 25%;
+    }
+    ul {
+        list-style: none;
+    }
+</style>
+
 <p>This is the partial for {{pageName}}.</p>
 
-<input type="submit" value="Upload" ng-click="upload()">
-<input type="submit" value="Get Image" ng-click="get()">
+<input type="file" multiple file-change handler="fileSelect(files)">
 
-<img src="" alt="" id="myImage">
+<div>
+    <ul ng-repeat="file in files">
+        <li>{{file.name}}</li>
+    </ul>
+</div>
+
+<input type="button" value="Upload" ng-click="upload()">
+<input type="button" value="Get" ng-click="get()">
+
+<div>
+    <ul ng-repeat="image in images">
+        <li><img src="{{image._downloadURL}}"></li>
+    </ul>
+</div>
