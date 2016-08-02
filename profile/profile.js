@@ -115,21 +115,9 @@ angular.module('myApp.profile', ['ngRoute'])
             });
         };
 
-        // TODO: this doesn't work yet
-        // it should load images for current user
-        // when the profile view is clicked but it throws error
         let init = function () {
-            $kinvey.init({
-                appKey: kinveyConfig.appKey,
-                appSecret: kinveyConfig.appSecret
-            }).then(function () {
-                let user = Kinvey.getActiveUser();
-                if (!user) {
-                    console.log("No active user from profile view");
-                    return;
-                }
-
-                $scope.get();
-            });
+            $scope.get();
         }
+
+        init();
     }]);
