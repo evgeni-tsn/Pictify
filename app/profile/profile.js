@@ -35,7 +35,7 @@ angular.module('myApp.profile', ['ngRoute'])
             }).then(function () {
                 let images = [];
                 let user = Kinvey.getActiveUser();
-                if(!user){
+                if(!user) {
                     console.log("No active user");
                     return;
                 }
@@ -43,11 +43,14 @@ angular.module('myApp.profile', ['ngRoute'])
                 query.equalTo('_acl.creator', user.id, 'mimeType', "image/*");
                 let promise = $kinvey.File.find(query);
                 promise.then(function (files) {
-                    if(files.length >= 1){
+                    if(files.length > 1) {
                         files.forEach(function (file) {
                             images.push(file);
                             console.log(file);
                         })
+                    } else if(files.length === 1) {
+                        images.push(files[0]);
+                        console.log(files[0]);
                     }
                 }, function (error) {
                     console.log(error)
