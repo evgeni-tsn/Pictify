@@ -20,7 +20,7 @@ angular.module('myApp.login', ['ngRoute'])
                     appKey: kinveyConfig.appKey,
                     appSecret: kinveyConfig.appSecret
                 }).then(function () {
-                    var promise = $kinvey.User.login($scope.username, $scope.password);
+                    let promise = $kinvey.User.login($scope.username, $scope.password);
                     promise.then(function (user) {
                         console.log("Successfully Logged In");
                         $scope.status = "Successfully Logged In";
@@ -39,9 +39,9 @@ angular.module('myApp.login', ['ngRoute'])
                     appKey: kinveyConfig.appKey,
                     appSecret: kinveyConfig.appSecret
                 }).then(function () {
-                    var user = $kinvey.getActiveUser();
+                    let user = $kinvey.getActiveUser();
                     if (user !== null) {
-                        var promise = $kinvey.User.logout();
+                        let promise = $kinvey.User.logout();
                         promise.then(function () {
                             console.log("Successfully Logout");
                             $scope.status = "Successfully Logout";

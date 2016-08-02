@@ -33,20 +33,21 @@ angular.module('myApp.profile', ['ngRoute'])
                 appKey: kinveyConfig.appKey,
                 appSecret: kinveyConfig.appSecret
             }).then(function () {
-                var images = [];
-                var user = Kinvey.getActiveUser();
+                let images = [];
+                let user = Kinvey.getActiveUser();
                 if(!user){
                     console.log("No active user");
                     return;
                 }
-                var query = new $kinvey.Query();
-                query.equalTo('_acl.creator', user.id);
-                var promise = $kinvey.File.find(query);
+                let query = new $kinvey.Query();
+                query.equalTo('_acl.creator', user.id, 'mimeType', "image/*");
+                let promise = $kinvey.File.find(query);
                 promise.then(function (files) {
-                    for (var i = 0, length = files.length; i < length; i += 1) {
-                        var image = files[i];
-                        images.push(image);
-                        console.log(image);
+                    if(files.length >= 1){
+                        files.forEach(function (file) {
+                            images.push(file);
+                            console.log(file);
+                        })
                     }
                 }, function (error) {
                     console.log(error)
@@ -72,8 +73,10 @@ angular.module('myApp.profile', ['ngRoute'])
             }
 
             for(let file of files){
-                if(!containsFile($scope.files, file)){
-                    $scope.files.push(file);
+                if(file.type.match('image.*')) {
+                    if (!containsFile($scope.files, file)) {
+                        $scope.files.push(file);
+                    }
                 }
             }
         };
@@ -83,13 +86,13 @@ angular.module('myApp.profile', ['ngRoute'])
                 appKey: kinveyConfig.appKey,
                 appSecret: kinveyConfig.appSecret
             }).then(function () {
-                var user = Kinvey.getActiveUser();
+                let user = Kinvey.getActiveUser();
                 if (!user) {
                     console.log("No active user");
                     return;
                 }
 
-                var uploads = [];
+                let uploads = [];
 
                 $scope.files.forEach(function (file) {
                     uploads.push(Kinvey.File.upload(file, {
@@ -100,17 +103,7 @@ angular.module('myApp.profile', ['ngRoute'])
                     }));
                 });
 
-                // for (var i = 0, length = $scope.files.length; i < length; i += 1) {
-                //     var file = $scope.files[i];
-                //     uploads.push(Kinvey.File.upload(file, {
-                //         mimeType: "image/*",
-                //         size: file.size,
-                //         public: true,
-                //         isProfPic: false
-                //     }));
-                // }
-
-                var promise = Kinvey.Defer.all(uploads);
+                let promise = Kinvey.Defer.all(uploads);
                 promise.then(function (response) {
                     console.log(response);
                 }, function (error) {
