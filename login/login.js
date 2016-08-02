@@ -9,8 +9,8 @@ angular.module('myApp.login', ['ngRoute'])
         });
     }])
 
-    .controller('LoginCtrl', ['$scope', '$kinvey', 'kinveyConfig', '$window',
-        function ($scope, $kinvey, kinveyConfig, $window) {
+    .controller('LoginCtrl', ['$rootScope', '$scope', '$kinvey', 'kinveyConfig', '$window',
+        function ($rootScope, $scope, $kinvey, kinveyConfig, $window) {
             $scope.pageName = "Login Page";
             $scope.username = "";
             $scope.password = "";
@@ -26,6 +26,7 @@ angular.module('myApp.login', ['ngRoute'])
                         $scope.status = "Successfully Logged In";
                         console.log("Hello, your name is: " + user.username);
                         console.log(user);
+                        $rootScope.currentUser = user;
                     }, function (err) {
                         console.log(err);
                         $scope.status = err.message;
@@ -39,11 +40,12 @@ angular.module('myApp.login', ['ngRoute'])
                     appSecret: kinveyConfig.appSecret
                 }).then(function () {
                     var user = $kinvey.getActiveUser();
-                    if (null !== user) {
+                    if (user !== null) {
                         var promise = $kinvey.User.logout();
                         promise.then(function () {
                             console.log("Successfully Logout");
                             $scope.status = "Successfully Logout";
+                            $rootScope.currentUser = null;
                         }, function (err) {
                             console.log(err);
                             $scope.status = err.message;
