@@ -1,8 +1,44 @@
 <style>
     #userProfImg {
-        width: 20%;
-        height: 20%;
+        width: 25%;
+        height: 25%;
     }
+    div.galContainer {
+        position:relative;
+        overflow:hidden;
+        padding-bottom:100%;
+    }
+
+    div.galContainer > img {
+        width: 100%;
+        height : 100%;
+        max-height: 100%;
+        max-width: 100%;
+        object-fit: contain;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    div.galContainer > img:hover {
+        opacity: 0.7;
+    }
+
+    #modalImageContainter img {
+        margin: auto;
+        display: block;
+        width: 80%;
+        max-width: 700px;
+    }
+
+    #profilePictureSetter {
+        float: right;
+    }
+    
+    #modalImageCaption {
+        float: left;
+    }
+
 </style>
 
 <p>This is the partial for {{pageName}}.</p>
@@ -13,9 +49,40 @@
 
 <input type="file" multiple file-change handler="fileSelect(files)">
 
-<div class="row" ng-repeat="image in images | groupBy:3">
-    <div class="col-md-4" ng-repeat="image in images" >
-        <img class="img-thumbnail" ng-dblclick="setProfilePic(image)" src="{{image._downloadURL}}">
+<div class="row" ng-repeat="imagesGroup in images | groupBy:3">
+    <div class="col-md-4" ng-repeat="image in imagesGroup" >
+        <div class="galContainer">
+            <img class="img-responsive" ng-click="selectPic(image)"
+                 data-toggle="modal" data-target="#imageModal" src="{{image._downloadURL}}">
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="imageModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <br>
+                <br>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4 class="modal-title text-center" id="modalImageCaption">{{selectedImage._filename}}</h4>
+                    </div>
+                    <div class="col-md-6">
+                        <button type="button" class="btn btn-primary" ng-click="setProfilePic(selectedImage)" id="profilePictureSetter">
+                            Set as profile picture
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body" id="modalImageContainter">
+                <img src="{{selectedImage._downloadURL}}" alt="">
+            </div>
+            <div class="modal-footer">
+               // TODO: bottom line with comments, likes, etc. will go here
+            </div>
+        </div>
     </div>
 </div>
 

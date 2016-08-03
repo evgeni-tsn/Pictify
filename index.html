@@ -55,7 +55,7 @@
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#" ng-model="currentUser">Current User: {{currentUser.username}}</a></li>
+                <li ng-show="currentUser" ng-class="{active: $route.current.activetab == 'profile'}"><a href="#/profile">Current user: {{currentUser.username}}</a></li>
             </ul>
         </div>
     </div>
