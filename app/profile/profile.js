@@ -26,7 +26,8 @@ angular.module('myApp.profile', ['ngRoute'])
         };
     })
 
-    .controller('ProfileCtrl', ['$scope', '$kinvey', 'kinveyConfig', function ($scope, $kinvey, kinveyConfig) {
+    .controller('ProfileCtrl', ['$rootScope', '$scope', '$kinvey', 'kinveyConfig',
+        function ($rootScope, $scope, $kinvey, kinveyConfig) {
         $scope.pageName = "Profile Page";
 
         $scope.get = function () {
@@ -35,23 +36,22 @@ angular.module('myApp.profile', ['ngRoute'])
                 appSecret: kinveyConfig.appSecret
             }).then(function () {
                 let images = [];
-                let user = Kinvey.getActiveUser();
+                let user = $rootScope.currentUser;
                 if(!user) {
                     console.log("No active user");
                     return;
                 }
+
                 let query = new $kinvey.Query();
                 query.equalTo('_acl.creator', user.id, 'mimeType', "image/*");
                 let promise = $kinvey.File.find(query);
                 promise.then(function (files) {
-                    if(files.length > 1) {
-                        files.forEach(function (file) {
-                            images.push(file);
-                            console.log(file);
-                        })
-                    } else if(files.length === 1) {
-                        images.push(files[0]);
-                        console.log(files[0]);
+                    for (let file of files) {
+                        images.push(file);
+                        if(file._id === user.profile_picture) {
+                            $scope.profPic = file;
+                        }
+                        console.log(file);
                     }
                 }, function (error) {
                     console.log(error)
@@ -90,8 +90,8 @@ angular.module('myApp.profile', ['ngRoute'])
                 appKey: kinveyConfig.appKey,
                 appSecret: kinveyConfig.appSecret
             }).then(function () {
-                let user = Kinvey.getActiveUser();
-                if (!user) {
+                let user = $rootScope.currentUser;
+                if(!user) {
                     console.log("No active user");
                     return;
                 }
@@ -103,7 +103,6 @@ angular.module('myApp.profile', ['ngRoute'])
                         mimeType: "image/*",
                         size: file.size,
                         public: true,
-                        isProfPic: false
                     }));
                 });
 
@@ -116,8 +115,47 @@ angular.module('myApp.profile', ['ngRoute'])
             });
         };
 
+        $scope.setProfilePic = function (file) {
+            $kinvey.init({
+                appKey: kinveyConfig.appKey,
+                appSecret: kinveyConfig.appSecret
+            }).then(function () {
+                let user = $rootScope.currentUser;
+                if(!user) {
+                    console.log("No active user");
+                    return;
+                }
+
+                if(!file) {
+                    console.log("No picture selected");
+                    return;
+                }
+
+                user.profile_picture = file._id;
+
+                var promise = Kinvey.User.update(user);
+                promise.then(function(response) {
+                    console.log(response);
+                    $scope.profPic = file;
+                }, function(error) {
+                    console.log(error);
+                });
+            });
+        };
+
         let init = function () {
-            $scope.get();
+            $kinvey.init({
+                appKey: kinveyConfig.appKey,
+                appSecret: kinveyConfig.appSecret
+            }).then(function () {
+                $rootScope.currentUser = Kinvey.getActiveUser();
+                if(!$rootScope.currentUser) {
+                    console.log("No active user");
+                    return;
+                }
+
+                $scope.get();
+            });
         };
 
         init();
