@@ -31,15 +31,12 @@ angular.module('myApp.home', ['ngRoute'])
                     appKey: kinveyConfig.appKey,
                     appSecret: kinveyConfig.appSecret
                 }).then(function () {
-                    let user = Kinvey.getActiveUser();
-                    if (user) {
-                        $rootScope.currentUser = user;
-                    } else {
-                        $rootScope.currentUser = {};
-                        $rootScope.currentUser.username = 'No active user';
+                    $rootScope.currentUser = Kinvey.getActiveUser();
+                    if(!$rootScope.currentUser) {
+                        console.log("No active user");
                     }
                 });
             };
-            init();
 
+            init();
         }]);

@@ -12,7 +12,8 @@ angular.module('myApp.authentication', [])
                 });
                 promise.then(function (user) {
                     console.log("Hello, your name is: " + user.username);
-                    console.log(user)
+                    console.log(user);
+                    $rootScope.currentUser = user;
                 }, function (err) {
                     console.log(err);
                 });
@@ -43,13 +44,12 @@ angular.module('myApp.authentication', [])
                 appKey: kinveyConfig.appKey,
                 appSecret: kinveyConfig.appSecret
             }).then(function () {
-                let user = $kinvey.getActiveUser();
+                $rootScope.currentUser = Kinvey.getActiveUser();
+                let user = $rootScope.currentUser;
                 if (user !== null) {
                     let promise = $kinvey.User.logout();
                     promise.then(function () {
                         console.log("Successfully Logout");
-                        $rootScope.currentUser = {};
-                        $rootScope.currentUser.username = "No active user";
                     }, function (err) {
                         console.log(err);
                     });

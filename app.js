@@ -9,7 +9,8 @@ var app = angular.module('myApp', [
     'myApp.version',
     'ui.bootstrap',
     'mgcrea.ngStrap',
-    'myApp.authentication'
+    'myApp.authentication',
+    'angular.filter'
 ]);
 
 app.config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
@@ -23,6 +24,6 @@ app.constant('kinveyConfig', {
     appSecret: 'f952632dff87441c82c8a0fefdc8c72f'
 });
 
-app.controller('MainCtrl', ['$scope', '$route', function ($scope, $route) {
+app.controller('MainCtrl', ['$rootScope', '$scope', '$route', function ($rootScope, $scope, $route) {
     $scope.$route = $route;
 }]);
