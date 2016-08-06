@@ -155,11 +155,40 @@ angular.module('myApp.profile', ['ngRoute'])
                 }
 
                 if(!image) {
-                    console.log("No picture selected")
+                    console.log("No picture selected");
                 }
 
                 $scope.selectedImage = image;
             });
+        };
+
+        $scope.deletePic = function (image) {
+          $kinvey.init({
+              appKey: kinveyConfig.appKey,
+              appSecret: kinveyConfig.appSecret
+          }).then(function () {
+              $rootScope.currentUser = Kinvey.getActiveUser();
+              if(!$rootScope.currentUser) {
+                  console.log("No active user");
+                  return;
+              }
+
+              if(!image) {
+                  console.log("No picture selected");
+                  return;
+              }
+
+              var promise = Kinvey.File.destroy(image._id);
+              promise.then(function (success) {
+                  console.log(success);
+              }, function (error) {
+                  console.log(error);
+              });
+
+              $scope.images = $scope.images.filter(function (img) {
+                  return img._id !== image._id;
+              });
+          })
         };
 
         let init = function () {
@@ -178,6 +207,5 @@ angular.module('myApp.profile', ['ngRoute'])
                 $scope.profPicSelectMode = false;
             });
         };
-
         init();
     }]);
