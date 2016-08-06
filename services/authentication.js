@@ -33,6 +33,13 @@ angular.module('myApp.authentication', [])
                     console.log(user);
                     $rootScope.currentUser = user;
                     $('#loginModal').modal('hide');
+                    let promise = Kinvey.File.stream($rootScope.currentUser.profile_picture);
+                    promise.then(function (img) {
+                        console.log(img);
+                        $rootScope.profPic = img;
+                    }, function (error) {
+                        console.log(error);
+                    })
                 }, function (err) {
                     console.log(err);
                 });
@@ -50,6 +57,7 @@ angular.module('myApp.authentication', [])
                     let promise = $kinvey.User.logout();
                     promise.then(function () {
                         console.log("Successfully Logout");
+                        $rootScope.currentUser = Kinvey.getActiveUser();
                     }, function (err) {
                         console.log(err);
                     });

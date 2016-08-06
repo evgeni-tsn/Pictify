@@ -1,5 +1,5 @@
-<input class="btn btn-warning" type="submit" value="Login" data-toggle="modal" data-target="#loginModal">
-<input class="btn btn-warning" type="submit" value="Register" data-toggle="modal" data-target="#registerModal">
+<input ng-hide="currentUser" class="btn btn-warning" type="submit" value="Login" data-toggle="modal" data-target="#loginModal">
+<input ng-hide="currentUser" class="btn btn-warning" type="submit" value="Register" data-toggle="modal" data-target="#registerModal">
 <input class="btn btn-warning" type="submit" value="Logout" ng-click="logout()">
 
 <div class="modal fade" id="loginModal">
