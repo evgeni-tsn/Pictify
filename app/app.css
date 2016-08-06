@@ -5,6 +5,11 @@
   float: none;
 }
 
+#profileThumbnail {
+  width: 70px;
+  height: 70px;
+}
+
 /*.menu {*/
 /*text-align: center;*/
 /*list-style: none;*/

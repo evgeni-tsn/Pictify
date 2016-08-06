@@ -49,7 +49,7 @@ angular.module('myApp.profile', ['ngRoute'])
                     for (let file of files) {
                         images.push(file);
                         if(file._id === user.profile_picture) {
-                            $scope.profPic = file;
+                            $rootScope.profPic = file;
                         }
                         console.log(file);
                     }
@@ -136,7 +136,7 @@ angular.module('myApp.profile', ['ngRoute'])
                 var promise = Kinvey.User.update(user);
                 promise.then(function(response) {
                     console.log(response);
-                    $scope.profPic = image;
+                    $rootScope.profPic = image;
                 }, function(error) {
                     console.log(error);
                 });
@@ -203,8 +203,6 @@ angular.module('myApp.profile', ['ngRoute'])
                 }
 
                 $scope.get();
-
-                $scope.profPicSelectMode = false;
             });
         };
         init();
