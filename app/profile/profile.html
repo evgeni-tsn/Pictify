@@ -31,12 +31,17 @@
         max-width: 700px;
     }
 
-    #profilePictureSetter {
-        float: right;
-    }
-    
     #modalImageCaption {
         float: left;
+    }
+
+    #deletePictureButton {
+        float: right;
+    }
+
+    #profilePictureSetter {
+        float: right;
+        margin-right: 5px;
     }
 
 </style>
@@ -70,6 +75,9 @@
                         <h4 class="modal-title text-center" id="modalImageCaption">{{selectedImage._filename}}</h4>
                     </div>
                     <div class="col-md-6">
+                        <button type="button" class="btn btn-warning" ng-click="deletePic(selectedImage)" id="deletePictureButton">
+                            DeletePicture
+                        </button>
                         <button type="button" class="btn btn-primary" ng-click="setProfilePic(selectedImage)" id="profilePictureSetter">
                             Set as profile picture
                         </button>
