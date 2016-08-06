@@ -23,6 +23,11 @@
 </head>
 <body ng-controller="MainCtrl">
 
+<!--[if lt IE 7]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a> to improve your experience.</p>
+<![endif]-->
+
 <nav class="navbar navbar-inverse" role="navigation" bs-navbar>
     <div class="container-fluid">
         <div class="navbar-header">
@@ -35,16 +40,22 @@
             </button>
             <a class="navbar-brand" href="#/">Pictify</a>
         </div>
-
+        <span class="nav-divider"></span>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
-            <ul class="nav navbar-nav">
 
-                <li ng-class="{active: $route.current.activetab == 'home'}"><a href="#/home">Home</a></li>
-                <li ng-show="currentUser" ng-class="{active: $route.current.activetab == 'profile'}"><a href="#/profile">Profile</a></li>
+            <ul id="navigationTabs" class="nav navbar-nav navbar-right">
+                <li ng-class="{active: $route.current.activetab == 'home'}">
+                    <a href="#/home">Home</a>
+                </li>
+                <li ng-show="currentUser" ng-class="{active: $route.current.activetab == 'profile'}">
+                    <a href="#/profile">Profile</a>
+                </li>
 
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown
-                        <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                        Dropdown
+                        <span class="caret"></span>
+                    </a>
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="#">Action</a></li>
                         <li class="divider"></li>
@@ -54,25 +65,30 @@
                     </ul>
                 </li>
             </ul>
-
-            <ul class="nav navbar-nav navbar-right">
-                <li ng-show="currentUser" ng-class="{active: $route.current.activetab == 'profile'}">
-                    <a href="#/profile">
-                        <img id="profileThumbnail" class="img-circle" ng-src="{{profPic._downloadURL}}">
-                        {{currentUser.username}}
-                    </a>
-                </li>
-            </ul>
         </div>
     </div>
 </nav>
-<!--[if lt IE 7]>
-<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
-    your browser</a> to improve your experience.</p>
-<![endif]-->
+<div class="row">
+    <div class="col-md-2">
+    <ul id="profileTabs" class="nav navbar-nav navbar-left">
+        <li ng-show="currentUser" ng-class="{active: $route.current.activetab == 'profile'}">
+            <a href="#/profile">
+                <div>
+                    <img id="profileThumbnail" class="img-responsive" ng-src="{{profPic._downloadURL}}">
+                </div>
+                <div>
+                    <span>{{currentUser.username}}</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+        <div>Should be collapse-able sidebar with friends, albums and more shit.</div>
+    </div>
 
-<div ng-view></div>
-
+    <div class="col-md-10">
+        <div ng-view></div>
+    </div>
+</div>
 <!--<div>Angular seed app: v<span app-version></span></div>-->
 
 <!-- In production use:
