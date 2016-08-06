@@ -49,7 +49,7 @@
 <p>This is the partial for {{pageName}}.</p>
 
 <div>
-    <img src="{{profPic._downloadURL}}" alt="mamkamu" class="img-circle" id="userProfImg">
+    <img ng-src="{{profPic._downloadURL}}" alt="Failed to load" class="img-circle" id="userProfImg">
 </div>
 
 <input type="file" multiple file-change handler="fileSelect(files)">
@@ -58,7 +58,7 @@
     <div class="col-md-4" ng-repeat="image in imagesGroup" >
         <div class="galContainer">
             <img class="img-responsive" ng-click="selectPic(image)"
-                 data-toggle="modal" data-target="#imageModal" src="{{image._downloadURL}}">
+                 data-toggle="modal" data-target="#imageModal" ng-src="{{image._downloadURL}}">
         </div>
     </div>
 </div>
@@ -85,7 +85,7 @@
                 </div>
             </div>
             <div class="modal-body" id="modalImageContainter">
-                <img src="{{selectedImage._downloadURL}}" alt="">
+                <img ng-src="{{selectedImage._downloadURL}}" alt="">
             </div>
             <div class="modal-footer">
                // TODO: bottom line with comments, likes, etc. will go here
