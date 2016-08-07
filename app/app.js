@@ -42,7 +42,6 @@ app.controller('MainCtrl', ['$rootScope', '$scope', '$route', function ($rootSco
         promise.then(function (image) {
             console.log(image);
             $rootScope.profPic = image;
-            //document.getElementById('profileThumbnail').src=$rootScope.profPic._downloadURL;
         }, function (error) {
             console.log(error)
         });

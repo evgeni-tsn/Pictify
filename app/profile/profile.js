@@ -29,6 +29,21 @@ angular.module('myApp.profile', ['ngRoute'])
     .controller('ProfileCtrl', ['$rootScope', '$scope', '$kinvey', 'kinveyConfig',
         function ($rootScope, $scope, $kinvey, kinveyConfig) {
         $scope.pageName = "Profile Page";
+        $scope.shouldCrop = false;
+        $scope.image = null;
+        $scope.croppedImage = null;
+        $scope.croppedImageBlob = null;
+
+        $scope.showCrop = function () {
+            if(!$scope.image) {
+                $scope.shouldCrop = false;
+                $scope.croppedImage = null;
+                $scope.croppedImageBlob = null;
+                return $scope.shouldCrop;
+            }
+
+            $scope.shouldCrop = !$scope.shouldCrop;
+        };
 
         $scope.get = function () {
             $kinvey.init({
@@ -43,7 +58,7 @@ angular.module('myApp.profile', ['ngRoute'])
                 }
 
                 let query = new $kinvey.Query();
-                query.equalTo('_acl.creator', user.id, 'mimeType', "image/*");
+                query.equalTo('_acl.creator', user.id /*, 'mimeType', "image/*"*/);
                 let promise = $kinvey.File.find(query);
                 promise.then(function (files) {
                     for (let file of files) {
@@ -72,16 +87,18 @@ angular.module('myApp.profile', ['ngRoute'])
         }
 
         $scope.fileSelect = function (files) {
-            if(!$scope.files) {
-                $scope.files = [];
+            if(!$scope.file) {
+                $scope.file = {};
             }
 
-            for(let file of files){
-                if(file.type.match('image.*')) {
-                    if (!containsFile($scope.files, file)) {
-                        $scope.files.push(file);
-                    }
-                }
+            if(!files[0]) {
+                $scope.image = null;
+                $scope.showCrop();
+                return;
+            }
+
+            if(files[0].type.match('image.*')) {
+                $scope.image = files[0];
             }
         };
 
@@ -96,22 +113,58 @@ angular.module('myApp.profile', ['ngRoute'])
                     return;
                 }
 
-                let uploads = [];
+                if(!$scope.image) {
+                    console.log("No image to upload")
+                    return;
+                }
 
-                $scope.files.forEach(function (file) {
-                    uploads.push(Kinvey.File.upload(file, {
+                if (!$scope.shouldCrop) {
+                    let promise = Kinvey.File.upload($scope.image, {
+                        mimeType: $scope.image.type,
+                        size: $scope.image.size,
+                        public: true
+                    });
+                    promise.then(function (response) {
+                        console.log(response);
+                        $scope.get();
+                    }, function (error) {
+                        console.log(error);
+                    });
+                } else {
+                    let fileContent = $scope.croppedImageBlob;
+                    let promise = Kinvey.File.upload(fileContent, {
                         mimeType: "image/*",
-                        size: file.size,
-                        public: true,
-                    }));
-                });
+                        size: fileContent.size,
+                        _filename: "cropped_" + $scope.image.name,
+                        public: true
+                    });
+                    promise.then(function (response) {
+                        console.log(response);
+                        $scope.showCrop();
+                        $scope.get();
+                    }, function (error) {
+                        console.log(error);
+                    })
+                }
 
-                let promise = Kinvey.Defer.all(uploads);
-                promise.then(function (response) {
-                    console.log(response);
-                }, function (error) {
-                    console.log(error);
-                });
+
+                // This handles multiple file uploads, but lacks cropping
+                // uploads.push()
+                //
+                // $scope.file.forEach(function (files) {
+                //     uploads.push(Kinvey.File.upload(files, {
+                //         mimeType: "image/*",
+                //         size: file.size,
+                //         public: true,
+                //     }));
+                // });
+
+                // let promise = Kinvey.Defer.all(uploads);
+                // promise.then(function (response) {
+                //     console.log(response);
+                // }, function (error) {
+                //     console.log(error);
+                // });
             });
         };
 
