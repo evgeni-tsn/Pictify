@@ -6,14 +6,15 @@
     div.galContainer {
         position:relative;
         overflow:hidden;
-        padding-bottom:100%;
+        padding-bottom:10%;
+        display: block;
     }
 
     div.galContainer > img {
         width: 100%;
         height : 100%;
         max-height: 100%;
-        max-width: 95%;
+        max-width: 100%;
         object-fit: contain;
         border-radius: 5px;
         cursor: pointer;
@@ -44,6 +45,13 @@
         margin-right: 5px;
     }
 
+    .cropArea {
+        background: #E4E4E4;
+        overflow: hidden;
+        width:500px;
+        height:350px;
+    }
+
 </style>
 
 <p>This is the partial for {{pageName}}.</p>
@@ -52,15 +60,35 @@
     <img ng-src="{{profPic._downloadURL}}" alt="Failed to load" class="img-circle" id="userProfImg">
 </div>
 
-<input type="file" multiple file-change handler="fileSelect(files)">
+<input type="file" file-change handler="fileSelect(files)">
+<input type="button" value="Crop Image" ng-click="showCrop()">
+<div ng-show="shouldCrop">
+    <div class="cropArea">
+        <img-crop image="image"
+                  result-image="croppedImage"
+                  result-blob="croppedImageBlob"
+                  area-type="square"
+                  result-image-size="400">
+        </img-crop>
+    </div>
+
+    <div>Cropped image</div>
+    <div><img ng-src="{{croppedImage}}" alt=""></div>
+</div>
 <input type="button" value="Upload" ng-click="upload()">
 <input type="button" value="Get" ng-click="get()">
 
-<div class="row" ng-repeat="imagesGroup in images | groupBy:3">
-    <div class="col-md-4" ng-repeat="image in imagesGroup" >
-        <div class="galContainer">
-            <img class="img-responsive" ng-click="selectPic(image)"
-                 data-toggle="modal" data-target="#imageModal" ng-src="{{image._downloadURL}}">
+<div class="row">
+    <div ng-repeat="image in images">
+        <div class="clearfix" ng-if="$index % 3 == 0"></div>
+        <div class="col-md-4">
+            <div class="galContainer">
+                <img class="img-responsive"
+                     ng-click="selectPic(image)"
+                     data-toggle="modal"
+                     data-target="#imageModal"
+                     ng-src="{{image._downloadURL}}">
+            </div>
         </div>
     </div>
 </div>
