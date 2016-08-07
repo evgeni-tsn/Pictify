@@ -22,6 +22,17 @@ angular.module('myApp.home', ['ngRoute'])
                 authentication.logout();
             };
 
+            $scope.loginGoogle = function () {
+                var promise = $kinvey.Social.connect(null, 'google', {redirect: 'http://localhost:8000'});
+                console.log(promise);
+                promise.then(function (user) {
+                    alert("VADETE UQ -> " + user.username)
+                }, function (err) {
+                    alert("MAMKAMO OSRA SA -> " + err)
+                    console.log(err)
+                });
+            }
+
             $scope.checkRegisterDetails = function (user) {
                 authentication.registerUser(user);
             };

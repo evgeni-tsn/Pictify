@@ -148,7 +148,7 @@ angular.module('myApp.profile', ['ngRoute'])
                 }
 
 
-                // This handles multiple file uploads, but lacks cropping
+                //// This handles multiple file uploads, but lacks cropping
                 // uploads.push()
                 //
                 // $scope.file.forEach(function (files) {
