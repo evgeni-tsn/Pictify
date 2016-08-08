@@ -2,10 +2,8 @@ angular.module('myApp.authentication', [])
     .factory('authentication', ['$rootScope', '$kinvey', 'kinveyConfig', function ($rootScope, $kinvey, kinveyConfig) {
 
         function registerUser(user) {
-            $kinvey.init({
-                appKey: kinveyConfig.appKey,
-                appSecret: kinveyConfig.appSecret
-            }).then(function () {
+            kinveyConfig.authorize
+                .then(function () {
                 let promise = $kinvey.User.signup({
                     username: user.username,
                     password: user.password
@@ -21,10 +19,8 @@ angular.module('myApp.authentication', [])
         }
 
         function loginUser(user) {
-            $kinvey.init({
-                appKey: kinveyConfig.appKey,
-                appSecret: kinveyConfig.appSecret
-            }).then(function () {
+            kinveyConfig.authorize
+                .then(function () {
                 let promise = $kinvey.User.login({
                     username: user.username,
                     password: user.password
@@ -47,10 +43,8 @@ angular.module('myApp.authentication', [])
         }
 
         function logout() {
-            $kinvey.init({
-                appKey: kinveyConfig.appKey,
-                appSecret: kinveyConfig.appSecret
-            }).then(function () {
+            kinveyConfig.authorize
+                .then(function () {
                 $rootScope.currentUser = Kinvey.getActiveUser();
                 let user = $rootScope.currentUser;
                 if (user !== null) {

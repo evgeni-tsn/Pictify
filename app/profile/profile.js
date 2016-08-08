@@ -46,10 +46,8 @@ angular.module('myApp.profile', ['ngRoute'])
         };
 
         $scope.get = function () {
-            $kinvey.init({
-                appKey: kinveyConfig.appKey,
-                appSecret: kinveyConfig.appSecret
-            }).then(function () {
+            kinveyConfig.authorize
+                .then(function () {
                 let images = [];
                 let user = $rootScope.currentUser;
                 if(!user) {
@@ -103,10 +101,8 @@ angular.module('myApp.profile', ['ngRoute'])
         };
 
         $scope.upload = function () {
-            $kinvey.init({
-                appKey: kinveyConfig.appKey,
-                appSecret: kinveyConfig.appSecret
-            }).then(function () {
+            kinveyConfig.authorize
+                .then(function () {
                 let user = $rootScope.currentUser;
                 if(!user) {
                     console.log("No active user");
@@ -114,7 +110,7 @@ angular.module('myApp.profile', ['ngRoute'])
                 }
 
                 if(!$scope.image) {
-                    console.log("No image to upload")
+                    console.log("No image to upload");
                     return;
                 }
 
@@ -169,10 +165,8 @@ angular.module('myApp.profile', ['ngRoute'])
         };
 
         $scope.setProfilePic = function (image) {
-            $kinvey.init({
-                appKey: kinveyConfig.appKey,
-                appSecret: kinveyConfig.appSecret
-            }).then(function () {
+            kinveyConfig.authorize
+                .then(function () {
                 let user = $rootScope.currentUser;
                 if(!user) {
                     console.log("No active user");
@@ -197,10 +191,8 @@ angular.module('myApp.profile', ['ngRoute'])
         };
 
         $scope.selectPic = function (image) {
-            $kinvey.init({
-                appKey: kinveyConfig.appKey,
-                appSecret: kinveyConfig.appSecret
-            }).then(function () {
+            kinveyConfig.authorize
+                .then(function () {
                 $rootScope.currentUser = Kinvey.getActiveUser();
                 if(!$rootScope.currentUser) {
                     console.log("No active user");
@@ -216,10 +208,8 @@ angular.module('myApp.profile', ['ngRoute'])
         };
 
         $scope.deletePic = function (image) {
-          $kinvey.init({
-              appKey: kinveyConfig.appKey,
-              appSecret: kinveyConfig.appSecret
-          }).then(function () {
+            kinveyConfig.authorize
+                .then(function () {
               $rootScope.currentUser = Kinvey.getActiveUser();
               if(!$rootScope.currentUser) {
                   console.log("No active user");
@@ -245,10 +235,7 @@ angular.module('myApp.profile', ['ngRoute'])
         };
 
         let init = function () {
-            $kinvey.init({
-                appKey: kinveyConfig.appKey,
-                appSecret: kinveyConfig.appSecret
-            }).then(function () {
+            kinveyConfig.authorize.then(function () {
                 $rootScope.currentUser = Kinvey.getActiveUser();
                 if(!$rootScope.currentUser) {
                     console.log("No active user");

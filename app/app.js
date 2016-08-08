@@ -14,7 +14,7 @@ var app = angular.module('myApp', [
     'ngImgCrop'
 ]);
 
-app.config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
+app.config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider, $kinveyConfig) {
 
     // 404
     $routeProvider.otherwise({redirectTo: '/'});
@@ -22,15 +22,18 @@ app.config(['$locationProvider', '$routeProvider', function ($locationProvider, 
 
 app.constant('kinveyConfig', {
     appKey: 'kid_BkwgJlt_',
-    appSecret: 'f952632dff87441c82c8a0fefdc8c72f'
-});
-
-app.controller('MainCtrl', ['$rootScope', '$scope', '$route', function ($rootScope, $scope, $route) {
-    $scope.$route = $route;
-    Kinvey.init({
+    appSecret: 'f952632dff87441c82c8a0fefdc8c72f',
+    authorize: Kinvey.init({
         appKey: 'kid_BkwgJlt_',
         appSecret: 'f952632dff87441c82c8a0fefdc8c72f'
-    }).then(function () {
+    })
+});
+
+app.controller('MainCtrl', ['$rootScope', '$scope', '$route', 'kinveyConfig', function ($rootScope, $scope, $route, kinveyConfig) {
+    $scope.$route = $route;
+
+    kinveyConfig.authorize
+        .then(function () {
         $rootScope.currentUser = Kinvey.getActiveUser();
         if(!$rootScope.currentUser) {
             console.log("No active user");
