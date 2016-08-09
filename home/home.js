@@ -10,8 +10,9 @@ angular.module('myApp.home', ['ngRoute'])
         });
     }])
 
-    .controller('HomeCtrl', ['$rootScope', '$scope', '$kinvey', 'kinveyConfig', '$q', '$window', '$location', '$route', 'authentication',
-        function ($rootScope, $scope, $kinvey, kinveyConfig, $q, $window, $location, $route, authentication) {
+    .controller('HomeCtrl', ['$rootScope', '$scope', '$http', '$kinvey', 'kinveyConfig',
+        '$q', '$window', '$location', '$route', 'authentication', 'facebook',
+        function ($rootScope, $scope, $http, $kinvey, kinveyConfig, $q, $window, $location, $route, authentication, facebook) {
             $scope.pageName = "Login Page";
 
             $scope.login = function (user) {
@@ -22,19 +23,14 @@ angular.module('myApp.home', ['ngRoute'])
                 authentication.logout();
             };
 
+            $scope.checkRegisterDetails = function (user) {
+                authentication.registerUser(user);
+            };
+
             $scope.loginFbk = function () {
-                var deferred = Kinvey.Defer.deferred();
-                var promise = deferred.promise;
-                // Login with the Facebook SDK
-                FB.getLoginStatus(function (response) {
-                    if (response.status === 'connected') {
-                        return deferred.resolve(response.authResponse);
-                    }
-                    FB.login(function (response) {
-                        deferred.resolve(response.authResponse);
-                    });
-                });
-                promise.then(function (authResponse) {
+
+                facebook.getLoginStatus()
+                    .then(function (authResponse) {
                     var provider = 'facebook';
                     var tokens = {
                         'access_token': authResponse.accessToken,
@@ -47,41 +43,54 @@ angular.module('myApp.home', ['ngRoute'])
                         }
                         return Kinvey.Defer.reject(err);
                     });
-                }).then(function (user) {
-                    console.log(user)
-                    console.log(user._socialIdentity.facebook)
-                }).catch(function (err) {
-                    console.log(err)
-                });
+                    })
+                    .then(function (user) {
+
+                        $scope.fbkFullname = user._socialIdentity.facebook.name;
+
+                        facebook.getProfilePicture(user._socialIdentity.facebook.id)
+                            .then(
+                                function (response) {
+                                    console.log(response);
+                                    var getProfileUrl = response.data.url;
+                                    facebook.updateUserInfo("profile_picture", getProfileUrl);
+                                    console.log("Profile picture url gotted");
+
+                                    //Extract from function
+                                    $rootScope.currentUser = Kinvey.getActiveUser();
+                                    let user = $rootScope.currentUser;
+                                    console.log(user.profile_picture);
+                                    $scope.fbkProfilePhotoShow = user.profile_picture;
+                                }
+                            )
+                            .then(
+                                function () {
+                                    facebook.updateUserInfo("username", user._socialIdentity.facebook.id);
+                                    console.log("Username updated with facebook id")
+                                }
+                            );
+                    });
             };
 
+            // $scope.loginGoogle = function () {
+            //     var promise = $kinvey.Social.connect(null, 'google', {redirect: 'http://localhost:8000'});
+            //     console.log(promise);
+            //     promise.then(function (user) {
+            //         alert("VADETE UQ -> " + user.username)
+            //     }, function (err) {
+            //         alert("MAMKAMO OSRA SA -> " + err);
+            //         console.log(err)
+            //     });
+            // };
 
-            $scope.loginGoogle = function () {
-                var promise = $kinvey.Social.connect(null, 'google', {redirect: 'http://localhost:8000'});
-                promise.then(function (user) {
-                    console.log(user);
-                    console.log(user._socialIdentity.google)
-                }, function (err) {
-                    alert("MAMKAMO OSRA SA -> " + err);
-                    console.log(err)
-                });
-            };
-
-            $scope.checkRegisterDetails = function (user) {
-                authentication.registerUser(user);
-            };
-
-            let init = function () {
-                $kinvey.init({
-                    appKey: kinveyConfig.appKey,
-                    appSecret: kinveyConfig.appSecret
-                }).then(function () {
-                    $rootScope.currentUser = Kinvey.getActiveUser();
-                    if(!$rootScope.currentUser) {
-                        console.log("No active user");
-                    }
-                });
-            };
-
-            init();
+            // let init = function () {
+            //     kinveyConfig.authorize.then(function () {
+            //         $rootScope.currentUser = Kinvey.getActiveUser();
+            //         if (!$rootScope.currentUser) {
+            //             console.log("No active user");
+            //         }
+            //     });
+            // };
+            //
+            // init();
         }]);

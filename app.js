@@ -11,7 +11,8 @@ var app = angular.module('myApp', [
     'mgcrea.ngStrap',
     'myApp.authentication',
     'angular.filter',
-    'ngImgCrop'
+    'ngImgCrop',
+    'myApp.facebook'
 ]);
 
 app.config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider, $kinveyConfig) {
