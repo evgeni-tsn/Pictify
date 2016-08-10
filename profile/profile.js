@@ -30,17 +30,12 @@ angular.module('myApp.profile', ['ngRoute'])
         function ($rootScope, $scope, $kinvey, kinveyConfig) {
             $scope.pageName = "Profile Page";
             $scope.shouldCrop = false;
-            $scope.image = null;
+            $scope.imageForUpload = null;
             $scope.croppedImage = null;
             $scope.croppedImageBlob = null;
 
-
-            $scope.get = function () {
-                //    use IIFE for this
-            };
-
-            //GET() on load
-            (function () {
+            // I don't agree this should be IIFE, sorry jak
+            $scope.getAllPics = function () {
                 'use strict';
                 kinveyConfig.authorize
                     .then(function () {
@@ -68,8 +63,7 @@ angular.module('myApp.profile', ['ngRoute'])
 
                         $scope.images = images;
                     })
-            })();
-
+            };
 
             function containsFile(array, obj) {
                 let i = array.length;
@@ -82,7 +76,7 @@ angular.module('myApp.profile', ['ngRoute'])
             }
 
             $scope.showCrop = function () {
-                if (!$scope.image) {
+                if (!$scope.imageForUpload) {
                     $scope.shouldCrop = false;
                     $scope.croppedImage = null;
                     $scope.croppedImageBlob = null;
@@ -93,18 +87,18 @@ angular.module('myApp.profile', ['ngRoute'])
             };
 
             $scope.fileSelect = function (files) {
-                if (!$scope.file) {
-                    $scope.file = {};
+                if (!$scope.imageForUpload) {
+                    $scope.imageForUpload = {};
                 }
 
                 if (!files[0]) {
-                    $scope.image = null;
+                    $scope.imageForUpload = null;
                     $scope.showCrop();
                     return;
                 }
 
                 if (files[0].type.match('image.*')) {
-                    $scope.image = files[0];
+                    $scope.imageForUpload = files[0];
                 }
             };
 
@@ -117,20 +111,20 @@ angular.module('myApp.profile', ['ngRoute'])
                             return;
                         }
 
-                        if (!$scope.image) {
+                        if (!$scope.imageForUpload) {
                             console.log("No image to upload");
                             return;
                         }
 
                         if (!$scope.shouldCrop) {
-                            let promise = Kinvey.File.upload($scope.image, {
-                                mimeType: $scope.image.type,
-                                size: $scope.image.size,
+                            let promise = Kinvey.File.upload($scope.imageForUpload, {
+                                mimeType: $scope.imageForUpload.type,
+                                size: $scope.imageForUpload.size,
                                 public: true
                             });
                             promise.then(function (response) {
                                 console.log(response);
-                                $scope.get();
+                                $scope.getAllPics();
                             }, function (error) {
                                 console.log(error);
                             });
@@ -139,13 +133,13 @@ angular.module('myApp.profile', ['ngRoute'])
                             let promise = Kinvey.File.upload(fileContent, {
                                 mimeType: "image/*",
                                 size: fileContent.size,
-                                _filename: "cropped_" + $scope.image.name,
+                                _filename: "cropped_" + $scope.imageForUpload.name,
                                 public: true
                             });
                             promise.then(function (response) {
                                 console.log(response);
                                 $scope.showCrop();
-                                $scope.get();
+                                $scope.getAllPics();
                             }, function (error) {
                                 console.log(error);
                             })
@@ -199,9 +193,6 @@ angular.module('myApp.profile', ['ngRoute'])
             };
 
             $scope.selectPic = function (image) {
-                kinveyConfig.authorize
-                    .then(function () {
-                        $rootScope.currentUser = Kinvey.getActiveUser();
                         if (!$rootScope.currentUser) {
                             console.log("No active user");
                             return;
@@ -212,8 +203,7 @@ angular.module('myApp.profile', ['ngRoute'])
                         }
 
                         $scope.selectedImage = image;
-                    });
-            };
+                    };
 
             $scope.deletePic = function (image) {
                 kinveyConfig.authorize
@@ -242,16 +232,10 @@ angular.module('myApp.profile', ['ngRoute'])
                     })
             };
 
-            // let init = function () {
-            //     kinveyConfig.authorize.then(function () {
-            //         $rootScope.currentUser = Kinvey.getActiveUser();
-            //         if(!$rootScope.currentUser) {
-            //             console.log("No active user");
-            //             return;
-            //         }
-            //
-            //         $scope.get();
-            //     });
-            // };
-            // init();
+            let init = function () {
+                kinveyConfig.authorize.then(function () {
+                    $scope.getAllPics();
+                });
+            };
+            init();
         }]);

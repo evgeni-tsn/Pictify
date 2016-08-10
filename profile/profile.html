@@ -64,7 +64,7 @@
 <input type="button" value="Crop Image" ng-click="showCrop()">
 <div ng-show="shouldCrop">
     <div class="cropArea">
-        <img-crop image="image"
+        <img-crop image="imageForUpload"
                   result-image="croppedImage"
                   result-blob="croppedImageBlob"
                   area-type="square"
@@ -76,7 +76,7 @@
     <div><img ng-src="{{croppedImage}}" alt=""></div>
 </div>
 <input type="button" value="Upload" ng-click="upload()">
-<input type="button" value="[Maybe depricated] Get" ng-click="get()" ng-disabled="true">
+<input type="button" value="[Maybe depricated] Get" ng-click="getAllPics()" ng-disabled="true">
 
 
 <div class="row">
@@ -86,9 +86,9 @@
             <div class="galContainer">
                 <img class="img-responsive"
                      ng-click="selectPic(image)"
+                     ng-src="{{image._downloadURL}}"
                      data-toggle="modal"
-                     data-target="#imageModal"
-                     ng-src="{{image._downloadURL}}">
+                     data-target="#imageModal">
             </div>
         </div>
     </div>
@@ -116,7 +116,7 @@
                 </div>
             </div>
             <div class="modal-body" id="modalImageContainter">
-                <img ng-src="{{selectedImage._downloadURL}}" alt="">
+                <img ng-src="{{selectedImage._downloadURL}}" alt="Wtf">
             </div>
             <div class="modal-footer">
                // TODO: bottom line with comments, likes, etc. will go here
