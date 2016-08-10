@@ -11,7 +11,7 @@ angular.module('myApp.authentication', [])
                     promise.then(function (user) {
                         console.log("Hello, your name is: " + user.username);
                         console.log(user);
-                        $route.reload();
+                        // $route.reload();
                         $rootScope.currentUser = user;
                     }, function (err) {
                         console.log(err);
@@ -34,7 +34,7 @@ angular.module('myApp.authentication', [])
                         promise.then(function (img) {
                             console.log(img);
                             $rootScope.profPic = img;
-                            $route.reload();
+                            // $route.reload();
                         }, function (error) {
                             console.log(error);
                         })
