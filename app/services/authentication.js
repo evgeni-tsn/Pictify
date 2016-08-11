@@ -9,10 +9,11 @@ angular.module('myApp.authentication', [])
                         password: user.password
                     });
                     promise.then(function (user) {
+                        $('#registerModal').modal('hide');
                         console.log("Hello, your name is: " + user.username);
                         console.log(user);
-                        // $route.reload();
                         $rootScope.currentUser = user;
+                        $route.reload();
                     }, function (err) {
                         console.log(err);
                     });
@@ -34,7 +35,7 @@ angular.module('myApp.authentication', [])
                         promise.then(function (img) {
                             console.log(img);
                             $rootScope.profPic = img;
-                            // $route.reload();
+                            $route.reload();
                         }, function (error) {
                             console.log(error);
                         })
@@ -53,7 +54,8 @@ angular.module('myApp.authentication', [])
                         let promise = $kinvey.User.logout();
                         promise.then(function () {
                             console.log("Successfully Logout");
-                            $rootScope.currentUser = Kinvey.getActiveUser();
+                            $rootScope.currentUser = null;
+                            $rootScope.profPic = null;
                             $route.reload();
                         }, function (err) {
                             console.log(err);

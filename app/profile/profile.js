@@ -39,7 +39,6 @@ angular.module('myApp.profile', ['ngRoute'])
                 'use strict';
                 kinveyConfig.authorize
                     .then(function () {
-                        let images = [];
                         let user = $rootScope.currentUser;
                         if (!user) {
                             console.log("No active user");
@@ -49,19 +48,11 @@ angular.module('myApp.profile', ['ngRoute'])
                         let query = new $kinvey.Query();
                         query.equalTo('_acl.creator', user.id /*, 'mimeType', "image/*"*/);
                         let promise = $kinvey.File.find(query);
-                        promise.then(function (files) {
-                            for (let file of files) {
-                                images.push(file);
-                                if (file._id === user.profile_picture) {
-                                    $rootScope.profPic = file;
-                                }
-                                console.log(file);
-                            }
+                        promise.then(function (images) {
+                            $scope.images = images;
                         }, function (error) {
                             console.log(error)
                         });
-
-                        $scope.images = images;
                     })
             };
 
@@ -120,8 +111,10 @@ angular.module('myApp.profile', ['ngRoute'])
                             let promise = Kinvey.File.upload($scope.imageForUpload, {
                                 mimeType: $scope.imageForUpload.type,
                                 size: $scope.imageForUpload.size,
-                                public: true
-                            });
+                                _acl: {
+                                    gr: true
+                                }
+                            }, {public:true});
                             promise.then(function (response) {
                                 console.log(response);
                                 $scope.getAllPics();
@@ -134,8 +127,10 @@ angular.module('myApp.profile', ['ngRoute'])
                                 mimeType: "image/*",
                                 size: fileContent.size,
                                 _filename: "cropped_" + $scope.imageForUpload.name,
-                                public: true
-                            });
+                                _acl: {
+                                    gr: true
+                                }
+                            }, {public:true});
                             promise.then(function (response) {
                                 console.log(response);
                                 $scope.showCrop();
@@ -193,10 +188,10 @@ angular.module('myApp.profile', ['ngRoute'])
             };
 
             $scope.selectPic = function (image) {
-                        if (!$rootScope.currentUser) {
-                            console.log("No active user");
-                            return;
-                        }
+                        // if (!$rootScope.currentUser) {
+                        //     console.log("No active user");
+                        //     return;
+                        // }
 
                         if (!image) {
                             console.log("No picture selected");
