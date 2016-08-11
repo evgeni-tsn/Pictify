@@ -45,8 +45,8 @@ angular.module('myApp.profile', ['ngRoute'])
                             return;
                         }
 
-                        let query = new $kinvey.Query();
-                        query.equalTo('_acl.creator', user.id /*, 'mimeType', "image/*"*/);
+                        let query = new Kinvey.Query();
+                        query.equalTo('_acl.creator', user._id /*, 'mimeType', "image/*"*/);
                         let promise = $kinvey.File.find(query);
                         promise.then(function (images) {
                             $scope.images = images;
