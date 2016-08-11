@@ -55,6 +55,8 @@ app.controller('MainCtrl', ['$rootScope', '$scope', '$route', '$location', 'kinv
 
     $scope.logout = function () {
         authentication.logout();
+        $rootScope.currentUser = null;
+        $rootScope.profPic = null;
     };
 
     $scope.searchUsers = function (typed) {

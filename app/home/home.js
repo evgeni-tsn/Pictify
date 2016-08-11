@@ -79,14 +79,21 @@ angular.module('myApp.home', ['ngRoute'])
             //     });
             // };
 
-            // let init = function () {
-            //     kinveyConfig.authorize.then(function () {
-            //         $rootScope.currentUser = Kinvey.getActiveUser();
-            //         if (!$rootScope.currentUser) {
-            //             console.log("No active user");
-            //         }
-            //     });
-            // };
-            //
-            // init();
+            let init = function () {
+                kinveyConfig.authorize.then(function () {
+                    $rootScope.currentUser = Kinvey.getActiveUser();
+                    if (!$rootScope.currentUser) {
+                        console.log("No active user");
+                    }
+
+                    let promise = Kinvey.File.stream($rootScope.currentUser.profile_picture);
+                    promise.then(function (image) {
+                        $rootScope.profPic = image;
+                    }, function (error) {
+                        console.log(error);
+                    })
+                });
+            };
+
+            init();
         }]);
