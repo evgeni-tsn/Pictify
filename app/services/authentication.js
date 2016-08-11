@@ -32,20 +32,14 @@ angular.module('myApp.authentication', [])
                         console.log(user);
                         $rootScope.currentUser = Kinvey.getActiveUser();
                         $('#loginModal').modal('hide');
-                        if($rootScope.currentUser.profile_picture) {
-                            let promise = Kinvey.File.stream($rootScope.currentUser.profile_picture);
-                            promise.then(function (img) {
-                                console.log(img);
-                                $rootScope.profPic = img;
-                                $route.reload();
-                            }, function (error) {
-                                console.log(error);
-                            })
-                        }
-                        else {
-                            $rootScope.profPic = null;
+                        let promise = Kinvey.File.stream($rootScope.currentUser.profile_picture);
+                        promise.then(function (img) {
+                            console.log(img);
+                            $rootScope.profPic = img;
                             $route.reload();
-                        }
+                        }, function (error) {
+                            console.log(error);
+                        })
                     }, function (err) {
                         console.log(err);
                     });
