@@ -6,13 +6,14 @@ angular.module('myApp.authentication', [])
                 .then(function () {
                     let promise = $kinvey.User.signup({
                         username: user.username,
-                        password: user.password
+                        password: user.password,
+                        profile_picture: '638e1f4a-2684-4174-a1d5-1e66dd22af8e'
                     });
                     promise.then(function (user) {
                         $('#registerModal').modal('hide');
                         console.log("Hello, your name is: " + user.username);
                         console.log(user);
-                        $rootScope.currentUser = user;
+                        $rootScope.currentUser = Kinvey.getActiveUser();
                         $route.reload();
                     }, function (err) {
                         console.log(err);
@@ -29,16 +30,22 @@ angular.module('myApp.authentication', [])
                     });
                     promise.then(function (user) {
                         console.log(user);
-                        $rootScope.currentUser = user;
+                        $rootScope.currentUser = Kinvey.getActiveUser();
                         $('#loginModal').modal('hide');
-                        let promise = Kinvey.File.stream($rootScope.currentUser.profile_picture);
-                        promise.then(function (img) {
-                            console.log(img);
-                            $rootScope.profPic = img;
+                        if($rootScope.currentUser.profile_picture) {
+                            let promise = Kinvey.File.stream($rootScope.currentUser.profile_picture);
+                            promise.then(function (img) {
+                                console.log(img);
+                                $rootScope.profPic = img;
+                                $route.reload();
+                            }, function (error) {
+                                console.log(error);
+                            })
+                        }
+                        else {
+                            $rootScope.profPic = null;
                             $route.reload();
-                        }, function (error) {
-                            console.log(error);
-                        })
+                        }
                     }, function (err) {
                         console.log(err);
                     });
