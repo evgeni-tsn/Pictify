@@ -50,7 +50,7 @@
     your browser</a> to improve your experience.</p>
 <![endif]-->
 
-<nav class="navbar navbar-inverse " role="navigation" bs-navbar>
+<nav class="navbar navbar-inverse" role="navigation" bs-navbar>
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
@@ -61,9 +61,30 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="#/">Pictify</a>
+            <input id="searchBox"
+                   class="form-control navbar-form"
+                   type="text"
+                   ng-model="selectedUser"
+                   placeholder="search"
+                   uib-typeahead="user as user.username for user in searchUsers($viewValue)"
+                   typeahead-editable="false"
+                   typeahead-on-select="onSelect()"/>
         </div>
         <span class="nav-divider"></span>
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+        <div class="collapse navbar-collapse navbar-right headerGroup" id="bs-example-navbar-collapse-2">
+
+            <ul id="profileTabs">
+                <li ng-show="currentUser" ng-class="{active: $route.current.activetab == 'profile'}">
+                    <a href="#/profile">
+                        <div>
+                            <img id="profileThumbnail" class="img-responsive" ng-src="{{profPic._downloadURL}}">
+                        </div>
+                        <div>
+                            <span>{{currentUser.username}}</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
 
             <ul id="navigationTabs" class="nav navbar-nav navbar-right">
                 <li ng-class="{active: $route.current.activetab == 'home'}">
@@ -75,11 +96,16 @@
 
                 <li class="dropdown">
                     <a href="#/" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                        Dropdown
+                        Settings
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Action</a></li>
+                        <li><input
+                                ng-show="currentUser"
+                                class="btn btn-group-justified btn-danger"
+                                type="submit"
+                                value="Logout"
+                                ng-click="logout()"></li>
                         <li class="divider"></li>
                         <li><a href="#">Separated link</a></li>
                         <li class="divider"></li>
@@ -90,28 +116,7 @@
         </div>
     </div>
 </nav>
-<div class="row">
-    <div class="col-md-2">
-    <ul id="profileTabs" class="nav navbar-nav navbar-left">
-        <li ng-show="currentUser" ng-class="{active: $route.current.activetab == 'profile'}">
-            <a href="#/profile">
-                <div>
-                    <img id="profileThumbnail" class="img-responsive" ng-src="{{profPic._downloadURL}}">
-                </div>
-                <div>
-                    <span>{{currentUser.username}}</span>
-                </div>
-            </a>
-        </li>
-    </ul>
-        <div>Should be collapse-able sidebar with friends, albums and more shit.</div>
-    </div>
-
-    <div class="col-md-10">
-        <div ng-view></div>
-    </div>
-
-</div>
+<div ng-view></div>
 
 <!--<div>Angular seed app: v<span app-version></span></div>-->
 
@@ -136,6 +141,7 @@
 <script src="app.js"></script>
 <script src="home/home.js"></script>
 <script src="profile/profile.js"></script>
+<script src="viewProfile/viewProfile.js"></script>
 <script src="services/authentication.js"></script>
 <script src="services/facebook.js"></script>
 <script src="components/version/version.js"></script>

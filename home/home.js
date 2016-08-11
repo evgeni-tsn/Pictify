@@ -19,10 +19,6 @@ angular.module('myApp.home', ['ngRoute'])
                 authentication.loginUser(user);
             };
 
-            $scope.logout = function () {
-                authentication.logout();
-            };
-
             $scope.checkRegisterDetails = function (user) {
                 authentication.registerUser(user);
             };
