@@ -1,24 +1,24 @@
 'use strict';
 
-angular.module('myApp.home', ['ngRoute'])
+angular.module('myApp.landing', ['ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.when('/home', {
-            templateUrl: 'home/home.html',
-            controller: 'HomeCtrl',
-            activetab: 'home'
+        $routeProvider.when('/', {
+            templateUrl: 'landing/landing.html',
+            controller: 'LandingCtrl',
+            activetab: 'landing'
         });
     }])
 
-    .controller('HomeCtrl', ['$rootScope', '$scope', '$http', '$kinvey', 'kinveyConfig',
+    .controller('LandingCtrl', ['$rootScope', '$scope', '$http', '$kinvey', 'kinveyConfig',
         '$q', '$window', '$location', '$route', 'authentication', 'facebook',
         function ($rootScope, $scope, $http, $kinvey, kinveyConfig,
                   $q, $window, $location, $route, authentication, facebook) {
 
-            $scope.msg = "Login and Register are on /#/ /// Facebook to be moved";
-
             $scope.login = function (user) {
                 authentication.loginUser(user);
+                $location.path("/#")
+
             };
 
             $scope.checkRegisterDetails = function (user) {
@@ -29,18 +29,18 @@ angular.module('myApp.home', ['ngRoute'])
 
                 facebook.getLoginStatus()
                     .then(function (authResponse) {
-                    var provider = 'facebook';
-                    var tokens = {
-                        'access_token': authResponse.accessToken,
-                        'expires_in': authResponse.expiresIn
-                    };
-                    return Kinvey.User.loginWithProvider(provider, tokens).then(null, function (err) {
-                        // Attempt to signup as a new user if no user with the identity exists.
-                        if (Kinvey.Error.USER_NOT_FOUND === err.name) {
-                            return Kinvey.User.signupWithProvider(provider, tokens);
-                        }
-                        return Kinvey.Defer.reject(err);
-                    });
+                        var provider = 'facebook';
+                        var tokens = {
+                            'access_token': authResponse.accessToken,
+                            'expires_in': authResponse.expiresIn
+                        };
+                        return Kinvey.User.loginWithProvider(provider, tokens).then(null, function (err) {
+                            // Attempt to signup as a new user if no user with the identity exists.
+                            if (Kinvey.Error.USER_NOT_FOUND === err.name) {
+                                return Kinvey.User.signupWithProvider(provider, tokens);
+                            }
+                            return Kinvey.Defer.reject(err);
+                        });
                     })
                     .then(function (user) {
 
@@ -71,6 +71,11 @@ angular.module('myApp.home', ['ngRoute'])
                                 // WHATEVER WE NEED FROM FACEBOOK
                             );
                     });
+            };
+
+            $scope.myVar = false;
+            $scope.toggle = function () {
+                $scope.myVar = !$scope.myVar;
             };
 
             // $scope.loginGoogle = function () {

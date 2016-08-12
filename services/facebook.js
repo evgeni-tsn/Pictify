@@ -14,20 +14,6 @@ angular.module('myApp.facebook', [])
             return deferred.promise;
         }
 
-        function getLastName() {
-            var deferred = $q.defer();
-            FB.api('/me', {
-                fields: 'last_name'
-            }, function (response) {
-                if (!response || response.error) {
-                    deferred.reject('Error occured');
-                } else {
-                    deferred.resolve(response);
-                }
-            });
-            return deferred.promise;
-        }
-
         function getProfilePicture(userId) {
             var deferred = $q.defer();
             FB.api(
@@ -57,7 +43,6 @@ angular.module('myApp.facebook', [])
 
 
         return {
-            getLastName: getLastName,
             getProfilePicture: getProfilePicture,
             updateUserInfo: updateUserInfo,
             getLoginStatus: getLoginStatus

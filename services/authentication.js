@@ -1,5 +1,6 @@
 angular.module('myApp.authentication', [])
-    .factory('authentication', ['$rootScope', '$kinvey', 'kinveyConfig', '$route', function ($rootScope, $kinvey, kinveyConfig, $route) {
+    .factory('authentication', ['$rootScope', '$kinvey', 'kinveyConfig', '$route', '$location',
+        function ($rootScope, $kinvey, kinveyConfig, $route, $location) {
 
         function registerUser(user) {
             kinveyConfig.authorize
@@ -14,7 +15,8 @@ angular.module('myApp.authentication', [])
                         console.log("Hello, your name is: " + user.username);
                         console.log(user);
                         $rootScope.currentUser = Kinvey.getActiveUser();
-                        $route.reload();
+                        // $route.reload();
+                        $location.path("/profile");
                     }, function (err) {
                         console.log(err);
                     });
@@ -36,7 +38,8 @@ angular.module('myApp.authentication', [])
                         promise.then(function (img) {
                             console.log(img);
                             $rootScope.profPic = img;
-                            $route.reload();
+                            // $route.reload();
+                            $location.path("/profile");
                         }, function (error) {
                             console.log(error);
                         })
