@@ -1,8 +1,24 @@
 /* app css stylesheet */
 
+body {
+    background-color: #fafafa;
+}
+
+.margin-bottom {
+    margin-bottom: 20px;
+}
+
 .col-centered {
   margin: 0 auto;
   float: none;
+}
+
+.align-center {
+    text-align: center;
+}
+
+#login-form {
+    background-color: #ffffff;
 }
 
 #profileThumbnail {
