@@ -77,7 +77,7 @@
                 <li ng-show="currentUser" ng-class="{active: $route.current.activetab == 'profile'}">
                     <a href="#/profile">
                         <div>
-                            <img id="profileThumbnail" class="img-responsive" ng-src="{{profPic._downloadURL}}">
+                            <img id="profileThumbnail" class="img-responsive" ng-src="{{profPic}}">
                         </div>
                         <div>
                             <span>{{currentUser.username}}</span>
@@ -92,6 +92,10 @@
                 </li>
                 <li ng-show="currentUser" ng-class="{active: $route.current.activetab == 'profile'}">
                     <a href="#/profile">Profile</a>
+                </li>
+
+                <li ng-show="!currentUser" ng-class="{active: $route.current.activetab == 'landing'}">
+                    <a href="#/landing">Login / Register</a>
                 </li>
 
                 <li class="dropdown">

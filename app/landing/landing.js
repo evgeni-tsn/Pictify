@@ -15,7 +15,6 @@ angular.module('myApp.landing', ['ngRoute'])
 
             $scope.login = function (user) {
                 authentication.loginUser(user);
-                $location.path("/#")
             };
 
             $scope.checkRegisterDetails = function (user) {
@@ -48,24 +47,27 @@ angular.module('myApp.landing', ['ngRoute'])
                                 function (response) {
                                     console.log(response);
                                     var getProfileUrl = response.data.url;
-                                    facebook.updateUserInfo("profile_picture", getProfileUrl);
+                                    facebook.updateUserInfo("profile_picture_url", getProfileUrl);
                                     console.log("Profile picture url gotted");
 
                                     //Extract from function
                                     $rootScope.currentUser = Kinvey.getActiveUser();
                                     let user = $rootScope.currentUser;
-                                    console.log(user.profile_picture);
-                                    $scope.fbkProfilePhotoShow = user.profile_picture;
+                                    console.log(user.profile_picture_url);
+                                    $rootScope.profPic = user.profile_picture_url;
                                 }
                             )
                             .then(
                                 function () {
-                                    facebook.updateUserInfo("username", user._socialIdentity.facebook.name);
+                                    let rawFacebookName = user._socialIdentity.facebook.name;
+                                    let facebookUsernameParts = rawFacebookName.toLowerCase().split(' ');
+                                    let facebookUsernameReady = facebookUsernameParts.join(".");
+                                    facebook.updateUserInfo("username", facebookUsernameReady);
                                     console.log("Username updated with facebook id")
                                 }
                             )
                             .then(
-                                // WHATEVER WE NEED FROM FACEBOOK
+                                $location.path("/profile")
                             );
                     });
             };
