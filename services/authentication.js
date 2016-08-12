@@ -35,7 +35,8 @@ angular.module('myApp.authentication', [])
                             let promise = Kinvey.File.stream($rootScope.currentUser.profile_picture);
                             promise.then(function (img) {
                                 console.log(img);
-                                $rootScope.profPic = img;
+                                $rootScope.profPic = img._downloadURL;
+                                $location.path("/profile")
                             }, function (error) {
                                 console.log(error);
                             })
