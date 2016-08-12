@@ -114,7 +114,7 @@ angular.module('myApp.profile', ['ngRoute'])
                                 _acl: {
                                     gr: true
                                 }
-                            }, {public:true});
+                            }, {public: true});
                             promise.then(function (response) {
                                 console.log(response);
                                 $scope.getAllPics();
@@ -130,7 +130,7 @@ angular.module('myApp.profile', ['ngRoute'])
                                 _acl: {
                                     gr: true
                                 }
-                            }, {public:true});
+                            }, {public: true});
                             promise.then(function (response) {
                                 console.log(response);
                                 $scope.showCrop();
@@ -180,7 +180,7 @@ angular.module('myApp.profile', ['ngRoute'])
                         var promise = Kinvey.User.update(user);
                         promise.then(function (response) {
                             console.log(response);
-                            $rootScope.profPic = image;
+                            $rootScope.profPic = image._downloadURL;
                         }, function (error) {
                             console.log(error);
                         });
@@ -188,17 +188,17 @@ angular.module('myApp.profile', ['ngRoute'])
             };
 
             $scope.selectPic = function (image) {
-                        // if (!$rootScope.currentUser) {
-                        //     console.log("No active user");
-                        //     return;
-                        // }
+                // if (!$rootScope.currentUser) {
+                //     console.log("No active user");
+                //     return;
+                // }
 
-                        if (!image) {
-                            console.log("No picture selected");
-                        }
+                if (!image) {
+                    console.log("No picture selected");
+                }
 
-                        $scope.selectedImage = image;
-                    };
+                $scope.selectedImage = image;
+            };
 
             $scope.deletePic = function (image) {
                 kinveyConfig.authorize
