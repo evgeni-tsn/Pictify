@@ -10,15 +10,12 @@ angular.module('myApp.landing', ['ngRoute'])
         });
     }])
 
-    .controller('LandingCtrl', ['$rootScope', '$scope', '$http', '$kinvey', 'kinveyConfig',
-        '$q', '$window', '$location', '$route', 'authentication', 'facebook',
-        function ($rootScope, $scope, $http, $kinvey, kinveyConfig,
-                  $q, $window, $location, $route, authentication, facebook) {
+    .controller('LandingCtrl', ['$rootScope', '$scope', '$q', '$location', '$route', 'authentication', 'facebook',
+        function ($rootScope, $scope, $q, $location, $route, authentication, facebook) {
 
             $scope.login = function (user) {
                 authentication.loginUser(user);
                 $location.path("/#")
-
             };
 
             $scope.checkRegisterDetails = function (user) {
@@ -73,9 +70,9 @@ angular.module('myApp.landing', ['ngRoute'])
                     });
             };
 
-            $scope.myVar = false;
+            $scope.isRegistered = true;
             $scope.toggle = function () {
-                $scope.myVar = !$scope.myVar;
+                $scope.isRegistered = !$scope.isRegistered;
             };
 
             // $scope.loginGoogle = function () {

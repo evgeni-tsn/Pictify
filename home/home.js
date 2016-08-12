@@ -10,20 +10,10 @@ angular.module('myApp.home', ['ngRoute'])
         });
     }])
 
-    .controller('HomeCtrl', ['$rootScope', '$scope', '$http', '$kinvey', 'kinveyConfig',
-        '$q', '$window', '$location', '$route', 'authentication', 'facebook',
-        function ($rootScope, $scope, $http, $kinvey, kinveyConfig,
-                  $q, $window, $location, $route, authentication, facebook) {
+    .controller('HomeCtrl', ['$rootScope', '$scope', '$q', 'facebook',
+        function ($rootScope, $scope, $q, facebook) {
 
             $scope.msg = "Login and Register are on /#/ /// Facebook to be moved";
-
-            $scope.login = function (user) {
-                authentication.loginUser(user);
-            };
-
-            $scope.checkRegisterDetails = function (user) {
-                authentication.registerUser(user);
-            };
 
             $scope.loginFbk = function () {
 
