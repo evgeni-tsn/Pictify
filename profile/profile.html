@@ -52,6 +52,30 @@
         height:350px;
     }
 
+    .commentsToggler {
+        float: right;
+        color: darkgrey;
+        text-decoration: none;
+        cursor: pointer;
+        font-size: 1.5em;
+    }
+
+    .votes {
+        font-size: 1.5em;
+    }
+
+    .like {
+        color: limegreen;
+    }
+
+    .dislike {
+        color: palevioletred;
+    }
+
+    .socialBox {
+        margin: 5px;
+    }
+
 </style>
 
 <p>This is the partial for {{pageName}}.</p>
@@ -60,8 +84,8 @@
     <img ng-src="{{profPic.image._downloadURL}}" class="img-circle" id="userProfImg">
 </div>
 
-<input type="file" file-change handler="fileSelect(files)">
-<input type="button" value="Crop Image" ng-click="showCrop()">
+<input type="file" file-change handler="fileSelect(files)" class="btn btn-default btn-lg">
+<input type="button" value="Crop Image" ng-click="showCrop()" class="btn btn-danger btn-lg">
 <div ng-show="shouldCrop">
     <div class="cropArea">
         <img-crop image="imageForUpload"
@@ -87,6 +111,39 @@
                      ng-src="{{picture.image._downloadURL}}"
                      data-toggle="modal"
                      data-target="#imageModal">
+                <div class="socialBox">
+                    <span class="glyphicon glyphicon-hand-up votes like"
+                          ng-click="vote(picture, 'like')">
+                        {{picture.votes.likes.length}}
+                    </span>
+                    <span class="glyphicon glyphicon-hand-down votes dislike"
+                          ng-click="vote(picture, 'dislike')">
+                        {{picture.votes.dislikes.length}}
+                    </span>
+                    <span class="glyphicon glyphicon-comment commentsToggler"
+                          ng-click="showComments = !showComments">
+                        {{picture.comments.length}}
+                    </span>
+                    <br>
+                    <span class="commentsToggler"
+                          ng-click="showCommentBox = !showCommentBox">
+                        Comment
+                    </span>
+                    <div class="comments" ng-show="showComments"
+                         ng-repeat="commentObj in picture.comments">
+                        {{commentObj.username}}: {{commentObj.content}}
+                    </div>
+                    <div class="form-group" ng-show="showCommentBox || showComments">
+                        <textarea title="Comment:"
+                                  class="form-control comment" rows="1"
+                                  ng-model="commentBoxText">
+                        </textarea>
+                        <button class="btn btn-info"
+                                ng-click="comment(picture, commentBoxText)">
+                            Submit
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -101,13 +158,32 @@
                 <br>
                 <div class="row">
                     <div class="col-md-6">
-                        <h4 class="modal-title text-center" id="modalImageCaption">{{selectedImage.image._filename}}</h4>
+                        <textarea title="caption"
+                                  class="form-control"
+                                  ng-show="editingCaption"
+                                  rows="3"
+                                  ng-model="editedCaption">
+                        </textarea>
+                        <h3 ng-click="editingCaption = !editingCaption"
+                            ng-hide="editingCaption"
+                            class="modal-title text-left"
+                            id="modalImageCaption">
+                            {{selectedImage.caption}}
+                        </h3>
                     </div>
                     <div class="col-md-6">
-                        <button type="button" class="btn btn-warning" ng-click="deletePic(selectedImage)" id="deletePictureButton">
-                            DeletePicture
+                        <button type="button" class="btn btn-warning btn-sm"
+                                ng-click="deletePic(selectedImage)"
+                                id="deletePictureButton">
+                            Delete
                         </button>
-                        <button type="button" class="btn btn-primary" ng-click="setProfilePic(selectedImage)" id="profilePictureSetter">
+                        <button ng-click="editCaption(selectedImage, editedCaption); editingCaption = !editingCaption"
+                                class="btn btn-danger btn-sm">
+                            Edit caption
+                        </button>
+                        <button type="button" class="btn btn-primary btn-sm"
+                                ng-click="setProfilePic(selectedImage)"
+                                id="profilePictureSetter">
                             Set as profile picture
                         </button>
                     </div>
@@ -117,7 +193,17 @@
                 <img ng-src="{{selectedImage.image._downloadURL}}" alt="Wtf">
             </div>
             <div class="modal-footer">
-               // TODO: bottom line with comments, likes, etc. will go here
+               <span class="glyphicon glyphicon-hand-up votes like"
+                     ng-click="vote(selectedImage, 'like')">
+                    {{selectedImage.votes.likes.length}}
+                </span>
+                <span class="glyphicon glyphicon-hand-down votes dislike"
+                      ng-click="vote(selectedImage, 'dislike')">
+                    {{selectedImage.votes.dislikes.length}}
+                </span>
+                <div ng-repeat="commentObj in selectedImage.comments">
+                    {{commentObj.username}}: {{commentObj.content}}
+                </div>
             </div>
         </div>
     </div>

@@ -142,21 +142,12 @@ angular.module('myApp.profile', ['ngRoute'])
                                     gr: true,
                                     gw: true
                                 },
-                                comments: [{
-                                    userId: null,
-                                    username: null,
-                                    content: null
-                                }],
+                                comments: [],
                                 votes: {
-                                    likes: [{
-                                        userId: null,
-                                        username: null
-                                    }],
-                                    dislikes: [{
-                                        userId: null,
-                                        username: null
-                                    }]
-                                }
+                                    likes: [],
+                                    dislikes: []
+                                },
+                                caption: ''
                             })
                             .then(function (success) {
                                 console.log(success);
@@ -240,6 +231,8 @@ angular.module('myApp.profile', ['ngRoute'])
                             return;
                         }
 
+                        Kinvey.File.destroy(picture.image._id);
+
                         var promise = Kinvey.DataStore.destroy("pictures", picture._id);
                         promise.then(function (success) {
                             console.log(success);
@@ -251,6 +244,72 @@ angular.module('myApp.profile', ['ngRoute'])
                             return pic._id !== pictures._id;
                         });
                     })
+            };
+
+            $scope.vote = function (picture, vote) {
+                let likes = picture.votes.likes;
+                let dislikes = picture.votes.dislikes;
+                let canVote = true;
+
+                if (likes) {
+                    for (let likeObj of likes) {
+                        if (likeObj.userId === $rootScope.currentUser._id) {
+                            canVote = false;
+                        }
+                    }
+                } else {
+                    likes = [];
+                }
+
+                if (dislikes) {
+                    for (let dislikeObj of dislikes) {
+                        if (dislikeObj.userId === $rootScope.currentUser._id) {
+                            canVote = false;
+                        }
+                    }
+                } else {
+                    dislikes = [];
+                }
+
+                if (canVote) {
+                    if (vote === "like") {
+                        likes.push({
+                            userId: $rootScope.currentUser._id,
+                            username: $rootScope.currentUser.username
+                        });
+                    } else if (vote === "dislike") {
+                        dislikes.push({
+                            userId: $rootScope.currentUser._id,
+                            username: $rootScope.currentUser.username
+                        })
+                    }
+
+                    picture.votes.likes = likes;
+                    picture.votes.dislikes = dislikes;
+                    Kinvey.DataStore.update("pictures", picture)
+                        .then(function (response) {
+                            console.log("liked picture");
+                            console.log(response);
+                        })
+                }
+            };
+
+            $scope.comment = function (picture, text) {
+                picture.comments.push({
+                    userId: $rootScope.currentUser._id,
+                    username: $rootScope.currentUser.username,
+                    content: text});
+                let promise = Kinvey.DataStore.update("pictures", picture);
+                promise.then(function (response) {
+                    console.log(response);
+                }, function (error) {
+                    console.log(error);
+                })
+            };
+
+            $scope.editCaption = function (picture, caption) {
+                picture.caption = caption;
+                Kinvey.DataStore.update("pictures", picture);
             };
 
             let init = function () {

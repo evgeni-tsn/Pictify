@@ -39,87 +39,79 @@ angular.module('myApp.landing', ['ngRoute'])
                             if (Kinvey.Error.USER_NOT_FOUND === err.name) {
                                 return Kinvey.User.signupWithProvider(provider, tokens)
                                 .then(function (user) {
-                                        return facebook.getProfilePicture(user._socialIdentity.facebook.id)
-                                            .then(function (imageData) {
-                                                console.log(imageData);
-                                                let profilePicUrl = imageData.data.url;
-                                                console.log(profilePicUrl);
+                                    return facebook.getProfilePicture(user._socialIdentity.facebook.id)
+                                        .then(function (imageData) {
+                                            console.log(imageData);
+                                            let profilePicUrl = imageData.data.url;
+                                            console.log(profilePicUrl);
 
-                                                return $http.get(profilePicUrl, {responseType: "blob"})
-                                                    .then(function (response) {
-                                                        console.log("https response");
-                                                        console.log(response);
-                                                        let profImageBlob = response.data;
-                                                        return kinveyConfig.authorize
-                                                            .then(function () {
-                                                                return Kinvey.File.upload(profImageBlob, {
-                                                                    mimeType: profImageBlob.type,
-                                                                    size: profImageBlob.size,
-                                                                    _acl: {
-                                                                        gr: true,
-                                                                        gw: false
-                                                                    }
-                                                                }, {public: true})
-                                                                    .then(function (success) {
-                                                                        console.log("upload success");
-                                                                        console.log(success);
-                                                                        return success._id;
-                                                                    }, function (error) {
-                                                                        console.log(error);
-                                                                    }).then(function (imageId) {
-                                                                        // Open comments, likes and dislike for pic
-                                                                        return Kinvey.DataStore.save('pictures', {
-                                                                            image: {
-                                                                                _type: "KinveyFile",
-                                                                                _id: imageId
-                                                                            },
-                                                                            _acl: {
-                                                                                gr: true,
-                                                                                gw: true
-                                                                            },
-                                                                            comments: [{
-                                                                                userId: null,
-                                                                                username: null,
-                                                                                content: null
-                                                                            }],
-                                                                            votes: {
-                                                                                likes: [{
-                                                                                    userId: null,
-                                                                                    username: null
-                                                                                }],
-                                                                                dislikes: [{
-                                                                                    userId: null,
-                                                                                    username: null
-                                                                                }]
-                                                                            }
-                                                                        }, {public: true})
-                                                                        .then(function (picture) {
-                                                                            console.log("picture");
-                                                                            console.log(picture);
+                                            return $http.get(profilePicUrl, {responseType: "blob"})
+                                                .then(function (response) {
+                                                    console.log("https response");
+                                                    console.log(response);
+                                                    let profImageBlob = response.data;
+                                                    return kinveyConfig.authorize
+                                                        .then(function () {
+                                                            return Kinvey.File.upload(profImageBlob, {
+                                                                mimeType: profImageBlob.type,
+                                                                size: profImageBlob.size,
+                                                                _acl: {
+                                                                    gr: true,
+                                                                    gw: false
+                                                                }
+                                                            }, {public: true})
+                                                                .then(function (success) {
+                                                                    console.log("upload success");
+                                                                    console.log(success);
+                                                                    return success._id;
+                                                                }, function (error) {
+                                                                    console.log(error);
+                                                                })
+                                                                .then(function (imageId) {
+                                                                    // Open comments, likes and dislike for pic
+                                                                    return Kinvey.DataStore.save('pictures', {
+                                                                        image: {
+                                                                            _type: "KinveyFile",
+                                                                            _id: imageId
+                                                                        },
+                                                                        _acl: {
+                                                                            gr: true,
+                                                                            gw: true
+                                                                        },
+                                                                        comments: [],
+                                                                        votes: {
+                                                                            likes: [],
+                                                                            dislikes: []
+                                                                        },
+                                                                        caption: ''
+                                                                    }, {public: true})
+                                                                    .then(function (picture) {
+                                                                        console.log("picture");
+                                                                        console.log(picture);
 
-                                                                            // Update user and return him
-                                                                            let rawFacebookName = user._socialIdentity.facebook.name;
-                                                                            let facebookUsernameParts = rawFacebookName.toLowerCase().split(' ');
-                                                                            let facebookUsernameReady = facebookUsernameParts.join(".");
+                                                                        // Update user and return him
+                                                                        let rawFacebookName = user._socialIdentity.facebook.name;
+                                                                        let facebookUsernameParts = rawFacebookName.toLowerCase().split(' ');
+                                                                        let facebookUsernameReady = facebookUsernameParts.join(".");
 
-                                                                            user.username = facebookUsernameReady;
-                                                                            user.profile_picture = picture._id;
+                                                                        user.username = facebookUsernameReady;
+                                                                        user.profile_picture = picture._id;
 
-                                                                            return Kinvey.User.update(user)
-                                                                                .then(function (updatedUser) {
-                                                                                    $rootScope.currentUser = updatedUser;
-                                                                                    console.log("updatedUser: ");
-                                                                                    console.log(updatedUser);
-                                                                                    console.log("finished successfully");
-                                                                                    return updatedUser;
-                                                                                }, function (error) {
-                                                                                    console.log(error)
-                                                                                });
+                                                                        return Kinvey.User.update(user)
+                                                                        .then(function (updatedUser) {
+                                                                            $rootScope.currentUser = updatedUser;
+                                                                            console.log("updatedUser: ");
+                                                                            console.log(updatedUser);
+                                                                            console.log("finished successfully");
+                                                                            return updatedUser;
                                                                         }, function (error) {
-                                                                            console.log(error);
+                                                                            console.log(error)
                                                                         });
-                                                                    })
-                                                            });
+                                                                }, function (error) {
+                                                                    console.log(error);
+                                                                });
+                                                            })
+                                                        });
                                                     })
                                             }, function (error) {
                                                 console.log("http response error!:");
