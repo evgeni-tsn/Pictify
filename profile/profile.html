@@ -57,7 +57,7 @@
 <p>This is the partial for {{pageName}}.</p>
 
 <div>
-    <img ng-src="{{profPic._downloadURL}}" alt="Failed to load" class="img-circle" id="userProfImg">
+    <img ng-src="{{profPic.image._downloadURL}}" class="img-circle" id="userProfImg">
 </div>
 
 <input type="file" file-change handler="fileSelect(files)">
@@ -75,18 +75,16 @@
     <div>Cropped image</div>
     <div><img ng-src="{{croppedImage}}" alt=""></div>
 </div>
-<input type="button" value="Upload" ng-click="upload()">
-<input type="button" value="[Maybe depricated] Get" ng-click="getAllPics()" ng-disabled="true">
-
+<input type="button" value="Upload" ng-click="upload()" class="btn btn-danger btn-lg">
 
 <div class="row">
-    <div ng-repeat="image in images">
+    <div ng-repeat="picture in pictures">
         <div class="clearfix" ng-if="$index % 3 == 0"></div>
         <div class="col-md-4">
             <div class="galContainer">
                 <img class="img-responsive"
-                     ng-click="selectPic(image)"
-                     ng-src="{{image._downloadURL}}"
+                     ng-click="selectPic(picture)"
+                     ng-src="{{picture.image._downloadURL}}"
                      data-toggle="modal"
                      data-target="#imageModal">
             </div>
@@ -103,7 +101,7 @@
                 <br>
                 <div class="row">
                     <div class="col-md-6">
-                        <h4 class="modal-title text-center" id="modalImageCaption">{{selectedImage._filename}}</h4>
+                        <h4 class="modal-title text-center" id="modalImageCaption">{{selectedImage.image._filename}}</h4>
                     </div>
                     <div class="col-md-6">
                         <button type="button" class="btn btn-warning" ng-click="deletePic(selectedImage)" id="deletePictureButton">
@@ -116,7 +114,7 @@
                 </div>
             </div>
             <div class="modal-body" id="modalImageContainter">
-                <img ng-src="{{selectedImage._downloadURL}}" alt="Wtf">
+                <img ng-src="{{selectedImage.image._downloadURL}}" alt="Wtf">
             </div>
             <div class="modal-footer">
                // TODO: bottom line with comments, likes, etc. will go here

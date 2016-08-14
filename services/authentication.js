@@ -8,7 +8,7 @@ angular.module('myApp.authentication', [])
                         let promise = $kinvey.User.signup({
                             username: user.username,
                             password: user.password,
-                            profile_picture: '638e1f4a-2684-4174-a1d5-1e66dd22af8e'
+                            profile_picture: '57b0ca18cff2859c1ea246be'
                         });
                         promise.then(function (user) {
                             console.log("Hello, your name is: " + user.username);
@@ -32,10 +32,10 @@ angular.module('myApp.authentication', [])
                         promise.then(function (user) {
                             console.log(user);
                             $rootScope.currentUser = Kinvey.getActiveUser();
-                            let promise = Kinvey.File.stream($rootScope.currentUser.profile_picture);
-                            promise.then(function (img) {
-                                console.log(img);
-                                $rootScope.profPic = img._downloadURL;
+                            let promise = Kinvey.DataStore.get("pictures", $rootScope.currentUser.profile_picture);
+                            promise.then(function (pic) {
+                                console.log(pic);
+                                $rootScope.profPic = pic;
                                 $location.path("/profile")
                             }, function (error) {
                                 console.log(error);
