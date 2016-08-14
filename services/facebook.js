@@ -17,7 +17,7 @@ angular.module('myApp.facebook', [])
         function getProfilePicture(userId) {
             var deferred = $q.defer();
             FB.api(
-                "/" + userId + "/picture?width=300",
+                "/" + userId + "/picture?width=300&height=300",
                 function (response) {
                     if (response && !response.error) {
                         deferred.resolve(response);
@@ -35,10 +35,13 @@ angular.module('myApp.facebook', [])
             user[key] = value;
             var promise = $kinvey.User.update(user);
             promise.then(function (user) {
-                // console.log(user);
+                console.log("Update user info after:");
+                console.log(user);
             }, function (err) {
-                // console.log(err);
+                console.log(err);
             });
+
+            return promise;
         }
 
 

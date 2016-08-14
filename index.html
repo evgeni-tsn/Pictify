@@ -77,7 +77,7 @@
                 <li ng-show="currentUser" ng-class="{active: $route.current.activetab == 'profile'}">
                     <a href="#/profile">
                         <div>
-                            <img id="profileThumbnail" class="img-responsive" ng-src="{{profPic}}">
+                            <img id="profileThumbnail" class="img-responsive" ng-src="{{profPic._downloadURL}}">
                         </div>
                         <div>
                             <span>{{currentUser.username}}</span>
