@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="bower_components/ng-img-crop-full-extended/compile/unminified/ng-img-crop.css">
     <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
 </head>
-<body ng-controller="MainCtrl">
+<body ng-controller="MainCtrl" ng-cloak>
 
 <!--FB object init-->
 <script>
@@ -95,10 +95,10 @@
                 </li>
 
                 <li ng-show="!currentUser" ng-class="{active: $route.current.activetab == 'landing'}">
-                    <a href="#/landing">Login / Register</a>
+                    <a href="#/landing">Login</a>
                 </li>
 
-                <li class="dropdown">
+                <li class="dropdown" ng-show="currentUser">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                         Settings
                         <span class="caret"></span>

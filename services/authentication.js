@@ -57,7 +57,7 @@ angular.module('myApp.authentication', [])
                                 console.log("Successfully Logout");
                                 $rootScope.currentUser = null;
                                 $rootScope.profPic = null;
-                                $route.reload();
+                                $location.path('/landing');
                             }, function (err) {
                                 console.log(err);
                             });
