@@ -118,9 +118,9 @@ angular.module('myApp.profile', ['ngRoute'])
                             $scope.showCrop();
                         }
 
-                        Kinvey.File.upload($scope.imageForUpload, {
-                            mimeType: $scope.imageForUpload.type,
-                            size: $scope.imageForUpload.size,
+                        Kinvey.File.upload(fileContent, {
+                            mimeType: fileContent.type,
+                            size: fileContent.size,
                             _acl: {
                                 gr: true,
                                 gw: false
