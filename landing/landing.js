@@ -78,6 +78,7 @@ angular.module('myApp.landing', ['ngRoute'])
                                                                                 console.log("updatedUser: ");
                                                                                 console.log(updatedUser);
                                                                                 console.log("finished successfully");
+                                                                                return updatedUser;
                                                                             }, function (error) {
                                                                                 console.log(error)
                                                                             });
