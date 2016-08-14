@@ -46,7 +46,7 @@ angular.module('myApp.profile', ['ngRoute'])
                         }
 
                         let query = new Kinvey.Query();
-                        query.equalTo('_acl.creator', user._id /*, 'mimeType', "image/*"*/);
+                        query.equalTo('_acl.creator', user._id);
                         let promise = $kinvey.File.find(query);
                         promise.then(function (images) {
                             $scope.images = images;
@@ -180,7 +180,7 @@ angular.module('myApp.profile', ['ngRoute'])
                         var promise = Kinvey.User.update(user);
                         promise.then(function (response) {
                             console.log(response);
-                            $rootScope.profPic = image._downloadURL;
+                            $rootScope.profPic = image;
                         }, function (error) {
                             console.log(error);
                         });
@@ -230,6 +230,13 @@ angular.module('myApp.profile', ['ngRoute'])
             let init = function () {
                 kinveyConfig.authorize.then(function () {
                     $scope.getAllPics();
+                    let promise = Kinvey.File.stream($rootScope.currentUser.profile_picture);
+                    promise.then(function (pic) {
+                        $rootScope.profPic = pic;
+                        console.log($rootScope.profPic);
+                    }, function (error) {
+                        console.log(error);
+                    })
                 });
             };
             init();

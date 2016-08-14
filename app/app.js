@@ -49,7 +49,7 @@ app.controller('MainCtrl', ['$rootScope', '$scope', '$route', '$location', 'kinv
         let promise = Kinvey.File.stream($rootScope.currentUser.profile_picture);
         promise.then(function (image) {
             console.log(image);
-            $rootScope.profPic = image._downloadURL;
+            $rootScope.profPic = image;
         }, function (error) {
             console.log(error)
         });
