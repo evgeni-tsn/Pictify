@@ -86,6 +86,19 @@ angular.module('myApp.viewProfile', ['ngRoute'])
                 }
             };
 
+            $scope.comment = function (picture, text) {
+                picture.comments.push({
+                    userId: $rootScope.currentUser._id,
+                    username: $rootScope.currentUser.username,
+                    content: text});
+                let promise = Kinvey.DataStore.update("pictures", picture);
+                promise.then(function (response) {
+                    console.log(response);
+                }, function (error) {
+                    console.log(error);
+                })
+            };
+
             let init = function () {
                 kinveyConfig.authorize
                     .then(function () {

@@ -30,6 +30,7 @@
 
     #viewProfileModalImageCaption {
         float: left;
+        margin: 5px;
     }
 
     .commentsToggler {
@@ -37,6 +38,7 @@
         color: darkgrey;
         text-decoration: none;
         cursor: pointer;
+        font-size: 1.5em;
     }
 
     .votes {
@@ -74,13 +76,36 @@
                      data-toggle="modal"
                      data-target="#viewProfileModal">
                 <div class="socialBox">
-                    <span class="glyphicon glyphicon-hand-up votes like" ng-click="vote(picture, 'like')">{{picture.votes.likes.length}}</span>
-                    <span class="glyphicon glyphicon-hand-down votes dislike" ng-click="vote(picture, 'dislike')">{{picture.votes.dislikes.length}}</span>
-                    <span class="commentsToggler" ng-click="showComments = !showComments">Comments</span>
-                    <div class="comments" ng-show="showComments" ng-repeat="commentObj in picture.comments">
-                        <div ng-repeat="comment in commentObj.content">
-                            {{comment}}
-                        </div>
+                    <span class="glyphicon glyphicon-hand-up votes like"
+                          ng-click="vote(picture, 'like')">
+                        {{picture.votes.likes.length}}
+                    </span>
+                    <span class="glyphicon glyphicon-hand-down votes dislike"
+                          ng-click="vote(picture, 'dislike')">
+                        {{picture.votes.dislikes.length}}
+                    </span>
+                    <span class="glyphicon glyphicon-comment commentsToggler"
+                          ng-click="showComments = !showComments">
+                        {{picture.comments.length}}
+                    </span>
+                    <br>
+                    <span class="commentsToggler"
+                          ng-click="showCommentBox = !showCommentBox">
+                        Comment
+                    </span>
+                    <div class="comments" ng-show="showComments"
+                         ng-repeat="commentObj in picture.comments">
+                        {{commentObj.username}}: {{commentObj.content}}
+                    </div>
+                    <div class="form-group" ng-show="showCommentBox || showComments">
+                        <textarea title="Comment:"
+                                  class="form-control comment" rows="1"
+                                  ng-model="commentBoxText">
+                        </textarea>
+                        <button class="btn btn-info"
+                                ng-click="comment(picture, commentBoxText)">
+                            Submit
+                        </button>
                     </div>
                 </div>
             </div>
@@ -96,14 +121,27 @@
                 <br>
                 <br>
                 <div class="row">
-                    <h4 class="modal-title text-center" id="viewProfileModalImageCaption">{{selectedPicture.caption}}</h4>
+                    <h4 class="modal-title text-center"
+                        id="viewProfileModalImageCaption">
+                        {{selectedPicture.caption}}
+                    </h4>
                 </div>
             </div>
             <div class="modal-body" id="modalImageContainter">
                 <img ng-src="{{selectedPicture.image._downloadURL}}" alt="Wtf">
             </div>
             <div class="modal-footer">
-                // TODO: bottom line with comments, likes, etc. will go here
+                <span class="glyphicon glyphicon-hand-up votes like"
+                      ng-click="vote(selectedPicture, 'like')">
+                    {{selectedPicture.votes.likes.length}}
+                </span>
+                <span class="glyphicon glyphicon-hand-down votes dislike"
+                      ng-click="vote(selectedPicture, 'dislike')">
+                    {{selectedPicture.votes.dislikes.length}}
+                </span>
+                <div ng-repeat="commentObj in selectedPicture.comments">
+                    {{commentObj.username}}: {{commentObj.content}}
+                </div>
             </div>
         </div>
     </div>
