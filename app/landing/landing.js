@@ -56,32 +56,68 @@ angular.module('myApp.landing', ['ngRoute'])
                                                                     mimeType: profImageBlob.type,
                                                                     size: profImageBlob.size,
                                                                     _acl: {
-                                                                        gr: true
+                                                                        gr: true,
+                                                                        gw: false
                                                                     }
                                                                 }, {public: true})
                                                                     .then(function (success) {
-                                                                        console.log(success);
-                                                                        console.log("Profile picture to be set id: " + success._id);
                                                                         console.log("upload success");
+                                                                        console.log(success);
                                                                         return success._id;
                                                                     }, function (error) {
                                                                         console.log(error);
-                                                                    }).then(function (profPicId) {
-                                                                        let rawFacebookName = user._socialIdentity.facebook.name;
-                                                                        let facebookUsernameParts = rawFacebookName.toLowerCase().split(' ');
-                                                                        let facebookUsernameReady = facebookUsernameParts.join(".");
-                                                                        user.username = facebookUsernameReady;
-                                                                        user.profile_picture = profPicId;
-                                                                        return Kinvey.User.update(user)
-                                                                            .then(function (updatedUser) {
-                                                                                $rootScope.currentUser = updatedUser;
-                                                                                console.log("updatedUser: ");
-                                                                                console.log(updatedUser);
-                                                                                console.log("finished successfully");
-                                                                                return updatedUser;
-                                                                            }, function (error) {
-                                                                                console.log(error)
-                                                                            });
+                                                                    }).then(function (imageId) {
+                                                                        // Open comments, likes and dislike for pic
+                                                                        return Kinvey.DataStore.save('pictures', {
+                                                                            image: {
+                                                                                _type: "KinveyFile",
+                                                                                _id: imageId
+                                                                            },
+                                                                            _acl: {
+                                                                                gr: true,
+                                                                                gw: true
+                                                                            },
+                                                                            comments: [{
+                                                                                userId: null,
+                                                                                username: null,
+                                                                                content: null
+                                                                            }],
+                                                                            votes: {
+                                                                                likes: [{
+                                                                                    userId: null,
+                                                                                    username: null
+                                                                                }],
+                                                                                dislikes: [{
+                                                                                    userId: null,
+                                                                                    username: null
+                                                                                }]
+                                                                            }
+                                                                        }, {public: true})
+                                                                        .then(function (picture) {
+                                                                            console.log("picture");
+                                                                            console.log(picture);
+
+                                                                            // Update user and return him
+                                                                            let rawFacebookName = user._socialIdentity.facebook.name;
+                                                                            let facebookUsernameParts = rawFacebookName.toLowerCase().split(' ');
+                                                                            let facebookUsernameReady = facebookUsernameParts.join(".");
+
+                                                                            user.username = facebookUsernameReady;
+                                                                            user.profile_picture = picture._id;
+
+                                                                            return Kinvey.User.update(user)
+                                                                                .then(function (updatedUser) {
+                                                                                    $rootScope.currentUser = updatedUser;
+                                                                                    console.log("updatedUser: ");
+                                                                                    console.log(updatedUser);
+                                                                                    console.log("finished successfully");
+                                                                                    return updatedUser;
+                                                                                }, function (error) {
+                                                                                    console.log(error)
+                                                                                });
+                                                                        }, function (error) {
+                                                                            console.log(error);
+                                                                        });
                                                                     })
                                                             });
                                                     })
@@ -96,9 +132,10 @@ angular.module('myApp.landing', ['ngRoute'])
                         });
                     })
                     .then(function (user) {
+                        console.log("user before path change");
                         $rootScope.currentUser = user;
-                        console.log("user");
                         console.log($rootScope.currentUser);
+                        return $rootScope.currentUser;
                     }, function (error) {
                         console.log(error);
                     })

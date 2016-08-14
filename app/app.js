@@ -45,11 +45,10 @@ app.controller('MainCtrl', ['$rootScope', '$scope', '$route', '$location', 'kinv
             return;
         }
 
-        let query = new Kinvey.Query();
-        let promise = Kinvey.File.stream($rootScope.currentUser.profile_picture);
-        promise.then(function (image) {
-            console.log(image);
-            $rootScope.profPic = image;
+        let promise = Kinvey.DataStore.get("pictures", $rootScope.currentUser.profile_picture);
+        promise.then(function (picture) {
+            console.log(picture);
+            $rootScope.profPic = picture;
         }, function (error) {
             console.log(error)
         });
@@ -78,8 +77,11 @@ app.controller('MainCtrl', ['$rootScope', '$scope', '$route', '$location', 'kinv
             )
         })
     };
-    
+
+    $scope.selectedUserProxy = null;
+
     $scope.onSelect = function () {
+        $scope.selectedUserProxy = $scope.selectedUser;
         $location.path('/viewProfile');
         $route.reload();
     }
