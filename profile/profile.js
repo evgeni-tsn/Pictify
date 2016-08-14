@@ -241,7 +241,7 @@ angular.module('myApp.profile', ['ngRoute'])
                         });
 
                         $scope.pictures = $scope.pictures.filter(function (pic) {
-                            return pic._id !== pictures._id;
+                            return pic._id !== picture._id;
                         });
                     })
             };
