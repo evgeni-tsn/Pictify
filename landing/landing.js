@@ -10,7 +10,7 @@ angular.module('myApp.landing', ['ngRoute'])
                     return $q.when(true);
                 }
 
-                return $q.reject($location.path("/settings"));
+                return $q.reject($location.path("/login"));
             }]
         };
 
@@ -18,7 +18,8 @@ angular.module('myApp.landing', ['ngRoute'])
             templateUrl: 'landing/landing.html',
             controller: 'LandingCtrl',
             activetab: 'landing',
-            resolve: routeChecks.authenticated
+            // Commented because on logout creates problem with routes.
+            //resolve: routeChecks.authenticated
         });
     }])
 

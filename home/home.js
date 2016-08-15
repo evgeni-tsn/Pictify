@@ -4,7 +4,6 @@ angular.module('myApp.home', ['ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
         // there should be no route authorization here
-        // There should be auth check. Test http://localhost:8000/#/ without logged user.
 
         var routeChecks = {
             authenticated: ['$q', function ($q) {
