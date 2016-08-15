@@ -17,7 +17,8 @@ angular.module('myApp.profile', ['ngRoute'])
             templateUrl: 'profile/profile.html',
             controller: 'ProfileCtrl',
             activetab: 'profile',
-            resolve: routeChecks.authenticated
+            // Commented because bugs facebook login. Not loading properly.
+            // resolve: routeChecks.authenticated
         });
     }])
 
