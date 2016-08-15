@@ -65,9 +65,23 @@ angular.module('myApp.authentication', [])
                     })
             }
 
+            function isLogged() {
+                let user = $rootScope.currentUser;
+                if (!user) {
+                    console.log("No active user");
+                    console.log("Redirected to landing");
+                    $location.path("/login")
+                    return false;
+
+                }
+                return true;
+
+            }
+
             return {
                 registerUser: registerUser,
                 loginUser: loginUser,
-                logout: logout
+                logout: logout,
+                isLogged: isLogged
             }
         }]);

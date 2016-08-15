@@ -46,6 +46,7 @@ angular.module('myApp.facebook', [])
 
 
         return {
+
             getProfilePicture: getProfilePicture,
             updateUserInfo: updateUserInfo,
             getLoginStatus: getLoginStatus
