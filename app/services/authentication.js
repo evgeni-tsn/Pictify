@@ -57,7 +57,7 @@ angular.module('myApp.authentication', [])
                                 console.log("Successfully Logout");
                                 $rootScope.currentUser = null;
                                 $rootScope.profPic = null;
-                                $location.path('/landing');
+                                $location.path('/login');
                             }, function (err) {
                                 console.log(err);
                             });
@@ -70,12 +70,10 @@ angular.module('myApp.authentication', [])
                 if (!user) {
                     console.log("No active user");
                     console.log("Redirected to landing");
-                    $location.path("/login")
+                    $location.path("/login");
                     return false;
-
                 }
                 return true;
-
             }
 
             function changePassword(newPass) {
