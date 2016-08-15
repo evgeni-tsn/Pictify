@@ -3,10 +3,22 @@
 angular.module('myApp.landing', ['ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
+        var routeChecks = {
+            authenticated: ['$q', '$location', function ($q, $location) {
+                if (!localStorage.getItem("Kinvey.kid_BkwgJlt_.activeUser")) {
+
+                    return $q.when(true);
+                }
+
+                return $q.reject($location.path("/settings"));
+            }]
+        };
+
         $routeProvider.when('/login', {
             templateUrl: 'landing/landing.html',
             controller: 'LandingCtrl',
-            activetab: 'landing'
+            activetab: 'landing',
+            resolve: routeChecks.authenticated
         });
     }])
 

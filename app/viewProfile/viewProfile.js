@@ -4,8 +4,8 @@ angular.module('myApp.viewProfile', ['ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
         var routeChecks = {
-            authenticated: ['$q', 'authentication', function ($q, authentication) {
-                if (authentication.isLogged()) {
+            authenticated: ['$q', function ($q) {
+                if (localStorage.getItem("Kinvey.kid_BkwgJlt_.activeUser")) {
                     return $q.when(true);
                 }
 
