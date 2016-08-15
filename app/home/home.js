@@ -3,6 +3,8 @@
 angular.module('myApp.home', ['ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
+        // there should be no route authorization here
+
         // var routeChecks = {
         //     authenticated: ['$q', 'authentication', function ($q, authentication) {
         //         if (authentication.isLogged()) {
