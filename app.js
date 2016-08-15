@@ -8,6 +8,7 @@ var app = angular.module('myApp', [
     'myApp.landing',
     'myApp.profile',
     'myApp.viewProfile',
+    'myApp.settings',
     'myApp.version',
     'ui.bootstrap',
     'ngAnimate',
@@ -36,15 +37,16 @@ app.constant('kinveyConfig', {
 app.controller('MainCtrl', ['$rootScope', '$scope', '$route', '$location', 'kinveyConfig', 'authentication',
     function ($rootScope, $scope, $route, $location, kinveyConfig, authentication) {
     $scope.$route = $route;
-
+        $scope.loaded = true;
     kinveyConfig.authorize
         .then(function () {
         $rootScope.currentUser = Kinvey.getActiveUser();
         if(!$rootScope.currentUser) {
             console.log("No active user");
+            $scope.loaded = true;
             return;
         }
-
+            $scope.loaded = false;
         let promise = Kinvey.DataStore.get("pictures", $rootScope.currentUser.profile_picture);
         promise.then(function (picture) {
             console.log(picture);

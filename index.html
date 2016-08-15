@@ -98,24 +98,12 @@
                 <li ng-show="!currentUser" ng-class="{active: $route.current.activetab == 'landing'}">
                     <a href="#/landing">Login</a>
                 </li>
+                <li ng-show="currentUser">
+                    <a href="#/" ng-click="logout()">Logout</a>
+                </li>
 
-                <li class="dropdown" ng-show="currentUser">
-                    <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                        Settings
-                        <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><input
-                                ng-show="currentUser"
-                                class="btn btn-group-justified btn-danger"
-                                type="submit"
-                                value="Logout"
-                                ng-click="logout()"></li>
-                        <li class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">One more separated link</a></li>
-                    </ul>
+                <li ng-show="currentUser">
+                    <a href="#/settings">Settings</a>
                 </li>
             </ul>
         </div>
@@ -147,6 +135,7 @@
 <script src="home/home.js"></script>
 <script src="landing/landing.js"></script>
 <script src="profile/profile.js"></script>
+<script src="settings/settings.js"></script>
 <script src="viewProfile/viewProfile.js"></script>
 <script src="services/authentication.js"></script>
 <script src="services/facebook.js"></script>
