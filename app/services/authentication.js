@@ -78,10 +78,25 @@ angular.module('myApp.authentication', [])
 
             }
 
+            function changePassword(newPass) {
+                var user = $rootScope.currentUser;
+                user.password = newPass;
+                var promise = $kinvey.User.update(user);
+                promise.then(function (user) {
+                    console.log("Password changed")
+                    console.log(user);
+                }, function (err) {
+                    console.log("Error occured")
+                    console.log(err);
+                });
+
+            }
+
             return {
                 registerUser: registerUser,
                 loginUser: loginUser,
                 logout: logout,
+                changePassword: changePassword,
                 isLogged: isLogged
             }
         }]);
