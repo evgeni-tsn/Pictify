@@ -4,22 +4,23 @@ angular.module('myApp.home', ['ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
         // there should be no route authorization here
+        // There should be auth check. Test http://localhost:8000/#/ without logged user.
 
-        // var routeChecks = {
-        //     authenticated: ['$q', 'authentication', function ($q, authentication) {
-        //         if (authentication.isLogged()) {
-        //             return $q.when(true);
-        //         }
-        //
-        //         return $q.reject('Unauthorized Access');
-        //     }]
-        // };
+        var routeChecks = {
+            authenticated: ['$q', function ($q) {
+                if (localStorage.getItem("Kinvey.kid_BkwgJlt_.activeUser")) {
+                    return $q.when(true);
+                }
+
+                return $q.reject('Unauthorized Access');
+            }]
+        };
 
         $routeProvider.when('/', {
             templateUrl: 'home/home.html',
             controller: 'HomeCtrl',
             activetab: 'home',
-            // resolve: routeChecks.authenticated
+            resolve: routeChecks.authenticated
         });
     }])
 
