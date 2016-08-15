@@ -3,21 +3,21 @@
 angular.module('myApp.settings', ['ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
-        // var routeChecks = {
-        //     authenticated: ['$q', 'authentication', function ($q, authentication) {
-        //         if (authentication.isLogged()) {
-        //             return $q.when(true);
-        //         }
-        //
-        //         return $q.reject('Unauthorized Access');
-        //     }]
-        // };
+        var routeChecks = {
+            authenticated: ['$q', 'authentication', function ($q, authentication) {
+                if (authentication.isLogged()) {
+                    return $q.when(true);
+                }
+
+                return $q.reject('Unauthorized Access');
+            }]
+        };
 
         $routeProvider.when('/settings', {
             templateUrl: 'settings/settings.html',
             controller: 'SettingsCtrl',
             activetab: 'settings',
-            // resolve: routeChecks.authenticated
+            resolve: routeChecks.authenticated
         });
     }])
 
