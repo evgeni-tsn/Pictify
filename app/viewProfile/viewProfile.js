@@ -3,10 +3,22 @@
 angular.module('myApp.viewProfile', ['ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
+
+        var routeChecks = {
+            authenticated: ['$q', 'authentication', function ($q, authentication) {
+                if (authentication.isLogged()) {
+                    return $q.when(true);
+                }
+
+                return $q.reject('Unauthorized Access');
+            }]
+        };
+
         $routeProvider.when('/viewProfile', {
             templateUrl: 'viewProfile/viewProfile.html',
             controller: 'ViewProfileCtrl',
-            activetab: 'viewProfile'
+            activetab: 'viewProfile',
+            resolve: routeChecks.authenticated
         });
     }])
 

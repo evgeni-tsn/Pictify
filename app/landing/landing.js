@@ -3,7 +3,7 @@
 angular.module('myApp.landing', ['ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.when('/', {
+        $routeProvider.when('/login', {
             templateUrl: 'landing/landing.html',
             controller: 'LandingCtrl',
             activetab: 'landing'

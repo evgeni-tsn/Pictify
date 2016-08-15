@@ -3,10 +3,21 @@
 angular.module('myApp.home', ['ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.when('/home', {
+        var routeChecks = {
+            authenticated: ['$q', 'authentication', function ($q, authentication) {
+                if (authentication.isLogged()) {
+                    return $q.when(true);
+                }
+
+                return $q.reject('Unauthorized Access');
+            }]
+        };
+
+        $routeProvider.when('/', {
             templateUrl: 'home/home.html',
             controller: 'HomeCtrl',
-            activetab: 'home'
+            activetab: 'home',
+            resolve: routeChecks.authenticated
         });
     }])
 
