@@ -19,7 +19,7 @@ var app = angular.module('myApp', [
     'myApp.facebook'
 ]);
 
-app.config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider, $kinveyConfig) {
+app.config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
 
     // 404
     $routeProvider.otherwise({redirectTo: '/'});
@@ -36,23 +36,25 @@ app.constant('kinveyConfig', {
 
 app.controller('MainCtrl', ['$rootScope', '$scope', '$route', '$location', 'kinveyConfig', 'authentication',
     function ($rootScope, $scope, $route, $location, kinveyConfig, authentication) {
-    $scope.$route = $route;
-        $scope.loaded = true;
-    kinveyConfig.authorize
+        $scope.$route = $route;
+
+        kinveyConfig.authorize
         .then(function () {
-        $rootScope.currentUser = Kinvey.getActiveUser();
-        if(!$rootScope.currentUser) {
-            console.log("No active user");
-            $scope.loaded = true;
-            return;
-        }
-            $scope.loaded = false;
-        let promise = Kinvey.DataStore.get("pictures", $rootScope.currentUser.profile_picture);
-        promise.then(function (picture) {
-            console.log(picture);
-            $rootScope.profPic = picture;
-        }, function (error) {
-            console.log(error)
+            $rootScope.currentUser = Kinvey.getActiveUser();
+            if (!$rootScope.currentUser) {
+                console.log('no active user during maincontroller init');
+                $location.path('/login');
+                return;
+            }
+
+            $rootScope.initialized = true;
+
+            let promise = Kinvey.DataStore.get("pictures", $rootScope.currentUser.profile_picture);
+            promise.then(function (picture) {
+                console.log(picture);
+                $rootScope.profPic = picture;
+            }, function (error) {
+                console.log(error)
         });
     });
 

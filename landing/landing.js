@@ -17,6 +17,8 @@ angular.module('myApp.landing', ['ngRoute'])
                   $location, $route, $http,
                   authentication, facebook, kinveyConfig) {
 
+            $rootScope.initialized = true;
+
             $scope.login = function (user) {
                 authentication.loginUser(user);
             };
