@@ -5,7 +5,8 @@ angular.module('myApp.profile', ['ngRoute'])
     .config(['$routeProvider', function ($routeProvider) {
         let routeChecks = {
             authenticated: ['$q', '$location', '$rootScope', function ($q, $location, $rootScope) {
-                if ($rootScope.currentUser) {
+                if (localStorage.getItem("Kinvey.kid_BkwgJlt_.activeUser")
+                    || $rootScope.currentUser) {
                     return $q.when(true);
                 }
 

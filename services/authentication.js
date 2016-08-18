@@ -53,8 +53,9 @@ angular.module('myApp.authentication', [])
                         let user = $rootScope.currentUser;
                         if (user !== null) {
                             let promise = $kinvey.User.logout();
-                            promise.then(function () {
+                            promise.then(function (success) {
                                 console.log("Successfully Logout");
+                                console.log(success);
                                 $rootScope.currentUser = null;
                                 $rootScope.profPic = null;
                                 $location.path('/login');
