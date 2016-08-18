@@ -8,12 +8,31 @@ angular.module('myApp.authentication', [])
                         let promise = $kinvey.User.signup({
                             username: user.username,
                             password: user.password,
-                            profile_picture: '57b0ca18cff2859c1ea246be'
+                            profile_picture: '57b0ca18cff2859c1ea246be', // Anonymous profile pic assigned
+                            followersCount: 0,
+                            followingCount: 0
                         });
                         promise.then(function (user) {
                             console.log("Hello, your name is: " + user.username);
                             console.log(user);
                             $rootScope.currentUser = Kinvey.getActiveUser();
+
+                            let social = {
+                                _id: $rootScope.currentUser._id,
+                                _acl: {
+                                    gr: true,
+                                    gw: true
+                                },
+                                followers: {},
+                                following: {}
+                            };
+
+                            Kinvey.DataStore.save('socials', social)
+                                .then(function (success) {
+                                    console.log(success);
+                                }, function (error) {
+                                    console.log(error);
+                                });
                             // $route.reload();
                             $location.path("/profile");
                         }, function (err) {
@@ -58,6 +77,7 @@ angular.module('myApp.authentication', [])
                                 console.log(success);
                                 $rootScope.currentUser = null;
                                 $rootScope.profPic = null;
+                                localStorage.removeItem("Kinvey.kid_BkwgJlt_.activeUser");
                                 $location.path('/login');
                             }, function (err) {
                                 console.log(err);
