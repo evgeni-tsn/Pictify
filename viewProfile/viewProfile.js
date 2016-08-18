@@ -110,6 +110,15 @@ angular.module('myApp.viewProfile', ['ngRoute'])
                 })
             };
 
+            $scope.testDelete = function (picture) {
+                let promise = Kinvey.DataStore.destroy("pictures", picture._id);
+                promise.then(function (success) {
+                    console.log(success);
+                }, function (error) {
+                    console.log(error);
+                })
+            };
+
             let init = function () {
                 kinveyConfig.authorize
                     .then(function () {
