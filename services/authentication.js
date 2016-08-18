@@ -8,7 +8,7 @@ angular.module('myApp.authentication', [])
                         let promise = $kinvey.User.signup({
                             username: user.username,
                             password: user.password,
-                            profile_picture: '57b0ca18cff2859c1ea246be', // Anonymous profile pic assigned
+                            profile_picture: '57b62a7420a1306254c52f29', // Anonymous profile pic assigned
                             followersCount: 0,
                             followingCount: 0
                         });

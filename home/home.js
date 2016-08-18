@@ -24,27 +24,55 @@ angular.module('myApp.home', ['ngRoute'])
         });
     }])
 
-    .controller('HomeCtrl', ['$rootScope', '$scope', 'facebook',
-        function ($rootScope, $scope, facebook) {
+    .controller('HomeCtrl', ['$rootScope', '$scope', 'kinveyConfig', '$location', '$route',
+        function ($rootScope, $scope, kinveyConfig, $location, $route) {
 
-            $scope.msg = "This will be news feed.";
+            $scope.viewProfile = function (user) {
+                console.log(user);
+                $rootScope.selectedUserProxy = user;
+                $rootScope.selectedUserProxy.profile_picture = user.profilePicture._id;
+                $location.path('/viewProfile');
+            };
 
+            let init = function () {
+                kinveyConfig.authorize.then(function () {
+                    $rootScope.currentUser = Kinvey.getActiveUser();
 
-            // let init = function () {
-            //     kinveyConfig.authorize.then(function () {
-            //         $rootScope.currentUser = Kinvey.getActiveUser();
-            //         if (!$rootScope.currentUser) {
-            //             console.log("No active user");
-            //         }
-            //
-            //         let promise = Kinvey.File.stream($rootScope.currentUser.profile_picture);
-            //         promise.then(function (image) {
-            //             $rootScope.profPic = image;
-            //         }, function (error) {
-            //             console.log(error);
-            //         })
-            //     });
-            // };
-            //
-            // init();
+                    Kinvey.DataStore.get("socials", $rootScope.currentUser._id)
+                        .then(function (response) {
+                            console.log(response);
+
+                            $scope.followedUsers = response.following;
+                            for (var id in $scope.followedUsers) {
+                                let idProxy = id;
+
+                                $scope.followedUsers[idProxy] = {username: $scope.followedUsers[idProxy]};
+
+                                Kinvey.User.get(idProxy)
+                                    .then(function (user) {
+                                        $scope.followedUsers[idProxy].followersCount = user.followersCount;
+                                        $scope.followedUsers[idProxy]._id = idProxy;
+                                        return user.profile_picture;
+                                    }, function (error) {
+                                        console.log(error);
+                                    })
+                                    .then(function (profPicId) {
+                                        Kinvey.DataStore.get("pictures", profPicId)
+                                            .then(function (profilePicture) {
+                                                $scope.followedUsers[idProxy].profilePicture = profilePicture;
+                                                console.log($scope.followedUsers);
+                                            }, function (error) {
+                                                console.log(error)
+                                            })
+                                    }, function (error) {
+                                        console.log(error);
+                                    })
+                            }
+                        }, function (error) {
+                            console.log(error);
+                        });
+                });
+            };
+
+            init();
         }]);
