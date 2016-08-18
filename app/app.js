@@ -83,10 +83,10 @@ app.controller('MainCtrl', ['$rootScope', '$scope', '$route', '$location', 'kinv
         })
     };
 
-    $scope.selectedUserProxy = null;
+    $rootScope.selectedUserProxy = null;
 
     $scope.onSelect = function () {
-        $scope.selectedUserProxy = $scope.selectedUser;
+        $rootScope.selectedUserProxy = $scope.selectedUser;
         $location.path('/viewProfile');
         $route.reload();
     }

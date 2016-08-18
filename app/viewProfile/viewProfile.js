@@ -7,7 +7,11 @@ angular.module('myApp.viewProfile', ['ngRoute'])
             authenticated: ['$q', '$location', '$rootScope', function ($q, $location, $rootScope) {
                 if (localStorage.getItem("Kinvey.kid_BkwgJlt_.activeUser")
                     || $rootScope.currentUser) {
-                    return $q.when(true);
+                    if ($rootScope.selectedUserProxy) {
+                        return $q.when(true);
+                    } else {
+                        return $q.reject($location.path('/'));
+                    }
                 }
 
                 return $q.reject($location.path('/login'));
@@ -24,13 +28,13 @@ angular.module('myApp.viewProfile', ['ngRoute'])
 
     .controller("ViewProfileCtrl", ["$rootScope", "$scope", "kinveyConfig",
         function ($rootScope, $scope, kinveyConfig) {
-            $scope.pageName = "Profile page of " + $scope.selectedUserProxy.username;
+            $scope.pageName = "Profile page of " + $rootScope.selectedUserProxy.username;
 
             $scope.getGallery = function () {
                 kinveyConfig.authorize
                 .then(function () {
                     let query = new Kinvey.Query();
-                    query.equalTo('_acl.creator', $scope.selectedUserProxy._id);
+                    query.equalTo('_acl.creator', $rootScope.selectedUserProxy._id);
                     let promise = Kinvey.DataStore.find("pictures", query);
                     promise.then(function (pictures) {
                         console.log("pictures in view profile gallery");
@@ -121,7 +125,7 @@ angular.module('myApp.viewProfile', ['ngRoute'])
             };
 
             $scope.follow = function () {
-                Kinvey.DataStore.get('socials', $scope.selectedUserProxy._id)
+                Kinvey.DataStore.get('socials', $rootScope.selectedUserProxy._id)
                     .then(function (social) {
                         // social.followers.push({
                         //     userId: $rootScope.currentUser._id,
@@ -139,14 +143,21 @@ angular.module('myApp.viewProfile', ['ngRoute'])
             let init = function () {
                 kinveyConfig.authorize
                     .then(function () {
-                    let promise = Kinvey.DataStore.get("pictures", $scope.selectedUserProxy.profile_picture);
+                    let promise = Kinvey.DataStore.get("pictures", $rootScope.selectedUserProxy.profile_picture);
                     promise.then(function (picture) {
                         $scope.userProfilePic = picture;
 
                         $scope.getGallery();
                     }, function (error) {
                         console.log(error);
-                    })
+                    });
+
+                    Kinvey.DataStore.get("socials", $rootScope.currentUser._id)
+                        .then(function (response) {
+
+                        }, function (error) {
+                            
+                        })
                 });
             };
 
