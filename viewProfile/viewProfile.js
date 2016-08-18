@@ -4,12 +4,12 @@ angular.module('myApp.viewProfile', ['ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
         var routeChecks = {
-            authenticated: ['$q', function ($q) {
+            authenticated: ['$q', '$location', function ($q, $location) {
                 if (localStorage.getItem("Kinvey.kid_BkwgJlt_.activeUser")) {
                     return $q.when(true);
                 }
 
-                return $q.reject('Unauthorized Access');
+                return $q.reject($location.path('/login'));
             }]
         };
 
