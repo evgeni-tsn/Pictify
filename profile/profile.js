@@ -92,21 +92,21 @@ angular.module('myApp.profile', ['ngRoute'])
                 $scope.shouldCrop = !$scope.shouldCrop;
             };
 
-            // $scope.fileSelect = function (files) {
-            //     if (!$scope.imageForUpload) {
-            //         $scope.imageForUpload = {};
-            //     }
-            //
-            //     if (!files[0]) {
-            //         $scope.imageForUpload = null;
-            //         $scope.showCrop();
-            //         return;
-            //     }
-            //
-            //     if (files[0].type.match('image.*')) {
-            //         $scope.imageForUpload = files[0];
-            //     }
-            // };
+            $scope.fileSelect = function (files) {
+                if (!$scope.imageForUpload) {
+                    $scope.imageForUpload = {};
+                }
+
+                if (!files[0]) {
+                    $scope.imageForUpload = null;
+                    $scope.showCrop();
+                    return;
+                }
+
+                if (files[0].type.match('image.*')) {
+                    $scope.imageForUpload = files[0];
+                }
+            };
 
             $scope.upload = function () {
                 kinveyConfig.authorize

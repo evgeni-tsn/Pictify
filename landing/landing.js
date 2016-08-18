@@ -122,6 +122,25 @@ angular.module('myApp.landing', ['ngRoute'])
 
                                                                         user.username = facebookUsernameReady;
                                                                         user.profile_picture = picture._id;
+                                                                        user.followersCount = 0;
+                                                                        user.followingCount = 0;
+
+                                                                        let social = {
+                                                                            _id: user._id,
+                                                                            _acl: {
+                                                                                gr: true,
+                                                                                gw: true
+                                                                            },
+                                                                            followers: {},
+                                                                            following: {}
+                                                                        };
+
+                                                                        Kinvey.DataStore.save("socials", social)
+                                                                            .then(function (success) {
+                                                                                console.log(success);
+                                                                            }, function (error) {
+                                                                                console.log(error);
+                                                                            });
 
                                                                         return Kinvey.User.update(user)
                                                                         .then(function (updatedUser) {
@@ -153,6 +172,7 @@ angular.module('myApp.landing', ['ngRoute'])
                         if(user) {
                             console.log("user before path change");
                             console.log(user);
+                            $rootScope.currentUser = user;
                             console.log("changing path to profile from landing");
                             $location.path("/profile");
                         } else {

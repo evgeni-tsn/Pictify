@@ -4,8 +4,9 @@ angular.module('myApp.viewProfile', ['ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
         var routeChecks = {
-            authenticated: ['$q', '$location', function ($q, $location) {
-                if (localStorage.getItem("Kinvey.kid_BkwgJlt_.activeUser")) {
+            authenticated: ['$q', '$location', '$rootScope', function ($q, $location, $rootScope) {
+                if (localStorage.getItem("Kinvey.kid_BkwgJlt_.activeUser")
+                    || $rootScope.currentUser) {
                     return $q.when(true);
                 }
 
@@ -117,6 +118,22 @@ angular.module('myApp.viewProfile', ['ngRoute'])
                 }, function (error) {
                     console.log(error);
                 })
+            };
+
+            $scope.follow = function () {
+                Kinvey.DataStore.get('socials', $scope.selectedUserProxy._id)
+                    .then(function (social) {
+                        // social.followers.push({
+                        //     userId: $rootScope.currentUser._id,
+                        //     username: $rootScope.currentUser.username
+                        // });
+                        Kinvey.DataStore.update('socials', social)
+                            .then(function (success) {
+                                console.log(success);
+                            }, function (error) {
+                                console.log(error);
+                            });
+                    });
             };
 
             let init = function () {
