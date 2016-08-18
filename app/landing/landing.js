@@ -6,11 +6,10 @@ angular.module('myApp.landing', ['ngRoute'])
         var routeChecks = {
             authenticated: ['$q', '$location', function ($q, $location) {
                 if (!localStorage.getItem("Kinvey.kid_BkwgJlt_.activeUser")) {
-
                     return $q.when(true);
                 }
 
-                return $q.reject($location.path("/login"));
+                return $q.reject($location.path("/home"));
             }]
         };
 
@@ -19,7 +18,7 @@ angular.module('myApp.landing', ['ngRoute'])
             controller: 'LandingCtrl',
             activetab: 'landing',
             // Commented because on logout creates problem with routes.
-            //resolve: routeChecks.authenticated
+            resolve: routeChecks.authenticated
         });
     }])
 
@@ -49,9 +48,20 @@ angular.module('myApp.landing', ['ngRoute'])
                             'access_token': authResponse.accessToken,
                             'expires_in': authResponse.expiresIn
                         };
-                        return Kinvey.User.loginWithProvider(provider, tokens).then(null, function (err) {
+                        return Kinvey.User.loginWithProvider(provider, tokens).then(
+                        function (success) {
+                            console.log("successful login with facebook");
+
+                            $rootScope.currentUser = Kinvey.getActiveUser();
+                            console.log($rootScope.currentUser);
+
+                            return $rootScope.currentUser;
+
+                        }, function (err) {
                             // Attempt to signup as a new user if no user with the identity exists.
                             if (Kinvey.Error.USER_NOT_FOUND === err.name) {
+                                console.log("first login with facebook -> registration procedure");
+
                                 return Kinvey.User.signupWithProvider(provider, tokens)
                                 .then(function (user) {
                                     return facebook.getProfilePicture(user._socialIdentity.facebook.id)
@@ -139,18 +149,18 @@ angular.module('myApp.landing', ['ngRoute'])
                         });
                     })
                     .then(function (user) {
-                        console.log("user before path change");
-                        $rootScope.currentUser = user;
-                        console.log($rootScope.currentUser);
-                        return $rootScope.currentUser;
+                        if(user) {
+                            console.log("user before path change");
+                            console.log(user);
+                            console.log("changing path to profile from landing");
+                            $location.path("/profile");
+                        } else {
+                            console.log("no user passed down so fuck off")
+                        }
                     }, function (error) {
                         console.log(error);
-                    })
-                    .then(function () {
-                        console.log("changing path to profile");
-                        $location.path("/profile");
                     });
-                    };
+                };
 
             $scope.isRegistered = true;
             $scope.toggle = function () {

@@ -47,6 +47,7 @@ app.controller('MainCtrl', ['$rootScope', '$scope', '$route', '$location', 'kinv
                 $location.path('/login');
                 return;
             }
+
             $rootScope.initialized = true;
 
             let promise = Kinvey.DataStore.get("pictures", $rootScope.currentUser.profile_picture);

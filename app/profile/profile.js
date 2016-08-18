@@ -3,13 +3,13 @@
 angular.module('myApp.profile', ['ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
-        var routeChecks = {
-            authenticated: ['$q', function ($q) {
-                if (localStorage.getItem("Kinvey.kid_BkwgJlt_.activeUser")) {
+        let routeChecks = {
+            authenticated: ['$q', '$location', '$rootScope', function ($q, $location, $rootScope) {
+                if ($rootScope.currentUser) {
                     return $q.when(true);
                 }
 
-                return $q.reject('Unauthorized Access');
+                return $q.reject($location.path('/login'));
             }]
         };
 
@@ -18,7 +18,7 @@ angular.module('myApp.profile', ['ngRoute'])
             controller: 'ProfileCtrl',
             activetab: 'profile',
             // Commented because bugs facebook login. Not loading properly.
-            // resolve: routeChecks.authenticated
+            resolve: routeChecks.authenticated
         });
     }])
 
@@ -91,21 +91,21 @@ angular.module('myApp.profile', ['ngRoute'])
                 $scope.shouldCrop = !$scope.shouldCrop;
             };
 
-            $scope.fileSelect = function (files) {
-                if (!$scope.imageForUpload) {
-                    $scope.imageForUpload = {};
-                }
-
-                if (!files[0]) {
-                    $scope.imageForUpload = null;
-                    $scope.showCrop();
-                    return;
-                }
-
-                if (files[0].type.match('image.*')) {
-                    $scope.imageForUpload = files[0];
-                }
-            };
+            // $scope.fileSelect = function (files) {
+            //     if (!$scope.imageForUpload) {
+            //         $scope.imageForUpload = {};
+            //     }
+            //
+            //     if (!files[0]) {
+            //         $scope.imageForUpload = null;
+            //         $scope.showCrop();
+            //         return;
+            //     }
+            //
+            //     if (files[0].type.match('image.*')) {
+            //         $scope.imageForUpload = files[0];
+            //     }
+            // };
 
             $scope.upload = function () {
                 kinveyConfig.authorize
