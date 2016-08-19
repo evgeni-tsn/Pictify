@@ -9,6 +9,7 @@ angular.module('myApp.authentication', [])
                             username: user.username,
                             password: user.password,
                             profile_picture: '57b62a7420a1306254c52f29', // Anonymous profile pic assigned
+                            fullname: user.fullname,
                             followersCount: 0,
                             followingCount: 0
                         });
@@ -111,11 +112,25 @@ angular.module('myApp.authentication', [])
 
             }
 
+            function changeFullName(fullname) {
+                var user = $rootScope.currentUser;
+                user.fullname = fullname;
+                var promise = $kinvey.User.update(user);
+                promise.then(function (user) {
+                    console.log("Fullname changed")
+                    console.log(user);
+                }, function (err) {
+                    console.log("Error occured")
+                    console.log(err);
+                });
+            }
+
             return {
                 registerUser: registerUser,
                 loginUser: loginUser,
                 logout: logout,
                 changePassword: changePassword,
-                isLogged: isLogged
+                isLogged: isLogged,
+                changeFullName: changeFullName
             }
         }]);

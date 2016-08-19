@@ -1,10 +1,20 @@
 <h1>Change Password</h1>
 <h1>TODO: MAKE VALIDATION</h1>
 <p>Old Password</p>
-<input ng-model="oldPassword" type="text"><br>
+<input ng-model="passwordDetails.oldPassword" type="text"><br>
 <p>New Password</p>
-<input ng-model="newPassword" type="text"><br>
+<input ng-model="passwordDetails.newPassword" type="text"><br>
 <p>Repeat New Password</p>
-<input ng-model="repeatNewPassword" type="text">
+<input ng-model="passwordDetails.repeatNewPassword" type="text">
 
-<input type="submit" ng-click="changePassword()">
+<input type="submit" ng-click="changePassword(passwordDetails)">
+
+<hr>
+
+<h1>Change Fullname</h1>
+<h1>TODO: MAKE VALIDATION</h1>
+<p>New Name</p>
+<input ng-model="fullname" type="text">
+
+<input type="submit" ng-click="setFullname(fullname)">
+

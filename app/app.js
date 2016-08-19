@@ -71,7 +71,8 @@ app.controller('MainCtrl', ['$rootScope', '$scope', '$route', '$location', 'kinv
             let regex = "^" + typed + ".*$";
 
             let query = new Kinvey.Query();
-            query.matches("username", regex);
+            query.matches("username", regex).or().matches('fullname', regex);
+
 
             return Kinvey.User.find(query).then(function (users) {
                     console.log(users);

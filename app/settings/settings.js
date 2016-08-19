@@ -25,11 +25,11 @@ angular.module('myApp.settings', ['ngRoute'])
     .controller('SettingsCtrl', ['$rootScope', '$kinvey', '$scope', 'authentication',
         function ($rootScope, $kinvey, $scope, authentication) {
 
-            $scope.oldPassword = "";
-            $scope.newPassword = "";
-            $scope.RepeatNewPassword = "";
+            $scope.changePassword = function (passwordDetails) {
+                authentication.changePassword(passwordDetails.newPassword);
+            };
 
-            $scope.changePassword = function () {
-                authentication.changePassword($scope.newPassword);
+            $scope.setFullname = function (fullName) {
+                authentication.changeFullName(fullName);
             }
         }]);
