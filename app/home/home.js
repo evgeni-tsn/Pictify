@@ -41,33 +41,39 @@ angular.module('myApp.home', ['ngRoute'])
                     Kinvey.DataStore.get("socials", $rootScope.currentUser._id)
                         .then(function (response) {
                             console.log(response);
+                            console.log(response.following);
+                            $scope.followedUsers = [];
+                            var followedUsersIds = [];
 
-                            $scope.followedUsers = response.following;
-                            for (var id in $scope.followedUsers) {
+                            for (var id in response.following) {
                                 let idProxy = id;
 
-                                $scope.followedUsers[idProxy] = {username: $scope.followedUsers[idProxy]};
-
-                                Kinvey.User.get(idProxy)
-                                    .then(function (user) {
-                                        $scope.followedUsers[idProxy].followersCount = user.followersCount;
-                                        $scope.followedUsers[idProxy]._id = idProxy;
-                                        return user.profile_picture;
-                                    }, function (error) {
-                                        console.log(error);
-                                    })
-                                    .then(function (profPicId) {
-                                        Kinvey.DataStore.get("pictures", profPicId)
-                                            .then(function (profilePicture) {
-                                                $scope.followedUsers[idProxy].profilePicture = profilePicture;
-                                                console.log($scope.followedUsers);
-                                            }, function (error) {
-                                                console.log(error)
-                                            })
-                                    }, function (error) {
-                                        console.log(error);
-                                    })
+                                followedUsersIds.push(idProxy);
                             }
+
+                            console.log(followedUsersIds);
+
+                            let query = new Kinvey.Query();
+                            query.equalTo("_id", {"$in":followedUsersIds});
+                            console.log(query);
+
+                            console.log(query);
+
+                            Kinvey.User.find(query)
+                                .then(function (followedUsers) {
+                                    console.log(followedUsers);
+                                    for(let user of followedUsers) {
+                                        Kinvey.DataStore.get("pictures", user.profile_picture)
+                                            .then(function (picture) {
+                                               user.profilePicture = picture;
+                                               $scope.followedUsers.push(user);
+                                            }, function (error) {
+                                                console.log(error);
+                                            });
+                                    }
+                                }, function (error) {
+                                   console.log(error);
+                                });
                         }, function (error) {
                             console.log(error);
                         });
