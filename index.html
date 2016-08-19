@@ -13,6 +13,8 @@
     <title>Pictify</title>
     <!--<base href="/">-->
     <meta name="description" content="">
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,700|Kaushan+Script|Montserrat' rel='stylesheet'
+          type='text/css'>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
@@ -68,7 +70,8 @@
                    ng-model="selectedUser"
                    ng-show="currentUser"
                    placeholder="search"
-                   uib-typeahead="user as user.username for user in searchUsers($viewValue)"
+                   title="None"
+                   uib-typeahead="user as user.fullname+' <br> '+user.username for user in searchUsers($viewValue)"
                    typeahead-editable="false"
                    typeahead-on-select="onSelect(); selectedUser = ''"/>
         </div>
@@ -82,7 +85,8 @@
                             <img id="profileThumbnail" class="img-responsive" ng-src="{{profPic.image._downloadURL}}">
                         </div>
                         <div>
-                            <span>{{currentUser.username}}</span>
+                            <span>{{currentUser.fullname}}</span><br>
+                            <span>({{currentUser.username}})</span>
                         </div>
                     </a>
                 </li>

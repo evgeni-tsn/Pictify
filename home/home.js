@@ -3,8 +3,6 @@
 angular.module('myApp.home', ['ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
-        // there should be no route authorization here
-
         var routeChecks = {
             authenticated: ['$q', '$location', '$rootScope', function ($q, $location, $rootScope) {
                 if (localStorage.getItem("Kinvey.kid_BkwgJlt_.activeUser")
@@ -55,8 +53,6 @@ angular.module('myApp.home', ['ngRoute'])
 
                             let query = new Kinvey.Query();
                             query.equalTo("_id", {"$in":followedUsersIds});
-                            console.log(query);
-
                             console.log(query);
 
                             Kinvey.User.find(query)

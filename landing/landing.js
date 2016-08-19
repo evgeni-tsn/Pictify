@@ -114,7 +114,6 @@ angular.module('myApp.landing', ['ngRoute'])
                                                                     .then(function (picture) {
                                                                         console.log("picture");
                                                                         console.log(picture);
-
                                                                         // Update user and return him
                                                                         let rawFacebookName = user._socialIdentity.facebook.name;
                                                                         let facebookUsernameParts = rawFacebookName.toLowerCase().split(' ');
@@ -122,6 +121,7 @@ angular.module('myApp.landing', ['ngRoute'])
 
                                                                         user.username = facebookUsernameReady;
                                                                         user.profile_picture = picture._id;
+                                                                        user.fullname = user._socialIdentity.facebook.name;
                                                                         user.followersCount = 0;
                                                                         user.followingCount = 0;
 
