@@ -82,6 +82,27 @@
     }
 </style>
 <style>
+    a.darken {
+        display: inline-block;
+        background: black;
+        padding: 0;
+    }
+
+    a.darken img {
+        display: block;
+
+        -webkit-transition: all 0.2s linear;
+        -moz-transition: all 0.2s linear;
+        -ms-transition: all 0.2s linear;
+        -o-transition: all 0.2s linear;
+        transition: all 0.2s linear;
+    }
+
+    a.darken:hover img {
+        opacity: 0.4;
+
+    }
+
     .thumb {
         margin-bottom: 30px;
     }
@@ -121,7 +142,7 @@
 
         <div ng-repeat="picture in pictures">
             <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-                <a href="" class="thumbnail">
+                <a href="" class="thumbnail darken">
                     <img class="img-responsive"
                          ng-click="selectPic(picture)"
                          ng-src="{{picture.image._downloadURL}}"
