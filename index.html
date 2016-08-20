@@ -11,7 +11,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Pictify</title>
-    <!--<base href="/">-->
+    <base href="/">
     <meta name="description" content="">
     <link href='http://fonts.googleapis.com/css?family=Lato:400,700|Kaushan+Script|Montserrat' rel='stylesheet'
           type='text/css'>
@@ -80,7 +80,7 @@
 
             <ul id="profileTabs">
                 <li ng-show="currentUser" ng-class="{active: $route.current.activetab == 'profile'}">
-                    <a href="#/profile">
+                    <a href="/profile">
                         <div>
                             <img id="profileThumbnail" class="img-responsive" ng-src="{{profPic.image._downloadURL}}">
                         </div>
@@ -94,21 +94,21 @@
 
             <ul id="navigationTabs" class="nav navbar-nav navbar-right">
                 <li ng-show="currentUser" ng-class="{active: $route.current.activetab == 'home'}">
-                    <a href="#/">Home</a>
+                    <a href="/">Home</a>
                 </li>
                 <li ng-show="currentUser" ng-class="{active: $route.current.activetab == 'profile'}">
-                    <a href="#/profile">Profile</a>
+                    <a href="/profile">Profile</a>
                 </li>
 
                 <li ng-show="!currentUser" ng-class="{active: $route.current.activetab == 'landing'}">
-                    <a href="#/landing">Login</a>
+                    <a href="/landing">Login</a>
                 </li>
                 <li ng-show="currentUser">
-                    <a href="#/" ng-click="logout()">Logout</a>
+                    <a href="/" ng-click="logout()">Logout</a>
                 </li>
 
                 <li ng-show="currentUser">
-                    <a href="#/settings">Settings</a>
+                    <a href="/settings">Settings</a>
                 </li>
             </ul>
         </div>

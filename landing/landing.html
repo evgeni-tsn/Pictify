@@ -9,7 +9,7 @@
         padding: 20px 28px 30px;
         margin: 0 auto;
         /*background-color: #eee;*/
-        border: 1px solid #56cc42;
+        border: 1px solid #27AE60;
     }
 
     .form-signin-heading, .form-signup-heading {
@@ -51,26 +51,26 @@
         border-top: 0;
         background: #c4e17f;
         border-radius: 5px;
-        background-image: -webkit-linear-gradient(left, #c4e17f, #c4e17f 33.5%);
-        background-image: -moz-linear-gradient(left, #c4e17f, #c4e17f 33.5%);
-        background-image: -o-linear-gradient(left, #c4e17f, #c4e17f 33.5%);
-        background-image: linear-gradient(to right, #c4e17f, #c4e17f 33.5%);
+        background-image: -webkit-linear-gradient(left, #27AE60, #c4e17f 50%, #27AE60);
+        background-image: -moz-linear-gradient(left, #27AE60, #c4e17f 50%, #27AE60);
+        background-image: -o-linear-gradient(left, #27AE60, #c4e17f 50%, #27AE60);
+        background-image: linear-gradient(to right, #27AE60, #c4e17f 50%, #27AE60);
     }
 
     .btn-primary {
-        background-color: #56cc42;
+        background-color: #27AE60;
         color: #fff;
         border-color: #2bac19;
     }
 
     .btn-primary:hover {
-        background-color: #2bac19;
+        background-color: #27AE60;
         color: #fff;
         border-color: #2bac19;
     }
 
-    .btn-primary:active, .btn-success:focus {
-        background-color: #2bac19 !important;
+    .btn-primary:active, .btn-primary:focus {
+        background-color: #27AE60 !important;
         color: #fff !important;
         border-color: #2bac19 !important;
     }
@@ -98,15 +98,15 @@
 
     .title-name {
         font-family: "Kaushan Script";
-        font-size: 12vw;
-        color: #94958e;
+        font-size: 8vw;
+        color: #27AE60;
     }
 
 </style>
 <div class="container">
     <div class="wrapper col-centered">
         <!--<img class="center-block img-responsive" src="resources/logo.png" alt="logo">-->
-        <h1 class="text-center title-name">PICTIFY</h1>
+        <h2 class="text-center title-name">PICTIFY</h2>
     </div>
     <div class="wrapper">
         <form name="loginForm" class="form-signin" ng-show="isRegistered">
@@ -134,14 +134,15 @@
 
             <input type="text" class="form-control" id="reg-username" ng-model="registerUser.username"
                    placeholder="Username" required="required" autofocus=""/>
+            <input type="text" class="form-control  no-border-radius" id="full-name" ng-model="registerUser.fullname"
+                   placeholder="Full name" required="required"/>
             <input type="password" class="form-control no-border-radius" id="reg-password"
                    ng-model="registerUser.password"
                    placeholder="Password" required="required" min-length="6" max-length="100"/>
-            <input type="password" class="form-control no-border-radius" id="reg-repeat-password"
+            <input type="password" class="form-control after-input" id="reg-repeat-password"
                    ng-model="registerUser.repeatPassword"
                    placeholder="Confirm Password" required="required" min-length="6" max-length="100"/>
-            <input type="text" class="form-control after-input" id="full-name" ng-model="registerUser.fullname"
-                   placeholder="Full name" required="required"/>
+
 
             <div class="text-center">
                 <button class="btn btn-lg btn-primary " ng-disabled="registerForm.$invalid"

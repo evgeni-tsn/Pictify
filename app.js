@@ -20,10 +20,10 @@ var app = angular.module('myApp', [
 ]);
 
 app.config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
-
+    $locationProvider.html5Mode(true);
     // 404
     $routeProvider.otherwise({redirectTo: '/'});
-    // $locationProvider.html5Mode(true);
+
 }]);
 
 app.constant('kinveyConfig', {
