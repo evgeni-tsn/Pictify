@@ -20,7 +20,7 @@ var app = angular.module('myApp', [
 ]);
 
 app.config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
-    $locationProvider.html5Mode(true);
+    // $locationProvider.html5Mode(true);
     // 404
     $routeProvider.otherwise({redirectTo: '/'});
 

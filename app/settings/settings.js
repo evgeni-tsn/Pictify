@@ -10,11 +10,11 @@ angular.module('myApp.settings', ['ngRoute'])
                     return $q.when(true);
                 }
 
-                return $q.reject($location.path('/login'));
+                return $q.reject($location.path('/login/'));
             }]
         };
 
-        $routeProvider.when('/settings', {
+        $routeProvider.when('/settings/', {
             templateUrl: 'settings/settings.html',
             controller: 'SettingsCtrl',
             activetab: 'settings',

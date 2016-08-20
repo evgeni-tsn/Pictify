@@ -10,11 +10,11 @@ angular.module('myApp.profile', ['ngRoute'])
                     return $q.when(true);
                 }
 
-                return $q.reject($location.path('/login'));
+                return $q.reject($location.path('/login/'));
             }]
         };
 
-        $routeProvider.when('/profile', {
+        $routeProvider.when('/profile/', {
             templateUrl: 'profile/profile.html',
             controller: 'ProfileCtrl',
             activetab: 'profile',

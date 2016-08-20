@@ -10,7 +10,7 @@ angular.module('myApp.home', ['ngRoute'])
                     return $q.when(true);
                 }
 
-                return $q.reject($location.path("/login"));
+                return $q.reject($location.path("/login/"));
             }]
         };
 

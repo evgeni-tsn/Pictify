@@ -14,7 +14,7 @@ angular.module('myApp.viewProfile', ['ngRoute'])
                     }
                 }
 
-                return $q.reject($location.path('/login'));
+                return $q.reject($location.path('/login/'));
             }]
         };
 
