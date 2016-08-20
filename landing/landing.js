@@ -14,7 +14,7 @@ angular.module('myApp.landing', ['ngRoute'])
             }]
         };
 
-        $routeProvider.when('/login', {
+        $routeProvider.when('/login/', {
             templateUrl: 'landing/landing.html',
             controller: 'LandingCtrl',
             activetab: 'landing',
