@@ -56,9 +56,14 @@
     .socialBox {
         margin: 5px;
     }
+
 </style>
 
 <style>
+    #prof-img {
+        width: 10%;
+        height: 10%;
+    }
     .thumb {
         margin-bottom: 30px;
     }
@@ -68,7 +73,7 @@
 <button ng-click="follow()" class="btn btn-primary btn-lg">Follow</button>
 
 <div>
-    <img ng-src="{{userProfilePic.image._downloadURL}}" alt="">
+    <img ng-src="{{userProfilePic.image._downloadURL}}" id="prof-img" alt="">
     <h2>{{selectedUserProxy.username}}</h2>
 </div>
 <div class="container">
