@@ -227,7 +227,7 @@ angular.module('myApp.profile', ['ngRoute'])
                     console.log("No picture selected");
                 }
 
-                $scope.selectedImage = picture;
+                $scope.selectedPicture = picture;
             };
 
             $scope.deletePic = function (picture) {
