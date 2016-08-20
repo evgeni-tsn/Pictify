@@ -65,31 +65,53 @@
         height: 10%;
     }
 
-    a.darken {
-        display: inline-block;
-        background: black;
+    .thumb {
+        margin-bottom: 30px;
+    }
+
+    .thumbnail {
+        border: 0;
+    }
+</style>
+
+<style>
+    .imgWrap {
+        position: relative;
+    }
+
+    .imgWrap > a {
         padding: 0;
     }
 
-    a.darken img {
-        display: block;
-
+    .imgDescription {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        text-align: center;
+        visibility: hidden;
+        background-color: black;
+        opacity: 0;
+        color: white;
+        font-size: 1.3em;
         -webkit-transition: all 0.2s linear;
         -moz-transition: all 0.2s linear;
         -ms-transition: all 0.2s linear;
         -o-transition: all 0.2s linear;
         transition: all 0.2s linear;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
-    a.darken:hover img {
-        opacity: 0.4;
+    .imgWrap:hover .imgDescription {
 
+        visibility: visible;
+        opacity: 0.7;
     }
 
-
-    .thumb {
-        margin-bottom: 30px;
-    }
 </style>
 <div>{{pageName}}</div>
 
@@ -106,49 +128,28 @@
         </div>
         <div ng-repeat="picture in pictures">
             <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-                <a href="" class="thumbnail darken">
-                    <img class="img-responsive"
-                         ng-click="selectPic(picture)"
-                         ng-src="{{picture.image._downloadURL}}"
-                         data-toggle="modal"
-                         data-target="#viewProfileModal">
-                </a>
-                <div class="socialBox">
-                    <span class="glyphicon glyphicon-hand-up votes like"
-                          ng-click="vote(picture, 'like')">
-                        {{picture.votes.likes.length}}
-                    </span>
-                    <span class="glyphicon glyphicon-hand-down votes dislike"
-                          ng-click="vote(picture, 'dislike')">
-                        {{picture.votes.dislikes.length}}
-                    </span>
-                    <span class="glyphicon glyphicon-comment commentsToggler"
-                          ng-click="showComments = !showComments">
-                        {{picture.comments.length}}
-                    </span>
-                    <br>
-                    <span class="commentsToggler"
-                          ng-click="showCommentBox = !showCommentBox">
-                        Comment
-                    </span>
-                    <div class="comments" ng-show="showComments"
-                         ng-repeat="commentObj in picture.comments">
-                        {{commentObj.username}}: {{commentObj.content}}
-                    </div>
-                    <div class="form-group" ng-show="showCommentBox || showComments">
-                        <textarea title="Comment:"
-                                  class="form-control comment" rows="1"
-                                  ng-model="commentBoxText">
-                        </textarea>
-                        <button class="btn btn-info"
-                                ng-click="comment(picture, commentBoxText)">
-                            Submit
-                        </button>
-                    </div>
+                <div class="imgWrap">
+                    <a href="" class="thumbnail">
+                        <img class="img-responsive" ng-src="{{picture.image._downloadURL}}">
+
+                        <div class="imgDescription"
+                             ng-click="selectPic(picture)"
+                             data-toggle="modal"
+                             data-target="#viewProfileModal">
+
+                                <span class="glyphicon glyphicon-hand-up votes like">
+                            {{picture.votes.likes.length}}</span>
+                            <span class="glyphicon glyphicon-hand-down votes dislike">
+                            {{picture.votes.dislikes.length}}</span>
+                            <span class="glyphicon glyphicon-comment commentsToggler">
+                            {{picture.comments.length}}</span>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 
 <div class="modal fade imageModal" id="viewProfileModal">
@@ -156,32 +157,51 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <br>
-                <br>
+                <div class="socialBox">
+                <span class="glyphicon glyphicon-hand-up votes like"
+                      ng-click="vote(selectedPicture, 'like')">
+                {{selectedPicture.votes.likes.length}}
+                </span>
+                    <span class="glyphicon glyphicon-hand-down votes dislike"
+                          ng-click="vote(selectedPicture, 'dislike')">
+                {{selectedPicture.votes.dislikes.length}}
+                </span>
+                    <span class="glyphicon glyphicon-comment commentsToggler"
+                          ng-click="showComments = !showComments">
+                {{selectedPicture.comments.length}}
+                </span>
+                    <br>
+                    <span class="commentsToggler"
+                          ng-click="showCommentBox = !showCommentBox">
+                Comment
+                </span>
+                    <div class="comments" ng-show="showComments"
+                         ng-repeat="commentObj in selectedPicture.comments">
+                        {{commentObj.username}}: {{commentObj.content}}
+                    </div>
+                    <div class="form-group" ng-show="showCommentBox || showComments">
+                <textarea title="Comment:"
+                          class="form-control comment" rows="1"
+                          ng-model="commentBoxText">
+                </textarea>
+                        <button class="btn btn-info"
+                                ng-click="comment(selectedPicture, commentBoxText)">
+                            Submit
+                        </button>
+                    </div>
+                </div>
 
-                <button ng-click="testDelete(selectedPicture)" class="btn btn-warning">TestDelete</button>
+
                 <div class="row">
                     <h4 class="modal-title text-center"
                         id="viewProfileModalImageCaption">
                         {{selectedPicture.caption}}
                     </h4>
                 </div>
+                <button ng-click="testDelete(selectedPicture)" class="btn btn-warning">TestDelete</button>
             </div>
             <div class="modal-body" id="modalImageContainter">
                 <img ng-src="{{selectedPicture.image._downloadURL}}" alt="Wtf">
-            </div>
-            <div class="modal-footer">
-                <span class="glyphicon glyphicon-hand-up votes like"
-                      ng-click="vote(selectedPicture, 'like')">
-                    {{selectedPicture.votes.likes.length}}
-                </span>
-                <span class="glyphicon glyphicon-hand-down votes dislike"
-                      ng-click="vote(selectedPicture, 'dislike')">
-                    {{selectedPicture.votes.dislikes.length}}
-                </span>
-                <div ng-repeat="commentObj in selectedPicture.comments">
-                    {{commentObj.username}}: {{commentObj.content}}
-                </div>
             </div>
         </div>
     </div>
