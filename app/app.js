@@ -16,7 +16,8 @@ var app = angular.module('myApp', [
     'myApp.authentication',
     'angular.filter',
     'ngImgCrop',
-    'myApp.facebook'
+    'myApp.facebook',
+    'ngSanitize'
 ]);
 
 app.config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
@@ -35,8 +36,8 @@ app.constant('kinveyConfig', {
     })
 });
 
-app.controller('MainCtrl', ['$rootScope', '$scope', '$route', '$location', 'kinveyConfig', 'authentication',
-    function ($rootScope, $scope, $route, $location, kinveyConfig, authentication) {
+app.controller('MainCtrl', ['$rootScope', '$scope', '$route', '$location', '$sce', 'kinveyConfig', 'authentication',
+    function ($rootScope, $scope, $route, $location, $sce, kinveyConfig, authentication) {
         $scope.$route = $route;
 
         kinveyConfig.authorize
@@ -76,6 +77,9 @@ app.controller('MainCtrl', ['$rootScope', '$scope', '$route', '$location', 'kinv
 
             return Kinvey.User.find(query).then(function (users) {
                     console.log(users);
+                    for (let user of users) {
+                        user.displayName = $sce.trustAsHtml(user.fullname + '<br/>' + '(' + user.username + ')');
+                    }
                     return users;
                 }, function (error) {
                     console.log(error);

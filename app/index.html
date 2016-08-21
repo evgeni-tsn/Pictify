@@ -11,7 +11,6 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Pictify</title>
-    <base href="/">
     <meta name="description" content="">
     <link href='http://fonts.googleapis.com/css?family=Lato:400,700|Kaushan+Script|Montserrat' rel='stylesheet'
           type='text/css'>
@@ -71,7 +70,7 @@
                    ng-show="currentUser"
                    placeholder="search"
                    title="None"
-                   uib-typeahead="user as user.fullname+' <br> '+user.username for user in searchUsers($viewValue)"
+                   uib-typeahead="user as user.displayName for user in searchUsers($viewValue)"
                    typeahead-editable="false"
                    typeahead-on-select="onSelect(); selectedUser = ''"/>
         </div>
@@ -135,6 +134,8 @@
 <script src="bower_components/angular-strap/dist/angular-strap.tpl.js"></script>
 <script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
 <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+
 
 <script src="app.js"></script>
 <script src="home/home.js"></script>

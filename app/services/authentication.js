@@ -18,6 +18,12 @@ angular.module('myApp.authentication', [])
                             console.log(user);
                             $rootScope.currentUser = Kinvey.getActiveUser();
 
+                            // let profilePicture = {
+                            //     _type: "KinveyRef",
+                            //     _id: "57b62a7420a1306254c52f29",
+                            //     _collection: "pictures"
+                            // };
+
                             let social = {
                                 _id: $rootScope.currentUser._id,
                                 _acl: {
@@ -34,7 +40,9 @@ angular.module('myApp.authentication', [])
                                 }, function (error) {
                                     console.log(error);
                                 });
-                            // $route.reload();
+
+                            // Kinvey.User.update()
+                            // // $route.reload();
                             $location.path("/profile");
                         }, function (err) {
                             console.log(err);

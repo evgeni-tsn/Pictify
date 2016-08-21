@@ -16,6 +16,7 @@
     "angular-bootstrap": "^2.0.1",
     "angular-strap": "^2.3.9",
     "ng-img-crop-full-extended": "ngImgCropFullExtended#^0.5.5",
-    "lightgallery": "^1.2.21"
+    "lightgallery": "^1.2.21",
+    "angular-sanitize": "^1.5.8"
   }
 }
