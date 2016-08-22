@@ -1,15 +1,15 @@
 <style>
-    div.galContainer {
-        position: relative;
-        overflow: hidden;
-        padding-bottom: 10%;
-        display: block;
-    }
+    /*div.galContainer {*/
+        /*position: relative;*/
+        /*overflow: hidden;*/
+        /*padding-bottom: 10%;*/
+        /*display: block;*/
+    /*}*/
 
-    div.galContainer > img {
+    div.galleryWrapper img {
         width: 100%;
         height: 100%;
-        max-height: 100%;
+        max-height: 25vh;
         max-width: 100%;
         object-fit: contain;
         border-radius: 5px;
@@ -17,9 +17,9 @@
         transition: 0.3s;
     }
 
-    div.galContainer > img:hover {
-        opacity: 0.7;
-    }
+    /*div.galContainer > img:hover {*/
+        /*opacity: 0.7;*/
+    /*}*/
 
     #modalImageContainter img {
         margin: auto;
@@ -66,7 +66,10 @@
     }
 
     .thumb {
-        margin-bottom: 30px;
+        margin-bottom: 1.5%;
+        display:flex;
+        justify-content:center;
+        align-items:center;
     }
 
     .thumbnail {
@@ -112,6 +115,18 @@
         opacity: 0.7;
     }
 
+    .row {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .row > [class*='col-'] {
+        display: flex;
+        flex-direction: column;
+    }
+
 </style>
 <div>{{pageName}}</div>
 
@@ -123,12 +138,12 @@
 </div>
 <div class="container">
     <h1 class="page-header">Profile View Gallery</h1>
-    <div class="row">
-            <div ng-repeat="picture in pictures"
-                 class="col-lg-3 col-md-4 col-xs-6 thumb">
+    <div class="galleryWrapper">
+        <div class="row">
+                <div ng-repeat="picture in pictures"
+                     class="col-lg-3 col-md-4 col-xs-6 thumb">
 
-                <div class="imgWrap">
-                    <a href="" class="thumbnail">
+                    <div class="imgWrap">
                         <img class="img-responsive"
                              ng-src="{{picture.image._downloadURL}}">
 
@@ -144,9 +159,9 @@
                             <span class="glyphicon glyphicon-comment commentsToggler">
                             {{picture.comments.length}}</span>
                         </div>
-                    </a>
+                    </div>
                 </div>
-            </div>
+        </div>
     </div>
 </div>
 </div>
