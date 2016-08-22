@@ -13,7 +13,7 @@
 
     div.galContainer > img {
         width: 100%;
-        height: 100%;
+        height:100%;
         max-height: 100%;
         max-width: 100%;
         object-fit: contain;
@@ -157,14 +157,13 @@
 
 <!-- Page Content -->
 <div class="container">
-
     <div class="row">
 
         <div class="col-lg-12">
             <h1 class="page-header">Gallery</h1>
         </div>
-
         <div ng-repeat="picture in pictures">
+            <div class="clearfix" ng-if="$index % 4 == 0"></div>
             <div class="col-lg-3 col-md-4 col-xs-6 thumb">
                 <div class="imgWrap">
                     <a href="" class="thumbnail">
@@ -186,7 +185,6 @@
                     </a>
                 </div>
             </div>
-
         </div>
         <!-- /.container -->
 
