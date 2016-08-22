@@ -4,17 +4,17 @@
         height: 10%;
     }
 
-    div.galContainer {
-        position: relative;
-        overflow: hidden;
-        padding-bottom: 10%;
-        display: block;
-    }
+    /*div.galContainer {*/
+        /*position: relative;*/
+        /*overflow: hidden;*/
+        /*padding-bottom: 10%;*/
+        /*display: block;*/
+    /*}*/
 
-    div.galContainer > img {
+    div.galleryWrapper img {
         width: 100%;
         height:100%;
-        max-height: 100%;
+        max-height: 25vh;
         max-width: 100%;
         object-fit: contain;
         border-radius: 5px;
@@ -22,9 +22,9 @@
         transition: 0.3s;
     }
 
-    div.galContainer > img:hover {
-        opacity: 0.7;
-    }
+    /*div.galContainer > img:hover {*/
+        /*opacity: 0.7;*/
+    /*}*/
 
     #modalImageContainter img {
         margin: auto;
@@ -85,6 +85,9 @@
 <style>
     .thumb {
         margin-bottom: 1.5%;
+        display:flex;
+        justify-content:center;
+        align-items:center;
     }
 
     .thumbnail {
@@ -173,9 +176,9 @@
         <div class="row">
             <!--<div ng-repeat="picture in pictures">-->
                 <!--<div class="clearfix" ng-if="$index % 4 == 0"></div>-->
-
                 <div ng-repeat="picture in pictures" class="col-lg-3 col-md-4 col-xs-6 thumb">
                     <div class="imgWrap">
+                        <!--<a href="" class="thumbnail">-->
                             <img class="img-responsive"
                                  ng-src="{{picture.image._downloadURL}}">
 
@@ -193,6 +196,7 @@
                                 <span class="glyphicon glyphicon-comment commentsToggler">
                                 {{picture.comments.length}}</span>
                             </div>
+                        <!--</a>-->
                     </div>
                 </div>
             <!--</div>-->
