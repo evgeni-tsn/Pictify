@@ -84,7 +84,7 @@
 
 <style>
     .thumb {
-        margin-bottom: 30px;
+        margin-bottom: 1.5%;
     }
 
     .thumbnail {
@@ -129,6 +129,18 @@
         visibility: visible;
         opacity: 0.7;
     }
+
+    .row {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .row > [class*='col-'] {
+        display: flex;
+        flex-direction: column;
+    }
 </style>
 
 <p>This is the partial for {{pageName}}.</p>
@@ -154,38 +166,38 @@
 </div>
 <input type="button" value="Upload" ng-click="upload()" class="btn btn-danger btn-lg">
 
-
-<!-- Page Content -->
+<!-- Gallery Content -->
 <div class="container">
-    <div class="row">
+    <div class="galleryWrapper">
+        <h1 class="page-header">Gallery</h1>
+        <div class="row">
+            <!--<div ng-repeat="picture in pictures">-->
+                <!--<div class="clearfix" ng-if="$index % 4 == 0"></div>-->
 
-        <div class="col-lg-12">
-            <h1 class="page-header">Gallery</h1>
-        </div>
-        <div ng-repeat="picture in pictures">
-            <div class="clearfix" ng-if="$index % 4 == 0"></div>
-            <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-                <div class="imgWrap">
-                    <a href="" class="thumbnail">
-                        <img class="img-responsive"
-                             ng-src="{{picture.image._downloadURL}}">
+                <div ng-repeat="picture in pictures" class="col-lg-3 col-md-4 col-xs-6 thumb">
+                    <div class="imgWrap">
+                            <img class="img-responsive"
+                                 ng-src="{{picture.image._downloadURL}}">
 
-                        <div class="imgDescription"
-                             ng-click="selectPic(picture)"
-                             data-toggle="modal"
-                             data-target="#imageModal">
+                            <div class="imgDescription"
+                                 ng-click="selectPic(picture)"
+                                 data-toggle="modal"
+                                 data-target="#imageModal">
 
-                                <span class="glyphicon glyphicon-hand-up votes like">
-                            {{picture.votes.likes.length}}</span>
-                            <span class="glyphicon glyphicon-hand-down votes dislike">
-                            {{picture.votes.dislikes.length}}</span>
-                            <span class="glyphicon glyphicon-comment commentsToggler">
-                            {{picture.comments.length}}</span>
-                        </div>
-                    </a>
+                                <span class="glyphicon glyphicon-hand-up votes like"
+                                ng-click="vote(picture, 'like')">
+                                {{picture.votes.likes.length}}</span>
+                                <span class="glyphicon glyphicon-hand-down votes dislike"
+                                ng-click="vote(picture, 'dislike')">
+                                {{picture.votes.dislikes.length}}</span>
+                                <span class="glyphicon glyphicon-comment commentsToggler">
+                                {{picture.comments.length}}</span>
+                            </div>
+                    </div>
                 </div>
-            </div>
+            <!--</div>-->
         </div>
+    </div>
         <!-- /.container -->
 
         <div class="modal fade imageModal" id="imageModal">
