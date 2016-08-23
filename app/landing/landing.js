@@ -32,6 +32,11 @@ angular.module('myApp.landing', ['ngRoute'])
             };
 
             $scope.register = function (user) {
+                if (user.password != user.repeatPassword) {
+                    $scope.IsMatch = true;
+                    return false;
+                }
+                $scope.IsMatch = false;
                 authentication.registerUser(user);
             };
 
