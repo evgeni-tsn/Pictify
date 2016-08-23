@@ -47,7 +47,6 @@ angular.module('myApp.profile', ['ngRoute'])
             $scope.croppedImage = null;
             $scope.croppedImageBlob = null;
 
-            // I don't agree this should be IIFE, sorry jak
             $scope.getGallery = function () {
                 'use strict';
                 kinveyConfig.authorize
@@ -138,37 +137,37 @@ angular.module('myApp.profile', ['ngRoute'])
                                 gr: true,
                                 gw: false
                             }
-                        }, { public: true })
-                        .then(function (response) {
-                            console.log(response);
-                            return response;
-                        }, function (error) {
-                            console.log(error);
-                        })
-                        .then(function (image) {
-                            return Kinvey.DataStore.save('pictures', {
-                                image: {
-                                    _type: 'KinveyFile',
-                                    _id: image._id
-                                },
-                                _acl: {
-                                    gr: true,
-                                    gw: true
-                                },
-                                comments: [],
-                                votes: {
-                                    likes: [],
-                                    dislikes: []
-                                },
-                                caption: ''
-                            })
-                            .then(function (success) {
-                                console.log(success);
-                                $scope.getGallery();
+                        }, {public: true})
+                            .then(function (response) {
+                                console.log(response);
+                                return response;
                             }, function (error) {
                                 console.log(error);
                             })
-                        });
+                            .then(function (image) {
+                                return Kinvey.DataStore.save('pictures', {
+                                    image: {
+                                        _type: 'KinveyFile',
+                                        _id: image._id
+                                    },
+                                    _acl: {
+                                        gr: true,
+                                        gw: true
+                                    },
+                                    comments: [],
+                                    votes: {
+                                        likes: [],
+                                        dislikes: []
+                                    },
+                                    caption: ''
+                                })
+                                    .then(function (success) {
+                                        console.log(success);
+                                        $scope.getGallery();
+                                    }, function (error) {
+                                        console.log(error);
+                                    })
+                            });
 
 
                         //// This handles multiple file uploads, but lacks cropping
@@ -218,11 +217,6 @@ angular.module('myApp.profile', ['ngRoute'])
             };
 
             $scope.selectPic = function (picture) {
-                // if (!$rootScope.currentUser) {
-                //     console.log("No active user");
-                //     return;
-                // }
-
                 if (!picture) {
                     console.log("No picture selected");
                 }
@@ -311,7 +305,8 @@ angular.module('myApp.profile', ['ngRoute'])
                 picture.comments.push({
                     userId: $rootScope.currentUser._id,
                     username: $rootScope.currentUser.username,
-                    content: text});
+                    content: text
+                });
                 let promise = Kinvey.DataStore.update("pictures", picture);
                 promise.then(function (response) {
                     console.log(response);

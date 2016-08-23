@@ -146,10 +146,12 @@
     }
 </style>
 
-<p>This is the partial for {{pageName}}.</p>
-
 <div>
     <img ng-src="{{profPic.image._downloadURL}}" class="img-circle" id="userProfImg">
+</div>
+<div>
+    <h2>{{currentUser.fullname}}</h2>
+    <h3>({{currentUser.username}})</h3>
 </div>
 
 <input type="file" file-change handler="fileSelect(files)" class="btn btn-default btn-lg">

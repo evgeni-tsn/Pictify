@@ -128,12 +128,12 @@
     }
 
 </style>
-<div>{{pageName}}</div>
 
 <button ng-click="follow()" class="btn btn-primary btn-lg">Follow</button>
 
 <div>
     <img ng-src="{{userProfilePic.image._downloadURL}}" id="prof-img" alt="">
+    <h2>{{selectedUserProxy.fullname}}</h2>
     <h2>{{selectedUserProxy.username}}</h2>
 </div>
 <div class="container">
