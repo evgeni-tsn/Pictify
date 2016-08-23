@@ -51,6 +51,28 @@ body {
     color: white;
 }
 
+.navbar-brand {
+    font-family: "Kaushan Script";
+    font-size: 3vw;
+    color: #78787b;
+}
+
+.navbar {
+    background-color: #77e681;
+    border: 0;
+    border-radius: 0;
+    padding-bottom: 0;
+    padding-top: 5px;
+}
+
+#searchBox {
+    text-align: center;
+
+}
+
+#profileTabs {
+    margin-bottom: 0px;
+}
 /*.menu {*/
 /*text-align: center;*/
 /*list-style: none;*/

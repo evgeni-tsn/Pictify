@@ -32,18 +32,18 @@ angular.module('myApp.viewProfile', ['ngRoute'])
 
             $scope.getGallery = function () {
                 kinveyConfig.authorize
-                .then(function () {
-                    let query = new Kinvey.Query();
-                    query.equalTo('_acl.creator', $rootScope.selectedUserProxy._id);
-                    let promise = Kinvey.DataStore.find("pictures", query);
-                    promise.then(function (pictures) {
-                        console.log("pictures in view profile gallery");
-                        console.log(pictures);
-                        $scope.pictures = pictures;
-                    }, function (error) {
-                        console.log(error)
+                    .then(function () {
+                        let query = new Kinvey.Query();
+                        query.equalTo('_acl.creator', $rootScope.selectedUserProxy._id);
+                        let promise = Kinvey.DataStore.find("pictures", query);
+                        promise.then(function (pictures) {
+                            console.log("pictures in view profile gallery");
+                            console.log(pictures);
+                            $scope.pictures = pictures;
+                        }, function (error) {
+                            console.log(error)
+                        })
                     })
-                })
             };
 
             $scope.selectPic = function (picture) {
@@ -95,10 +95,10 @@ angular.module('myApp.viewProfile', ['ngRoute'])
                     picture.votes.likes = likes;
                     picture.votes.dislikes = dislikes;
                     Kinvey.DataStore.update("pictures", picture)
-                    .then(function (response) {
-                        console.log("liked picture");
-                        console.log(response);
-                    })
+                        .then(function (response) {
+                            console.log("liked picture");
+                            console.log(response);
+                        })
                 }
             };
 
@@ -106,7 +106,8 @@ angular.module('myApp.viewProfile', ['ngRoute'])
                 picture.comments.push({
                     userId: $rootScope.currentUser._id,
                     username: $rootScope.currentUser.username,
-                    content: text});
+                    content: text
+                });
                 let promise = Kinvey.DataStore.update("pictures", picture);
                 promise.then(function (response) {
                     console.log(response);
@@ -143,23 +144,23 @@ angular.module('myApp.viewProfile', ['ngRoute'])
             let init = function () {
                 kinveyConfig.authorize
                     .then(function () {
-                    let promise = Kinvey.DataStore.get("pictures", $rootScope.selectedUserProxy.profile_picture);
-                    promise.then(function (picture) {
-                        $scope.userProfilePic = picture;
+                        let promise = Kinvey.DataStore.get("pictures", $rootScope.selectedUserProxy.profile_picture);
+                        promise.then(function (picture) {
+                            $scope.userProfilePic = picture;
 
-                        $scope.getGallery();
-                    }, function (error) {
-                        console.log(error);
-                    });
-
-                    Kinvey.DataStore.get("socials", $rootScope.currentUser._id)
-                        .then(function (response) {
-
+                            $scope.getGallery();
                         }, function (error) {
-                            
-                        })
-                });
+                            console.log(error);
+                        });
+
+                        Kinvey.DataStore.get("socials", $rootScope.currentUser._id)
+                            .then(function (response) {
+
+                            }, function (error) {
+
+                            })
+                    });
             };
 
             init();
-    }]);
+        }]);
