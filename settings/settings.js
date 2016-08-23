@@ -26,10 +26,16 @@ angular.module('myApp.settings', ['ngRoute'])
         function ($rootScope, $kinvey, $scope, authentication) {
 
             $scope.changePassword = function (passwordDetails) {
+                if (passwordDetails.newPassword != passwordDetails.repeatNewPassword) {
+                    $scope.IsMatch = true;
+                    return false;
+                }
+                $scope.IsMatch = false;
                 authentication.changePassword(passwordDetails.newPassword);
             };
 
             $scope.setFullname = function (fullName) {
                 authentication.changeFullName(fullName);
             }
+
         }]);

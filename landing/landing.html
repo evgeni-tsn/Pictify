@@ -109,7 +109,7 @@
         <h2 class="text-center title-name">PICTIFY</h2>
     </div>
     <div class="wrapper">
-        <form name="loginForm" class="form-signin" ng-show="isRegistered">
+        <form name="loginForm" class="form-signin" ng-show="isRegistered" novalidate>
             <h2 class="form-signin-heading">Login</h2>
             <hr class="colorgraph">
             <br>
@@ -127,7 +127,7 @@
             </div>
         </form>
 
-        <form name="registerForm" class="form-signup" ng-hide="isRegistered">
+        <form name="registerForm" class="form-signup" ng-hide="isRegistered" novalidate>
             <h2 class="form-signup-heading">Register</h2>
             <hr class="colorgraph">
             <br>
@@ -151,6 +151,7 @@
                 <button class="btn btn-lg btn-primary " ng-click="loginFbk()">via Facebook</button>
                 <button class="btn btn-primary btn-lg " ng-click="toggle()">Login?</button>
             </div>
+            <span ng-show="IsMatch">Passwords have to match!</span>
         </form>
     </div>
 </div>
