@@ -24,17 +24,24 @@ angular.module('myApp.viewProfile', ['ngRoute'])
             activetab: 'viewProfile',
             resolve: routeChecks.authenticated
         });
+
+        // $routeProvider.when('/viewProfile:userName', {
+        //     templateUrl: 'viewProfile/viewProfile.html',
+        //     controller: 'ViewProfileCtrl',
+        //     activetab: 'viewProfile',
+        //     resolve: routeChecks.authenticated
+        // });
     }])
 
-    .controller("ViewProfileCtrl", ["$rootScope", "$scope", "kinveyConfig",
-        function ($rootScope, $scope, kinveyConfig) {
+    .controller("ViewProfileCtrl", ["$rootScope", "$scope", "kinveyConfig", '$routeParams', '$location',
+        function ($rootScope, $scope, kinveyConfig, $routeParams, $location) {
             $scope.pageName = "Profile page of " + $rootScope.selectedUserProxy.username;
-
             $scope.getGallery = function () {
                 kinveyConfig.authorize
                     .then(function () {
                         let query = new Kinvey.Query();
                         query.equalTo('_acl.creator', $rootScope.selectedUserProxy._id);
+
                         let promise = Kinvey.DataStore.find("pictures", query);
                         promise.then(function (pictures) {
                             console.log("pictures in view profile gallery");
@@ -147,7 +154,6 @@ angular.module('myApp.viewProfile', ['ngRoute'])
                         let promise = Kinvey.DataStore.get("pictures", $rootScope.selectedUserProxy.profile_picture);
                         promise.then(function (picture) {
                             $scope.userProfilePic = picture;
-
                             $scope.getGallery();
                         }, function (error) {
                             console.log(error);

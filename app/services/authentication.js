@@ -133,12 +133,26 @@ angular.module('myApp.authentication', [])
                 });
             }
 
+            function changeUserName(username) {
+                var user = $rootScope.currentUser;
+                user.username = username;
+                var promise = $kinvey.User.update(user);
+                promise.then(function (user) {
+                    console.log("Username changed")
+                    console.log(user);
+                }, function (err) {
+                    console.log("Error occured")
+                    console.log(err);
+                });
+            }
+
             return {
                 registerUser: registerUser,
                 loginUser: loginUser,
                 logout: logout,
                 changePassword: changePassword,
                 isLogged: isLogged,
-                changeFullName: changeFullName
+                changeFullName: changeFullName,
+                changeUserName: changeUserName
             }
         }]);

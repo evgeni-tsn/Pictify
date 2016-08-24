@@ -38,4 +38,8 @@ angular.module('myApp.settings', ['ngRoute'])
                 authentication.changeFullName(fullName);
             }
 
+            $scope.setUsername = function (userName) {
+                authentication.changeUserName(userName);
+            }
+
         }]);

@@ -1,20 +1,58 @@
-<h1>Change Password</h1>
-<h1>TODO: MAKE VALIDATION</h1>
-<p>Old Password</p>
-<input ng-model="passwordDetails.oldPassword" type="text"><br>
-<p>New Password</p>
-<input ng-model="passwordDetails.newPassword" type="text"><br>
-<p>Repeat New Password</p>
-<input ng-model="passwordDetails.repeatNewPassword" type="text">
-
-<input type="submit" ng-click="changePassword(passwordDetails)">
-<span ng-show="IsMatch">Passwords have to match!</span>
-<hr>
-
-<h1>Change Fullname</h1>
-<h1>TODO: MAKE VALIDATION</h1>
-<p>New Name</p>
-<input ng-model="fullname" type="text">
-
-<input type="submit" ng-click="setFullname(fullname)">
+<div class="container">
+    <div class="wrapper">
+        <div class="col-md-4">
+            <form name="changePasswordForm" class="form-change-password" novalidate>
+                <h2 class="form-signin-heading">Change Password</h2>
+                <hr class="colorgraph">
+                <input type="password" class="form-control no-border-radius" id="oldPassword"
+                       ng-model="passwordDetails.oldPassword"
+                       placeholder="Old Password" required="required" autofocus=""/>
+                <input type="password" class="form-control no-border-radius" id="newPassword"
+                       ng-model="passwordDetails.newPassword"
+                       placeholder="New Password" required="required"/>
+                <input type="password" class="form-control no-border-radius after-input" id="newPasswordAgain"
+                       ng-model="passwordDetails.repeatNewPassword"
+                       placeholder="New Password Again" required="required"/>
+                <div class="text-center">
+                    <button class="btn btn-lg btn-primary " ng-disabled="changePasswordForm.$invalid"
+                            ng-click="changePassword(passwordDetails)"
+                            value="ChangePassword">Change Password
+                    </button>
+                    <br>
+                    <span ng-show="IsMatch">Passwords have to match!</span>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-4">
+            <form name="changeUsername" class="form-change-username" novalidate>
+                <h2 class="form-signin-heading">Change Username</h2>
+                <hr class="colorgraph">
+                <input type="text" class="form-control no-border-radius after-input" id="newUsername"
+                       ng-model="username"
+                       placeholder="New Username" required="required"/>
+                <div class="text-center">
+                    <button class="btn btn-lg btn-primary " ng-disabled="changeUsername.$invalid"
+                            ng-click="setUsername(username)"
+                            value="ChangeUsername">Change Username
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-4">
+            <form name="changeFullname" class="form-change-fullname" novalidate>
+                <h2 class="form-signin-heading">Change Fullname</h2>
+                <hr class="colorgraph">
+                <input type="text" class="form-control no-border-radius after-input" id="newFullname"
+                       ng-model="fullname"
+                       placeholder="New Fullname" required="required"/>
+                <div class="text-center">
+                    <button class="btn btn-lg btn-primary " ng-disabled="changeFullname.$invalid"
+                            ng-click="setFullname(fullname)"
+                            value="ChangeUsername">Change Fullname
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
