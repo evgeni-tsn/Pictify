@@ -51,13 +51,24 @@ app.controller('MainCtrl', ['$rootScope', '$scope', '$route', '$location', '$sce
 
             $rootScope.initialized = true;
 
-            let promise = Kinvey.DataStore.get("pictures", $rootScope.currentUser.profile_picture);
-            promise.then(function (picture) {
-                console.log(picture);
-                $rootScope.profPic = picture;
+            // old way of fetching profile picture
+            //     let promise = Kinvey.DataStore.get("pictures", $rootScope.currentUser.profile_picture);
+            //     promise.then(function (picture) {
+            //         console.log(picture);
+            //         $rootScope.profPic = picture;
+            //     }, function (error) {
+            //         console.log(error);
+            // });
+
+            Kinvey.User.get($rootScope.currentUser._id, {
+                relations: {profilePicture: "pictures"}
+            })
+            .then(function (user) {
+                console.log("fetched current user with embedded profile picture");
+                $rootScope.currentUser = user;
             }, function (error) {
-                console.log(error)
-        });
+                console.log(error);
+            });
     });
 
     $scope.logout = function () {
@@ -72,14 +83,14 @@ app.controller('MainCtrl', ['$rootScope', '$scope', '$route', '$location', '$sce
             let regex = "^" + typed + ".*$";
 
             let query = new Kinvey.Query();
-            query.matches("username", regex).or().matches('fullname', regex);
+            query.matches("username", regex).limit(15)
+                .or(new Kinvey.Query().matches('fullname', regex).limit(15));
 
-
-            return Kinvey.User.find(query).then(function (users) {
+            return Kinvey.User.find(query, {
+                relations: {profilePicture: "pictures"}
+                })
+                .then(function (users) {
                     console.log(users);
-                    for (let user of users) {
-                        user.displayName = $sce.trustAsHtml(user.fullname + '<br/>' + '(' + user.username + ')');
-                    }
                     return users;
                 }, function (error) {
                     console.log(error);

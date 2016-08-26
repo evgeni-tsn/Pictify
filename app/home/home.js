@@ -55,18 +55,11 @@ angular.module('myApp.home', ['ngRoute'])
                             query.equalTo("_id", {"$in":followedUsersIds});
                             console.log(query);
 
-                            Kinvey.User.find(query)
+                            Kinvey.User.find(query, {
+                                relations:{ profilePicture:"pictures" }
+                            })
                                 .then(function (followedUsers) {
                                     console.log(followedUsers);
-                                    for(let user of followedUsers) {
-                                        Kinvey.DataStore.get("pictures", user.profile_picture)
-                                            .then(function (picture) {
-                                               user.profilePicture = picture;
-                                               $scope.followedUsers.push(user);
-                                            }, function (error) {
-                                                console.log(error);
-                                            });
-                                    }
                                 }, function (error) {
                                    console.log(error);
                                 });
