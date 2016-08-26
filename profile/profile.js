@@ -322,6 +322,9 @@ angular.module('myApp.profile', ['ngRoute'])
 
             let init = function () {
                 kinveyConfig.authorize.then(function () {
+                    Kinvey.User.get($rootScope.currentUser._id, {
+                        relations: {profilePicture: "pictures"}
+                    });
                     let promise = Kinvey.DataStore.get("pictures", $rootScope.currentUser.profile_picture);
                     promise.then(function (pic) {
                         $rootScope.profPic = pic;

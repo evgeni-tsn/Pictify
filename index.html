@@ -62,7 +62,9 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
+
             <a class="navbar-brand" href="#/">Pictify</a>
+
             <input id="searchBox"
                    class="form-control navbar-form"
                    type="text"
@@ -70,9 +72,11 @@
                    ng-show="currentUser"
                    placeholder="search"
                    title="None"
-                   uib-typeahead="user as user.displayName for user in searchUsers($viewValue)"
+                   uib-typeahead="user as '' for user in searchUsers($viewValue)"
+                   typeahead-template-url="typeaheadTemplate.html"
                    typeahead-editable="false"
                    typeahead-on-select="onSelect(); selectedUser = ''"/>
+
         </div>
         <span class="nav-divider"></span>
         <div class="collapse navbar-collapse navbar-right headerGroup" id="bs-example-navbar-collapse-2">
@@ -81,7 +85,10 @@
                 <li ng-show="currentUser" ng-class="{active: $route.current.activetab == 'profile'}">
                     <a href="#/profile">
                         <div>
-                            <img id="profileThumbnail" class="img-responsive" ng-src="{{profPic.image._downloadURL}}">
+                            <img id="profileThumbnail" class="img-responsive" ng-src="{{currentUser
+                                                                                        .profilePicture
+                                                                                        .image
+                                                                                        ._downloadURL}}">
                         </div>
                         <div>
                             <span>{{currentUser.fullname}}</span><br>
@@ -135,6 +142,42 @@
 <script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
 <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+
+
+<script type="text/ng-template" id="typeaheadTemplate.html">
+    <a>
+        <div class="searchResultWrapper">
+            <img ng-src={{match.model.profilePicture.image._downloadURL}}
+                 class="searchResultImage">
+            <div class="searchResultText">
+                <span ng-bind-html="match.model.fullname | uibTypeaheadHighlight:query"></span>
+                <br>
+                (<span ng-bind-html="match.model.username | uibTypeaheadHighlight:query"></span>)
+            </div>
+        </div>
+    </a>
+
+    <style>
+        .searchResultImage {
+            float: left;
+            width: 40px;
+            height: 40px;
+            margin-right: 15px;
+        }
+
+        .searchResultWrapper {
+            display: inline-block;
+        }
+
+        .dropdown-menu {
+            width: 33%;
+        }
+
+        .dropdown-menu li {
+            margin: 10px;
+        }
+    </style>
+</script>
 
 
 <script src="app.js"></script>
