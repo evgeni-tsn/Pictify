@@ -42,6 +42,7 @@ angular.module('myApp.authentication', [])
                                 });
 
                             Kinvey.User.update(user, {
+                                exclude: ['profilePicture'],
                                 relations: {profilePicture: "pictures"}
                             });
                             // // $route.reload();

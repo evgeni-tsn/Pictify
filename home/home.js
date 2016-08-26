@@ -59,7 +59,7 @@ angular.module('myApp.home', ['ngRoute'])
                                 relations:{ profilePicture:"pictures" }
                             })
                                 .then(function (followedUsers) {
-                                    console.log(followedUsers);
+                                    $scope.followedUsers = followedUsers;
                                 }, function (error) {
                                    console.log(error);
                                 });

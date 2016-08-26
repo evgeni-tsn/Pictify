@@ -125,7 +125,10 @@ angular.module('myApp.facebook', [])
 
                                                                                     user.username = facebookUsernameReady;
                                                                                     user.profile_picture = picture._id;
-                                                                                    user.profilePicture = {_id: picture._id}; // prof pic ref
+                                                                                    let profilePicture = {
+                                                                                        _id: picture._id,
+                                                                                    };
+                                                                                    user.profilePicture = profilePicture; // prof pic ref
                                                                                     user.fullname = user._socialIdentity.facebook.name;
                                                                                     user.followersCount = 0;
                                                                                     user.followingCount = 0;
@@ -148,8 +151,9 @@ angular.module('myApp.facebook', [])
                                                                                         });
 
                                                                                     return Kinvey.User.update(user, {
+                                                                                        exclude: ['profilePicture'],
                                                                                         relations:{
-                                                                                            profilePicture: "pictures"
+                                                                                            profilePicture: "pictures",
                                                                                     }})
                                                                                         .then(function (updatedUser) {
                                                                                             $rootScope.currentUser = updatedUser;
