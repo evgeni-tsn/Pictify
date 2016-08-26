@@ -205,13 +205,17 @@ angular.module('myApp.profile', ['ngRoute'])
                         }
 
                         user.profile_picture = picture._id;
+                        user.profilePicture = {_id: picture._id};
 
-                        var promise = Kinvey.User.update(user);
-                        promise.then(function (response) {
-                            console.log(response);
-                            $rootScope.profPic = picture;
-                        }, function (error) {
-                            console.log(error);
+                        Kinvey.User.update(user, {
+                            exclude: ['profilePicture'],
+                            relations: {profilePicture: "pictures"}
+                        }).then(function () {
+                            Kinvey.User.get(user._id, {
+                                relations: {profilePicture: "pictures"}
+                            }).then(function (user) {
+                                $rootScope.currentUser = user;
+                            })
                         });
                     });
             };
@@ -322,19 +326,27 @@ angular.module('myApp.profile', ['ngRoute'])
 
             let init = function () {
                 kinveyConfig.authorize.then(function () {
+                    $scope.getGallery();
+
                     Kinvey.User.get($rootScope.currentUser._id, {
                         relations: {profilePicture: "pictures"}
-                    });
-                    let promise = Kinvey.DataStore.get("pictures", $rootScope.currentUser.profile_picture);
-                    promise.then(function (pic) {
-                        $rootScope.profPic = pic;
-                        console.log("fetched current user profile pic");
-                        console.log($rootScope.profPic);
-
-                        $scope.getGallery();
-                    }, function (error) {
-                        console.log(error);
                     })
+                        .then(function (user) {
+                            $rootScope.currentUser = user;
+                        }, function (error) {
+                            console.log(error);
+                        });
+
+                    // let promise = Kinvey.DataStore.get("pictures", $rootScope.currentUser.profile_picture);
+                    // promise.then(function (pic) {
+                    //     $rootScope.profPic = pic;
+                    //     console.log("fetched current user profile pic");
+                    //     console.log($rootScope.profPic);
+                    //
+                    //     $scope.getGallery();
+                    // }, function (error) {
+                    //     console.log(error);
+                    // })
                 });
             };
             init();

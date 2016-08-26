@@ -39,6 +39,7 @@ app.constant('kinveyConfig', {
 app.controller('MainCtrl', ['$rootScope', '$scope', '$route', '$location', '$sce', 'kinveyConfig', 'authentication',
     function ($rootScope, $scope, $route, $location, $sce, kinveyConfig, authentication) {
         $scope.$route = $route;
+        $rootScope.selectedUserProxy = null;
 
         kinveyConfig.authorize
         .then(function () {
@@ -98,8 +99,6 @@ app.controller('MainCtrl', ['$rootScope', '$scope', '$route', '$location', '$sce
             )
         })
     };
-
-    $rootScope.selectedUserProxy = null;
 
     $scope.onSelect = function () {
         $rootScope.selectedUserProxy = $scope.selectedUser;
