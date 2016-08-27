@@ -118,6 +118,7 @@ angular.module('myApp.viewProfile', ['ngRoute'])
                 let promise = Kinvey.DataStore.update("pictures", picture);
                 promise.then(function (response) {
                     console.log(response);
+                    $scope.commentBoxText = '';
                 }, function (error) {
                     console.log(error);
                 })

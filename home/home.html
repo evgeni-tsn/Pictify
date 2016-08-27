@@ -33,12 +33,31 @@
 
     .profileDataTextWrapper > span {
         color: lightgrey;
+        cursor: pointer;
+    }
+
+    .profileDataTextWrapper > span:hover {
+        color: darkgrey;
+    }
+
+    .feedCaption {
+        border-bottom: 2px;
+        width: 100%;
+        font-size: 1.5em
+    }
+
+    .contentSection {
+        width: 100%;
     }
 
     .newsFeedProfilePic {
-        width: 60px;
-        height: 60px;
+        width: 6.5vw;
+        height: 6.5vw;
+        min-height: 45px;
+        min-width: 45px;
         float: left;
+        border-radius: 50%;
+        margin-right: 15px;
     }
     
     .newsFeedProfilePic:hover {
@@ -75,6 +94,10 @@
         color: limegreen;
     }
 
+    .like:nth-child(2) {
+        margin-right: 5%;
+    }
+
     .dislike {
         color: palevioletred;
     }
@@ -82,7 +105,6 @@
     .socialBox {
         margin: 5px;
     }
-
 </style>
 
 <style>
@@ -99,8 +121,36 @@
 </style>
 
 <style>
+    .followersModalHeader div {
+        border-bottom: 2px;
+    }
+
+    .followersModalBody img, span {
+        cursor: pointer;
+    }
+
+    .followersModalBody img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .followersModalBody span {
+        color: grey;
+    }
+
+    .followersModalBody > div > div {
+        margin: 15px;
+    }
+
+    .followersModalBody {
+        margin-left: 2px;
+    }
+</style>
+
+<style>
     .imgWrap {
         position: relative;
+        cursor: pointer;
     }
 
     .imgWrap > a {
@@ -135,6 +185,10 @@
         visibility: visible;
         opacity: 0.7;
     }
+
+    div.comments {
+        margin-top: 5px;
+    }
 </style>
 
 <div id="newsFeedContainer">
@@ -143,21 +197,22 @@
             <div class="profileDataHolder panel panel-heading">
                 <img ng-src={{feed.user.profilePicture.image._downloadURL}}
                      ng-click="viewProfile(feed.user)"
-                     class="img-thumbnail newsFeedProfilePic">
+                     class="img-responsive newsFeedProfilePic">
 
                 <div class="profileDataTextWrapper">
                     <a ng-click="viewProfile(feed.user)">
-                        {{feed.user.username}}
+                        {{feed.user.username}} ({{feed.user.fullname}})
                     </a>
                     <br>
                     <span ng-click="showFollowers(feed.user)"
-                          style="cursor: pointer">
+                          data-toggle="modal"
+                          data-target="#followersModal">
                         {{feed.user.followersCount}} followers
                     </span>
                 </div>
             </div>
             <div class="panel panel-content contentSection">
-                <div style="color: darkgreen; width: 100%; font-size: 1.5em">
+                <div class="feedCaption">
                     {{feed.picture.caption}}
                 </div>
                 <br>
@@ -183,15 +238,47 @@
                 <span ng-click="vote(feed.picture, 'like')"
                       class="glyphicon glyphicon-hand-up votes like">
                 </span>
-                <span>Likes {{feed.picture.votes.likes.length}}</span>
+                <span class="like">{{feed.picture.votes.likes.length}}</span>
                 <span   ng-click="vote(feed.picture, 'dislike')"
                         class="glyphicon glyphicon-hand-down votes dislike">
                 </span>
-                <span>Dislikes {{feed.picture.votes.dislikes.length}}</span>
-                <span ng-repeat="comment in feed.picture.comments">
-                    <br>
+                <span class="dislike">{{feed.picture.votes.dislikes.length}}</span>
+                <div ng-repeat="comment in feed.picture.comments" class="comments">
                     {{comment.username}}: {{comment.content}}
-                </span>
+                </div>
+                <textarea title=""
+                          class="form-control comment" rows="2"
+                          id="{{'newsFeedCommentBox'+$index}}"></textarea>
+                <button class="btn btn-info"
+                        ng-click="comment(feed.picture, 'newsFeedCommentBox' + $index)">
+                    Submit
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade imageModal" id="followersModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="cleanFollowers()">&times;</button>
+                <div class="followersModalHeader">
+                    <span>
+                        Followers
+                    </span>
+                </div>
+            </div>
+            <div class="followersModalBody">
+                <div ng-repeat="follower in selectedUserFollowers">
+                    <div>
+                        <img ng-src="{{follower.profilePicture.image._downloadURL}}">
+                        <span ng-click="viewProfile(follower)">
+                            {{follower.fullname}}
+                            </span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

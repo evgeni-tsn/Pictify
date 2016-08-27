@@ -88,7 +88,13 @@ angular.module('myApp.home', ['ngRoute'])
                 }
             };
 
-            $scope.comment = function (picture, text) {
+            $scope.comment = function (picture, commentBoxId) {
+                let text = document.getElementById(commentBoxId).value;
+                document.getElementById(commentBoxId).value = '';
+                if (text === null || text.match(/^\s*$/) !== null) {
+                    return;
+                }
+
                 picture.comments.push({
                     userId: $rootScope.currentUser._id,
                     username: $rootScope.currentUser.username,
@@ -102,6 +108,38 @@ angular.module('myApp.home', ['ngRoute'])
                 })
             };
 
+            $scope.showFollowers = function (user) {
+                kinveyConfig.authorize
+                    .then(function () {
+                         Kinvey.DataStore.get("socials", user._id)
+                             .then(function (social) {
+                                 let followersIds = [];
+
+                                 for (let followerId in social.followers) {
+                                     followersIds.push(followerId);
+                                 }
+
+                                 let query = new Kinvey.Query();
+                                 query.equalTo("_id", {"$in": followersIds}).limit(20);
+
+                                 Kinvey.User.find(query, {
+                                     relations: {profilePicture: "pictures"}
+                                 })
+                                     .then(function (users) {
+                                        $scope.selectedUserFollowers = users;
+                                     }, function (error) {
+                                         console.log(error);
+                                     })
+                             }, function (error) {
+                                 console.log(error);
+                             })
+                    })
+            };
+
+            $scope.cleanFollowers = function () {
+                $scope.selectedUserFollowers = [];
+            };
+
             let init = function () {
                 kinveyConfig.authorize.then(function () {
                     $rootScope.currentUser = Kinvey.getActiveUser();
@@ -111,7 +149,7 @@ angular.module('myApp.home', ['ngRoute'])
                             console.log(response);
                             console.log(response.following);
                             $scope.followedUsers = [];
-                            var followedUsersIds = [];
+                            let followedUsersIds = [];
 
                             for (var id in response.following) {
                                 let idProxy = id;
