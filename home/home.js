@@ -21,8 +21,8 @@ angular.module('myApp.home', ['ngRoute', 'infinite-scroll'])
         });
     }])
 
-    .controller('HomeCtrl', ['$rootScope', '$scope', 'kinveyConfig', '$location', '$route',
-        function ($rootScope, $scope, kinveyConfig, $location, $route) {
+    .controller('HomeCtrl', ['$rootScope', '$scope', '$kinvey', 'kinveyConfig', '$location', '$route',
+        function ($rootScope, $scope, $kinvey, kinveyConfig, $location, $route) {
 
             $scope.disableScroll = false;
 
@@ -83,7 +83,7 @@ angular.module('myApp.home', ['ngRoute', 'infinite-scroll'])
 
                     picture.votes.likes = likes;
                     picture.votes.dislikes = dislikes;
-                    Kinvey.DataStore.update("pictures", picture)
+                    $kinvey.DataStore.update("pictures", picture)
                         .then(function (response) {
                             console.log("liked picture");
                             console.log(response);
@@ -103,7 +103,7 @@ angular.module('myApp.home', ['ngRoute', 'infinite-scroll'])
                     username: $rootScope.currentUser.username,
                     content: text
                 });
-                let promise = Kinvey.DataStore.update("pictures", picture);
+                let promise = $kinvey.DataStore.update("pictures", picture);
                 promise.then(function (response) {
                     console.log(response);
                 }, function (error) {
@@ -114,7 +114,7 @@ angular.module('myApp.home', ['ngRoute', 'infinite-scroll'])
             $scope.showFollowers = function (user) {
                 kinveyConfig.authorize
                     .then(function () {
-                         Kinvey.DataStore.get("socials", user._id)
+                        $kinvey.DataStore.get("socials", user._id)
                              .then(function (social) {
                                  let followersIds = [];
 
@@ -122,10 +122,10 @@ angular.module('myApp.home', ['ngRoute', 'infinite-scroll'])
                                      followersIds.push(followerId);
                                  }
 
-                                 let query = new Kinvey.Query();
+                                 let query = new $kinvey.Query();
                                  query.equalTo("_id", {"$in": followersIds}).limit(20);
 
-                                 Kinvey.User.find(query, {
+                                 $kinvey.User.find(query, {
                                      relations: {profilePicture: "pictures"}
                                  })
                                      .then(function (users) {
@@ -150,13 +150,13 @@ angular.module('myApp.home', ['ngRoute', 'infinite-scroll'])
                           return;
                       }
 
-                      let query = new Kinvey.Query();
+                      let query = new $kinvey.Query();
                       query.equalTo("_acl.creator", {"$in": followedUsersIds})
                           .lessThan("_kmd.lmt", $scope.newsFeed[$scope.newsFeed.length - 1].picture._kmd.lmt)
                           .descending("_kmd.lmt")
                           .limit(10);
 
-                      Kinvey.DataStore.find('pictures', query)
+                      $kinvey.DataStore.find('pictures', query)
                           .then(function (pictures) {
 
                               if (pictures.length === 0) {
@@ -186,9 +186,9 @@ angular.module('myApp.home', ['ngRoute', 'infinite-scroll'])
 
             let init = function () {
                 kinveyConfig.authorize.then(function () {
-                    $rootScope.currentUser = Kinvey.getActiveUser();
+                    $rootScope.currentUser = $kinvey.getActiveUser();
 
-                    Kinvey.DataStore.get("socials", $rootScope.currentUser._id)
+                    $kinvey.DataStore.get("socials", $rootScope.currentUser._id)
                         .then(function (response) {
                             console.log(response);
                             console.log(response.following);
@@ -202,20 +202,20 @@ angular.module('myApp.home', ['ngRoute', 'infinite-scroll'])
 
                             console.log(followedUsersIds);
 
-                            let query = new Kinvey.Query();
+                            let query = new $kinvey.Query();
                             query.equalTo("_id", {"$in":followedUsersIds});
 
-                            Kinvey.User.find(query, {
+                            $kinvey.User.find(query, {
                                 relations:{ profilePicture:"pictures" }
                             })
                                 .then(function (followedUsers) {
                                     $scope.followedUsers = followedUsers;
 
-                                    let queryForFeed = new Kinvey.Query();
+                                    let queryForFeed = new $kinvey.Query();
                                     queryForFeed.equalTo('_acl.creator', {"$in": followedUsersIds})
                                         .descending("_kmd.lmt").limit(10);
 
-                                    Kinvey.DataStore.find("pictures", queryForFeed)
+                                    $kinvey.DataStore.find("pictures", queryForFeed)
                                         .then(function (pictures) {
                                             let newsFeed = [];
                                             for (var picture of pictures) {

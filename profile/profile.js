@@ -57,9 +57,9 @@ angular.module('myApp.profile', ['ngRoute'])
                             return;
                         }
 
-                        let query = new Kinvey.Query();
+                        let query = new $kinvey.Query();
                         query.equalTo('_acl.creator', user._id);
-                        let promise = Kinvey.DataStore.find("pictures", query);
+                        let promise = $kinvey.DataStore.find("pictures", query);
                         promise.then(function (pictures) {
                             console.log("fetched current user profile gallery");
                             console.log(pictures);
@@ -130,7 +130,7 @@ angular.module('myApp.profile', ['ngRoute'])
                             $scope.showCrop();
                         }
 
-                        Kinvey.File.upload(fileContent, {
+                        $kinvey.File.upload(fileContent, {
                             mimeType: fileContent.type,
                             size: fileContent.size,
                             _acl: {
@@ -145,7 +145,7 @@ angular.module('myApp.profile', ['ngRoute'])
                                 console.log(error);
                             })
                             .then(function (image) {
-                                return Kinvey.DataStore.save('pictures', {
+                                return $kinvey.DataStore.save('pictures', {
                                     image: {
                                         _type: 'KinveyFile',
                                         _id: image._id
@@ -207,11 +207,11 @@ angular.module('myApp.profile', ['ngRoute'])
                         user.profile_picture = picture._id;
                         user.profilePicture = {_id: picture._id};
 
-                        Kinvey.User.update(user, {
+                        $kinvey.User.update(user, {
                             exclude: ['profilePicture'],
                             relations: {profilePicture: "pictures"}
                         }).then(function () {
-                            Kinvey.User.get(user._id, {
+                            $kinvey.User.get(user._id, {
                                 relations: {profilePicture: "pictures"}
                             }).then(function (user) {
                                 $rootScope.currentUser = user;
@@ -231,7 +231,7 @@ angular.module('myApp.profile', ['ngRoute'])
             $scope.deletePic = function (picture) {
                 kinveyConfig.authorize
                     .then(function () {
-                        $rootScope.currentUser = Kinvey.getActiveUser();
+                        $rootScope.currentUser = $kinvey.getActiveUser();
                         if (!$rootScope.currentUser) {
                             console.log("No active user");
                             return;
@@ -242,9 +242,9 @@ angular.module('myApp.profile', ['ngRoute'])
                             return;
                         }
 
-                        Kinvey.File.destroy(picture.image._id);
+                        $kinvey.File.destroy(picture.image._id);
 
-                        var promise = Kinvey.DataStore.destroy("pictures", picture._id);
+                        var promise = $kinvey.DataStore.destroy("pictures", picture._id);
                         promise.then(function (success) {
                             console.log(success);
                         }, function (error) {
@@ -297,7 +297,7 @@ angular.module('myApp.profile', ['ngRoute'])
 
                     picture.votes.likes = likes;
                     picture.votes.dislikes = dislikes;
-                    Kinvey.DataStore.update("pictures", picture)
+                    $kinvey.DataStore.update("pictures", picture)
                         .then(function (response) {
                             console.log("liked picture");
                             console.log(response);
@@ -311,7 +311,7 @@ angular.module('myApp.profile', ['ngRoute'])
                     username: $rootScope.currentUser.username,
                     content: text
                 });
-                let promise = Kinvey.DataStore.update("pictures", picture);
+                let promise = $kinvey.DataStore.update("pictures", picture);
                 promise.then(function (response) {
                     console.log(response);
                     $scope.commentBoxText = '';
@@ -322,7 +322,7 @@ angular.module('myApp.profile', ['ngRoute'])
 
             $scope.editCaption = function (picture, caption) {
                 picture.caption = caption;
-                Kinvey.DataStore.update("pictures", picture);
+                $kinvey.DataStore.update("pictures", picture);
                 $scope.editedCaption = '';
             };
 
@@ -330,7 +330,7 @@ angular.module('myApp.profile', ['ngRoute'])
                 kinveyConfig.authorize.then(function () {
                     $scope.getGallery();
 
-                    Kinvey.User.get($rootScope.currentUser._id, {
+                    $kinvey.User.get($rootScope.currentUser._id, {
                         relations: {profilePicture: "pictures"}
                     })
                         .then(function (user) {

@@ -37,14 +37,14 @@ app.constant('kinveyConfig', {
     })
 });
 
-app.controller('MainCtrl', ['$rootScope', '$scope', '$route', '$location', '$sce', 'kinveyConfig', 'authentication',
-    function ($rootScope, $scope, $route, $location, $sce, kinveyConfig, authentication) {
+app.controller('MainCtrl', ['$rootScope', '$scope', '$route', '$location', '$sce', '$kinvey', 'kinveyConfig', 'authentication',
+    function ($rootScope, $scope, $route, $location, $sce, $kinvey, kinveyConfig, authentication) {
         $scope.$route = $route;
         $rootScope.selectedUserProxy = null;
 
         kinveyConfig.authorize
         .then(function () {
-            $rootScope.currentUser = Kinvey.getActiveUser();
+            $rootScope.currentUser = $kinvey.getActiveUser();
             if (!$rootScope.currentUser) {
                 console.log('no active user during maincontroller init');
                 $location.path('/login');
@@ -62,7 +62,7 @@ app.controller('MainCtrl', ['$rootScope', '$scope', '$route', '$location', '$sce
             //         console.log(error);
             // });
 
-            Kinvey.User.get($rootScope.currentUser._id, {
+            $kinvey.User.get($rootScope.currentUser._id, {
                 relations: {profilePicture: "pictures"}
             })
             .then(function (user) {
@@ -84,11 +84,11 @@ app.controller('MainCtrl', ['$rootScope', '$scope', '$route', '$location', '$sce
             // Kinvey does not support ignore case regex due to performance issues
             let regex = "^" + typed + ".*$";
 
-            let query = new Kinvey.Query();
+            let query = new $kinvey.Query();
             query.matches("username", regex).limit(15)
-                .or(new Kinvey.Query().matches('fullname', regex).limit(15));
+                .or(new $kinvey.Query().matches('fullname', regex).limit(15));
 
-            return Kinvey.User.find(query, {
+            return $kinvey.User.find(query, {
                 relations: {profilePicture: "pictures"}
                 })
                 .then(function (users) {
