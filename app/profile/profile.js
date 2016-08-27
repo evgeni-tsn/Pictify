@@ -314,6 +314,7 @@ angular.module('myApp.profile', ['ngRoute'])
                 let promise = Kinvey.DataStore.update("pictures", picture);
                 promise.then(function (response) {
                     console.log(response);
+                    $scope.commentBoxText = '';
                 }, function (error) {
                     console.log(error);
                 })
@@ -322,6 +323,7 @@ angular.module('myApp.profile', ['ngRoute'])
             $scope.editCaption = function (picture, caption) {
                 picture.caption = caption;
                 Kinvey.DataStore.update("pictures", picture);
+                $scope.editedCaption = '';
             };
 
             let init = function () {
