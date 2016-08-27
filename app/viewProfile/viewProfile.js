@@ -33,16 +33,16 @@ angular.module('myApp.viewProfile', ['ngRoute'])
         // });
     }])
 
-    .controller("ViewProfileCtrl", ["$rootScope", "$scope", "kinveyConfig", '$routeParams', '$location',
-        function ($rootScope, $scope, kinveyConfig, $routeParams, $location) {
+    .controller("ViewProfileCtrl", ["$rootScope", "$scope", "kinveyConfig", '$kinvey', '$routeParams', '$location',
+        function ($rootScope, $scope, kinveyConfig, $kinvey, $routeParams, $location) {
             $scope.pageName = "Profile page of " + $rootScope.selectedUserProxy.username;
             $scope.getGallery = function () {
                 kinveyConfig.authorize
                     .then(function () {
-                        let query = new Kinvey.Query();
+                        let query = new $kinvey.Query();
                         query.equalTo('_acl.creator', $rootScope.selectedUserProxy._id);
 
-                        let promise = Kinvey.DataStore.find("pictures", query);
+                        let promise = $kinvey.DataStore.find("pictures", query);
                         promise.then(function (pictures) {
                             console.log("pictures in view profile gallery");
                             console.log(pictures);
@@ -101,7 +101,7 @@ angular.module('myApp.viewProfile', ['ngRoute'])
 
                     picture.votes.likes = likes;
                     picture.votes.dislikes = dislikes;
-                    Kinvey.DataStore.update("pictures", picture)
+                    $kinvey.DataStore.update("pictures", picture)
                         .then(function (response) {
                             console.log("liked picture");
                             console.log(response);
@@ -115,7 +115,7 @@ angular.module('myApp.viewProfile', ['ngRoute'])
                     username: $rootScope.currentUser.username,
                     content: text
                 });
-                let promise = Kinvey.DataStore.update("pictures", picture);
+                let promise = $kinvey.DataStore.update("pictures", picture);
                 promise.then(function (response) {
                     console.log(response);
                     $scope.commentBoxText = '';
@@ -125,7 +125,7 @@ angular.module('myApp.viewProfile', ['ngRoute'])
             };
 
             $scope.testDelete = function (picture) {
-                let promise = Kinvey.DataStore.destroy("pictures", picture._id);
+                let promise = $kinvey.DataStore.destroy("pictures", picture._id);
                 promise.then(function (success) {
                     console.log(success);
                 }, function (error) {
@@ -134,9 +134,9 @@ angular.module('myApp.viewProfile', ['ngRoute'])
             };
 
             $scope.follow = function () {
-                Kinvey.DataStore.get('socials', $rootScope.selectedUserProxy._id)
+                $kinvey.DataStore.get('socials', $rootScope.selectedUserProxy._id)
                     .then(function (social) {
-                        Kinvey.DataStore.save('socials', social)
+                        $kinvey.DataStore.save('socials', social)
                             .then(function (success) {
                                 console.log(success);
                             }, function (error) {
@@ -148,7 +148,7 @@ angular.module('myApp.viewProfile', ['ngRoute'])
             let init = function () {
                 kinveyConfig.authorize
                     .then(function () {
-                        let promise = Kinvey.DataStore.get("pictures", $rootScope.selectedUserProxy.profile_picture);
+                        let promise = $kinvey.DataStore.get("pictures", $rootScope.selectedUserProxy.profile_picture);
                         promise.then(function (picture) {
                             $scope.userProfilePic = picture;
                             $scope.getGallery();
@@ -156,7 +156,7 @@ angular.module('myApp.viewProfile', ['ngRoute'])
                             console.log(error);
                         });
 
-                        Kinvey.DataStore.get("socials", $rootScope.currentUser._id)
+                        $kinvey.DataStore.get("socials", $rootScope.currentUser._id)
                             .then(function (response) {
 
                             }, function (error) {

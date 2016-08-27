@@ -16,7 +16,7 @@ angular.module('myApp.authentication', [])
                         promise.then(function (user) {
                             console.log("Hello, your name is: " + user.username);
                             console.log(user);
-                            $rootScope.currentUser = Kinvey.getActiveUser();
+                            $rootScope.currentUser = $kinvey.getActiveUser();
 
                             let profilePicture = {
                                 _id: "57b62a7420a1306254c52f29",
@@ -34,14 +34,14 @@ angular.module('myApp.authentication', [])
                                 following: {}
                             };
 
-                            Kinvey.DataStore.save('socials', social)
+                            $kinvey.DataStore.save('socials', social)
                                 .then(function (success) {
                                     console.log(success);
                                 }, function (error) {
                                     console.log(error);
                                 });
 
-                            Kinvey.User.update(user, {
+                            $kinvey.User.update(user, {
                                 exclude: ['profilePicture'],
                                 relations: {profilePicture: "pictures"}
                             });
@@ -62,8 +62,8 @@ angular.module('myApp.authentication', [])
                         });
                         promise.then(function (user) {
                             console.log(user);
-                            $rootScope.currentUser = Kinvey.getActiveUser();
-                            let promise = Kinvey.DataStore.get("pictures", $rootScope.currentUser.profile_picture);
+                            $rootScope.currentUser = $kinvey.getActiveUser();
+                            let promise = $kinvey.DataStore.get("pictures", $rootScope.currentUser.profile_picture);
                             promise.then(function (pic) {
                                 console.log(pic);
                                 $rootScope.profPic = pic;
@@ -80,7 +80,7 @@ angular.module('myApp.authentication', [])
             function logout() {
                 kinveyConfig.authorize
                     .then(function () {
-                        $rootScope.currentUser = Kinvey.getActiveUser();
+                        $rootScope.currentUser = $kinvey.getActiveUser();
                         let user = $rootScope.currentUser;
                         if (user !== null) {
                             let promise = $kinvey.User.logout();

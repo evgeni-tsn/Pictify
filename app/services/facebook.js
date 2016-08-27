@@ -52,22 +52,22 @@ angular.module('myApp.facebook', [])
                         'access_token': authResponse.accessToken,
                         'expires_in': authResponse.expiresIn
                     };
-                    return Kinvey.User.loginWithProvider(provider, tokens).then(
+                    return $kinvey.User.loginWithProvider(provider, tokens).then(
                         function (success) {
                             console.log(success);
                             console.log("successful login with facebook");
 
-                            $rootScope.currentUser = Kinvey.getActiveUser();
+                            $rootScope.currentUser = $kinvey.getActiveUser();
                             console.log($rootScope.currentUser);
 
                             return $rootScope.currentUser;
 
                         }, function (err) {
                             // Attempt to signup as a new user if no user with the identity exists.
-                            if (Kinvey.Error.USER_NOT_FOUND === err.name) {
+                            if ($kinvey.Error.USER_NOT_FOUND === err.name) {
                                 console.log("first login with facebook -> registration procedure");
 
-                                return Kinvey.User.signupWithProvider(provider, tokens)
+                                return $kinvey.User.signupWithProvider(provider, tokens)
                                     .then(function (user) {
                                             return getProfilePicture(user._socialIdentity.facebook.id)
                                                 .then(function (imageData) {
@@ -82,7 +82,7 @@ angular.module('myApp.facebook', [])
                                                             let profImageBlob = response.data;
                                                             return kinveyConfig.authorize
                                                                 .then(function () {
-                                                                    return Kinvey.File.upload(profImageBlob, {
+                                                                    return $kinvey.File.upload(profImageBlob, {
                                                                         mimeType: profImageBlob.type,
                                                                         size: profImageBlob.size,
                                                                         _acl: {
@@ -99,7 +99,7 @@ angular.module('myApp.facebook', [])
                                                                         })
                                                                         .then(function (imageId) {
                                                                             // Open comments, likes and dislike for pic
-                                                                            return Kinvey.DataStore.save('pictures', {
+                                                                            return $kinvey.DataStore.save('pictures', {
                                                                                 image: {
                                                                                     _type: "KinveyFile",
                                                                                     _id: imageId
@@ -143,14 +143,14 @@ angular.module('myApp.facebook', [])
                                                                                         following: {}
                                                                                     };
 
-                                                                                    Kinvey.DataStore.save("socials", social)
+                                                                                    $kinvey.DataStore.save("socials", social)
                                                                                         .then(function (success) {
                                                                                             console.log(success);
                                                                                         }, function (error) {
                                                                                             console.log(error);
                                                                                         });
 
-                                                                                    return Kinvey.User.update(user, {
+                                                                                    return $kinvey.User.update(user, {
                                                                                         exclude: ['profilePicture'],
                                                                                         relations:{
                                                                                             profilePicture: "pictures",
@@ -177,7 +177,7 @@ angular.module('myApp.facebook', [])
                                         }
                                     );
                             }
-                            return Kinvey.Defer.reject(err);
+                            return $kinvey.Defer.reject(err);
                         });
                 })
                 .then(function (user) {
