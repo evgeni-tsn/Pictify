@@ -1,7 +1,6 @@
 'use strict';
 
-angular.module('myApp.home', ['ngRoute'])
-
+angular.module('myApp.home', ['ngRoute', 'infinite-scroll'])
     .config(['$routeProvider', function ($routeProvider) {
         var routeChecks = {
             authenticated: ['$q', '$location', '$rootScope', function ($q, $location, $rootScope) {
@@ -24,6 +23,10 @@ angular.module('myApp.home', ['ngRoute'])
 
     .controller('HomeCtrl', ['$rootScope', '$scope', 'kinveyConfig', '$location', '$route',
         function ($rootScope, $scope, kinveyConfig, $location, $route) {
+
+            $scope.disableScroll = false;
+
+            var followedUsersIds = [];
 
             $scope.viewProfile = function (user) {
                 console.log(user);
@@ -140,6 +143,47 @@ angular.module('myApp.home', ['ngRoute'])
                 $scope.selectedUserFollowers = [];
             };
 
+            $scope.loadMorePosts = function () {
+              kinveyConfig.authorize
+                  .then(function () {
+                      if (!$scope.newsFeed) {
+                          return;
+                      }
+
+                      let query = new Kinvey.Query();
+                      query.equalTo("_acl.creator", {"$in": followedUsersIds})
+                          .lessThan("_kmd.lmt", $scope.newsFeed[$scope.newsFeed.length - 1].picture._kmd.lmt)
+                          .descending("_kmd.lmt")
+                          .limit(10);
+
+                      Kinvey.DataStore.find('pictures', query)
+                          .then(function (pictures) {
+
+                              if (pictures.length === 0) {
+                                  $scope.disableScroll = true;
+                                  console.log("no more pictures posted from followed users");
+                                  return;
+                              }
+
+                              let newsFeed = [];
+                              for (var picture of pictures) {
+                                  for(var user of $scope.followedUsers) {
+                                      if (user._id === picture._acl.creator) {
+                                          newsFeed.push({picture: picture, user: user});
+                                          break;
+                                      }
+                                  }
+                              }
+
+                              for (var feed of newsFeed) {
+                                  $scope.newsFeed.push(feed);
+                              }
+                          }, function (error) {
+                              console.log(error);
+                          })
+                  });
+            };
+
             let init = function () {
                 kinveyConfig.authorize.then(function () {
                     $rootScope.currentUser = Kinvey.getActiveUser();
@@ -149,7 +193,6 @@ angular.module('myApp.home', ['ngRoute'])
                             console.log(response);
                             console.log(response.following);
                             $scope.followedUsers = [];
-                            let followedUsersIds = [];
 
                             for (var id in response.following) {
                                 let idProxy = id;
@@ -170,11 +213,10 @@ angular.module('myApp.home', ['ngRoute'])
 
                                     let queryForFeed = new Kinvey.Query();
                                     queryForFeed.equalTo('_acl.creator', {"$in": followedUsersIds})
-                                        .descending("_kmd.lmt").limit(20);
+                                        .descending("_kmd.lmt").limit(10);
 
                                     Kinvey.DataStore.find("pictures", queryForFeed)
                                         .then(function (pictures) {
-                                            console.log(pictures);
                                             let newsFeed = [];
                                             for (var picture of pictures) {
                                                 for(var user of $scope.followedUsers) {

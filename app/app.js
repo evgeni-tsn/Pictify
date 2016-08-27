@@ -17,7 +17,8 @@ var app = angular.module('myApp', [
     'angular.filter',
     'ngImgCrop',
     'myApp.facebook',
-    'ngSanitize'
+    'ngSanitize',
+    'infinite-scroll'
 ]);
 
 app.config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
@@ -106,3 +107,5 @@ app.controller('MainCtrl', ['$rootScope', '$scope', '$route', '$location', '$sce
         $route.reload();
     }
 }]);
+
+angular.module('infinite-scroll').value('THROTTLE_MILLISECONDS', 1000);
