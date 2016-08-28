@@ -2,23 +2,23 @@
 
 angular.module('myApp.viewProfile', ['ngRoute'])
 
-    .config(['$routeProvider', function ($routeProvider) {
+    .config(['$routeProvider' , function ($routeProvider) {
         var routeChecks = {
             authenticated: ['$q', '$location', '$rootScope', function ($q, $location, $rootScope) {
                 if (localStorage.getItem("Kinvey.kid_BkwgJlt_.activeUser")
                     || $rootScope.currentUser) {
-                    if ($rootScope.selectedUserProxy) {
+                    // if ($rootScope.selectedUserProxy) {
                         return $q.when(true);
-                    } else {
-                        return $q.reject($location.path('/'));
-                    }
+                    // } else {
+                    //     return $q.reject($location.path('/'));
+                    // }
                 }
 
                 return $q.reject($location.path('/login/'));
             }]
         };
 
-        $routeProvider.when('/viewProfile', {
+        $routeProvider.when('/view/:username', {
             templateUrl: 'viewProfile/viewProfile.html',
             controller: 'ViewProfileCtrl',
             activetab: 'viewProfile',
@@ -35,12 +35,11 @@ angular.module('myApp.viewProfile', ['ngRoute'])
 
     .controller("ViewProfileCtrl", ["$rootScope", "$scope", "kinveyConfig", '$kinvey', '$routeParams', '$location', '$route',
         function ($rootScope, $scope, kinveyConfig, $kinvey, $routeParams, $location, $route) {
-            $scope.pageName = "Profile page of " + $rootScope.selectedUserProxy.username;
             $scope.getGallery = function () {
                 kinveyConfig.authorize
                     .then(function () {
                         let query = new $kinvey.Query();
-                        query.equalTo('_acl.creator', $rootScope.selectedUserProxy._id);
+                        query.equalTo('_acl.creator', $scope.selectedUserProxy._id);
 
                         let promise = $kinvey.DataStore.find("pictures", query);
                         promise.then(function (pictures) {
@@ -214,29 +213,31 @@ angular.module('myApp.viewProfile', ['ngRoute'])
             };
 
             $scope.viewProfile = function (user) {
-                console.log(user);
-                $rootScope.selectedUserProxy = user;
-                $rootScope.selectedUserProxy.profile_picture = user.profilePicture._id;
-                $route.reload();
-                $location.path('/viewProfile');
+                $location.path('/view/' + user.username);
             };
 
             let init = function () {
                 kinveyConfig.authorize
                     .then(function () {
-                        let promise = $kinvey.DataStore.get("pictures", $rootScope.selectedUserProxy.profile_picture);
-                        promise.then(function (picture) {
+                        console.log($routeParams.username);
+                        let query = new $kinvey.Query();
+                        query.equalTo('username', $routeParams.username).limit(1);
+
+                        $kinvey.User.find(query, {
+                            relations: {profilePicture: "pictures"}
+                        }).then(function (userArr) {
+                            let user = userArr[0];
+
+                            if(!user) {
+                                $scope.pageName = "User " + $routeParams.username + " does not exist";
+                                return;
+                            }
+                            $scope.selectedUserProxy = user;
+                            $scope.pageName = "Profile page of " + user.username;
                             $scope.getGallery();
                         }, function (error) {
                             console.log(error);
-                        });
-
-                        $kinvey.DataStore.get("socials", $rootScope.currentUser._id)
-                            .then(function (response) {
-
-                            }, function (error) {
-
-                            })
+                        })
                     });
             };
 

@@ -141,6 +141,11 @@
         flex-direction: column;
     }
 
+    .pageDescription {
+        width: 100%;
+        font-size: 1.8em;
+        color: grey;
+    }
 </style>
 
 <style>
@@ -169,6 +174,14 @@
         margin-left: 2px;
     }
 </style>
+
+<div class="pageDescription">
+    <p>
+        {{pageName}}
+    </p>
+</div>
+
+<div ng-show="selectedUserProxy">
 
 <button ng-click="follow()" class="btn btn-primary btn-lg">Follow</button>
 
@@ -329,3 +342,5 @@
     </div>
 </div>
 <!--END Followers Modal-->
+
+</div>
