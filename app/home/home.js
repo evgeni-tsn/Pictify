@@ -70,24 +70,27 @@ angular.module('myApp.home', ['ngRoute', 'infinite-scroll'])
 
                 if (canVote) {
                     if (vote === "like") {
-                        likes.push({
-                            userId: $rootScope.currentUser._id,
-                            username: $rootScope.currentUser.username
-                        });
-                    } else if (vote === "dislike") {
-                        dislikes.push({
-                            userId: $rootScope.currentUser._id,
-                            username: $rootScope.currentUser.username
+                        $kinvey.DataStore.update("pictures", {
+                            _id: picture._id,
+                            like: true
                         })
-                    }
+                            .then(function (response) {
+                                console.log("liked picture");
+                                console.log(response);
+                                picture.votes.likes.push(response);
 
-                    picture.votes.likes = likes;
-                    picture.votes.dislikes = dislikes;
-                    $kinvey.DataStore.update("pictures", picture)
-                        .then(function (response) {
-                            console.log("liked picture");
-                            console.log(response);
+                            })
+                    } else if (vote === "dislike") {
+                        $kinvey.DataStore.update("pictures", {
+                            _id: picture._id,
+                            dislike: true
                         })
+                            .then(function (response) {
+                                console.log("disliked picture");
+                                console.log(response);
+                                picture.votes.dislikes.push(response);
+                            })
+                    }
                 }
             };
 
@@ -98,14 +101,13 @@ angular.module('myApp.home', ['ngRoute', 'infinite-scroll'])
                     return;
                 }
 
-                picture.comments.push({
-                    userId: $rootScope.currentUser._id,
-                    username: $rootScope.currentUser.username,
+                let promise = $kinvey.DataStore.update("pictures", {
+                    _id: picture._id,
                     content: text
                 });
-                let promise = $kinvey.DataStore.update("pictures", picture);
                 promise.then(function (response) {
                     console.log(response);
+                    picture.comments.push(response);
                 }, function (error) {
                     console.log(error);
                 })

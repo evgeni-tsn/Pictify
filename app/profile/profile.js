@@ -284,37 +284,39 @@ angular.module('myApp.profile', ['ngRoute'])
 
                 if (canVote) {
                     if (vote === "like") {
-                        likes.push({
-                            userId: $rootScope.currentUser._id,
-                            username: $rootScope.currentUser.username
-                        });
-                    } else if (vote === "dislike") {
-                        dislikes.push({
-                            userId: $rootScope.currentUser._id,
-                            username: $rootScope.currentUser.username
+                        $kinvey.DataStore.update("pictures", {
+                            _id: picture._id,
+                            like: true
                         })
-                    }
+                            .then(function (response) {
+                                console.log("liked picture");
+                                console.log(response);
+                                picture.votes.likes.push(response);
 
-                    picture.votes.likes = likes;
-                    picture.votes.dislikes = dislikes;
-                    $kinvey.DataStore.update("pictures", picture)
-                        .then(function (response) {
-                            console.log("liked picture");
-                            console.log(response);
+                            })
+                    } else if (vote === "dislike") {
+                        $kinvey.DataStore.update("pictures", {
+                            _id: picture._id,
+                            dislike: true
                         })
+                            .then(function (response) {
+                                console.log("disliked picture");
+                                console.log(response);
+                                picture.votes.dislikes.push(response);
+                            })
+                    }
                 }
             };
 
             $scope.comment = function (picture, text) {
-                picture.comments.push({
-                    userId: $rootScope.currentUser._id,
-                    username: $rootScope.currentUser.username,
+                $scope.commentBoxText = '';
+                let promise = $kinvey.DataStore.update("pictures", {
+                    _id: picture._id,
                     content: text
                 });
-                let promise = $kinvey.DataStore.update("pictures", picture);
                 promise.then(function (response) {
                     console.log(response);
-                    $scope.commentBoxText = '';
+                    picture.comments.push(response);
                 }, function (error) {
                     console.log(error);
                 })
