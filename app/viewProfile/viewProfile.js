@@ -135,7 +135,7 @@ angular.module('myApp.viewProfile', ['ngRoute'])
             };
 
             $scope.follow = function () {
-                $kinvey.DataStore.get('socials', $rootScope.selectedUserProxy._id)
+                $kinvey.DataStore.get('socials', $scope.selectedUserProxy._id)
                     .then(function (social) {
                         $kinvey.DataStore.save('socials', social)
                             .then(function (success) {
