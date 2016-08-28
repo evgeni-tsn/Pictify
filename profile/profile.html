@@ -1,7 +1,7 @@
 <style>
     #userProfImg {
-        width: 10%;
-        height: 10%;
+        width: 15vh;
+        height: 15vh;
     }
 
     /*div.galContainer {*/
@@ -247,6 +247,7 @@
             <!--</div>-->
         </div>
     </div>
+</div>
     <!-- /.container -->
 
     <!--IMAGE MODAL-->
@@ -269,21 +270,17 @@
                         <span class="commentsToggler"
                               ng-click="showCommentBox = !showCommentBox">
                                     Comment</span>
+                        <div class="form-group" ng-show="showCommentBox || showComments">
 
-                            <div class="comments" ng-show="showComments"
-                                 ng-repeat="commentObj in selectedPicture.comments">
-                                <p>{{commentObj.username}}: {{commentObj.content}}</p>
-                            </div>
-                            <div class="form-group" ng-show="showCommentBox || showComments">
                         <div class="comments" ng-show="showComments"
                              ng-repeat="commentObj in selectedPicture.comments">
-                            {{commentObj.username}}: {{commentObj.content}}
+                            <p>{{commentObj.username}}: {{commentObj.content}}</p>
                         </div>
                         <div class="form-group" ng-show="showCommentBox || showComments">
-                <textarea title="Comment:"
-                          class="form-control comment" rows="1"
-                          ng-model="commentBoxText">
-                </textarea>
+                        <textarea title="Comment:"
+                                  class="form-control comment" rows="1"
+                                  ng-model="commentBoxText">
+                        </textarea>
                             <button class="btn btn-info"
                                     ng-click="comment(selectedPicture, commentBoxText)">
                                 Submit
@@ -329,6 +326,7 @@
             </div>
         </div>
     </div>
+</div>>
     <!--END IMAGE MODAL-->
 
     <!--Following Modal-->
@@ -386,7 +384,6 @@
         </div>
     </div>
     <!--END Followers Modal-->
-</div>
 
 
     <!--Following Modal-->
@@ -444,4 +441,3 @@
         </div>
     </div>
     <!--END Followers Modal-->
-</div>
