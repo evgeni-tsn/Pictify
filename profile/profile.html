@@ -5,15 +5,15 @@
     }
 
     /*div.galContainer {*/
-        /*position: relative;*/
-        /*overflow: hidden;*/
-        /*padding-bottom: 10%;*/
-        /*display: block;*/
+    /*position: relative;*/
+    /*overflow: hidden;*/
+    /*padding-bottom: 10%;*/
+    /*display: block;*/
     /*}*/
 
     div.galleryWrapper img {
         width: 100%;
-        height:100%;
+        height: 100%;
         max-height: 25vh;
         max-width: 100%;
         object-fit: contain;
@@ -23,7 +23,7 @@
     }
 
     /*div.galContainer > img:hover {*/
-        /*opacity: 0.7;*/
+    /*opacity: 0.7;*/
     /*}*/
 
     #modalImageContainter img {
@@ -81,9 +81,9 @@
 <style>
     .thumb {
         margin-bottom: 1.5%;
-        display:flex;
-        justify-content:center;
-        align-items:center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .thumbnail {
@@ -136,9 +136,37 @@
         display: flex;
         flex-wrap: wrap;
     }
+
     .row > [class*='col-'] {
         display: flex;
         flex-direction: column;
+    }
+</style>
+
+<style>
+    .followersModalHeader div, .followingModalHeader div {
+        border-bottom: 2px;
+    }
+
+    .followersModalBody img, span, .followingModalBody img {
+        cursor: pointer;
+    }
+
+    .followersModalBody img, .followingModalBody img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .followersModalBody span, .followingModalBody span {
+        color: grey;
+    }
+
+    .followersModalBody > div > div, .followingModalBody > div > div {
+        margin: 15px;
+    }
+
+    .followersModalBody, .followingModalBody {
+        margin-left: 2px;
     }
 </style>
 
@@ -167,112 +195,178 @@
 </div>
 <input type="button" value="Upload" ng-click="upload()" class="btn btn-danger btn-lg">
 
+<h2 ng-click="showFollowers(currentUser)" data-toggle="modal" data-target="#followersModal">
+    {{currentUser.followersCount}} followers
+</h2>
+
+<h2 ng-click="showFollowing(currentUser)" data-toggle="modal" data-target="#followingModal">
+    {{currentUser.followingCount}} following
+</h2>
+
 <!-- Gallery Content -->
 <div class="container">
     <div class="galleryWrapper">
         <h1 class="page-header">Gallery</h1>
         <div class="row">
             <!--<div ng-repeat="picture in pictures">-->
-                <!--<div class="clearfix" ng-if="$index % 4 == 0"></div>-->
-                <div ng-repeat="picture in pictures" class="col-lg-3 col-md-4 col-xs-6 thumb">
-                    <div class="imgWrap">
-                            <img class="img-responsive"
-                                 ng-src="{{picture.image._downloadURL}}">
+            <!--<div class="clearfix" ng-if="$index % 4 == 0"></div>-->
+            <div ng-repeat="picture in pictures" class="col-lg-3 col-md-4 col-xs-6 thumb">
+                <div class="imgWrap">
+                    <img class="img-responsive"
+                         ng-src="{{picture.image._downloadURL}}">
 
-                            <div class="imgDescription"
-                                 ng-click="selectPic(picture)"
-                                 data-toggle="modal"
-                                 data-target="#imageModal">
+                    <div class="imgDescription"
+                         ng-click="selectPic(picture)"
+                         data-toggle="modal"
+                         data-target="#imageModal">
 
                                 <span class="glyphicon glyphicon-hand-up votes like"
-                                ng-click="vote(picture, 'like')">
+                                      ng-click="vote(picture, 'like')">
                                 {{picture.votes.likes.length}}</span>
-                                <span class="glyphicon glyphicon-hand-down votes dislike"
-                                ng-click="vote(picture, 'dislike')">
+                        <span class="glyphicon glyphicon-hand-down votes dislike"
+                              ng-click="vote(picture, 'dislike')">
                                 {{picture.votes.dislikes.length}}</span>
-                                <span class="glyphicon glyphicon-comment commentsToggler">
+                        <span class="glyphicon glyphicon-comment commentsToggler">
                                 {{picture.comments.length}}</span>
-                            </div>
                     </div>
                 </div>
+            </div>
             <!--</div>-->
         </div>
     </div>
-        <!-- /.container -->
+    <!-- /.container -->
 
-        <div class="modal fade imageModal" id="imageModal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <div class="socialBox">
+    <!--IMAGE MODAL-->
+    <div class="modal fade imageModal" id="imageModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <div class="socialBox">
                             <span class="glyphicon glyphicon-hand-up votes like"
                                   ng-click="vote(selectedPicture, 'like')">
                                     {{selectedPicture.votes.likes.length}}</span>
-                            <span class="glyphicon glyphicon-hand-down votes dislike"
-                                  ng-click="vote(selectedPicture, 'dislike')">
+                        <span class="glyphicon glyphicon-hand-down votes dislike"
+                              ng-click="vote(selectedPicture, 'dislike')">
                                     {{selectedPicture.votes.dislikes.length}}</span>
-                            <span class="glyphicon glyphicon-comment commentsToggler"
-                                  ng-click="showComments = !showComments">
+                        <span class="glyphicon glyphicon-comment commentsToggler"
+                              ng-click="showComments = !showComments">
                                     {{selectedPicture.comments.length}}</span>
-                            <br>
-                            <span class="commentsToggler"
-                                  ng-click="showCommentBox = !showCommentBox">
+                        <br>
+                        <span class="commentsToggler"
+                              ng-click="showCommentBox = !showCommentBox">
                                     Comment</span>
 
-                            <div class="comments" ng-show="showComments"
-                                 ng-repeat="commentObj in selectedPicture.comments">
-                                {{commentObj.username}}: {{commentObj.content}}
-                            </div>
-                            <div class="form-group" ng-show="showCommentBox || showComments">
+                        <div class="comments" ng-show="showComments"
+                             ng-repeat="commentObj in selectedPicture.comments">
+                            {{commentObj.username}}: {{commentObj.content}}
+                        </div>
+                        <div class="form-group" ng-show="showCommentBox || showComments">
                 <textarea title="Comment:"
                           class="form-control comment" rows="1"
                           ng-model="commentBoxText">
                 </textarea>
-                                <button class="btn btn-info"
-                                        ng-click="comment(selectedPicture, commentBoxText)">
-                                    Submit
-                                </button>
-                            </div>
+                            <button class="btn btn-info"
+                                    ng-click="comment(selectedPicture, commentBoxText)">
+                                Submit
+                            </button>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
                         <textarea title="caption"
                                   class="form-control"
                                   ng-show="editingCaption"
                                   rows="3"
                                   ng-model="editedCaption">
                         </textarea>
-                                <h3 ng-click="editingCaption = !editingCaption"
-                                    ng-hide="editingCaption"
-                                    class="modal-title text-left"
-                                    id="modalImageCaption">
-                                    {{selectedPicture.caption}}
-                                </h3>
-                            </div>
-                            <div class="col-md-6">
-                                <button type="button" class="btn btn-warning btn-sm"
-                                        ng-click="deletePic(selectedPicture)"
-                                        id="deletePictureButton">
-                                    Delete
-                                </button>
-                                <button ng-click="editCaption(selectedPicture, editedCaption); editingCaption = !editingCaption"
-                                        class="btn btn-danger btn-sm">
-                                    Edit caption
-                                </button>
-                                <button type="button" class="btn btn-primary btn-sm"
-                                        ng-click="setProfilePic(selectedPicture)"
-                                        id="profilePictureSetter">
-                                    Set as profile picture
-                                </button>
-                            </div>
+                            <h3 ng-click="editingCaption = !editingCaption"
+                                ng-hide="editingCaption"
+                                class="modal-title text-left"
+                                id="modalImageCaption">
+                                {{selectedPicture.caption}}
+                            </h3>
+                        </div>
+                        <div class="col-md-6">
+                            <button type="button" class="btn btn-warning btn-sm"
+                                    ng-click="deletePic(selectedPicture)"
+                                    id="deletePictureButton">
+                                Delete
+                            </button>
+                            <button ng-click="editCaption(selectedPicture, editedCaption); editingCaption = !editingCaption"
+                                    class="btn btn-danger btn-sm">
+                                Edit caption
+                            </button>
+                            <button type="button" class="btn btn-primary btn-sm"
+                                    ng-click="setProfilePic(selectedPicture)"
+                                    id="profilePictureSetter">
+                                Set as profile picture
+                            </button>
                         </div>
                     </div>
-                    <div class="modal-body" id="modalImageContainter">
-                        <img ng-src="{{selectedPicture.image._downloadURL}}" alt="Wtf">
+                </div>
+                <div class="modal-body" id="modalImageContainter">
+                    <img ng-src="{{selectedPicture.image._downloadURL}}" alt="Wtf">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--END IMAGE MODAL-->
+
+    <!--Following Modal-->
+    <div class="modal fade imageModal" id="followingModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                            ng-click="cleanFollowing()">&times;</button>
+                    <div class="followingModalHeader">
+                    <span>
+                        Following
+                    </span>
+                    </div>
+                </div>
+                <div class="followingModalBody">
+                    <div ng-repeat="following in selectedUserFollowing">
+                        <div ng-click="viewProfile(following)" data-dismiss="modal">
+                            <img ng-src="{{following.profilePicture.image._downloadURL}}">
+                            <span>
+                            {{following.fullname}}
+                        </span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <!--END Following Modal-->
+
+    <!--Followers Modal-->
+    <div class="modal fade imageModal" id="followersModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                            ng-click="cleanFollowers()">&times;</button>
+                    <div class="followersModalHeader">
+                    <span>
+                        Followers
+                    </span>
+                    </div>
+                </div>
+                <div class="followersModalBody">
+                    <div ng-repeat="follower in selectedUserFollowers">
+                        <div ng-click="viewProfile(follower)" data-dismiss="modal">
+                            <img ng-src="{{follower.profilePicture.image._downloadURL}}">
+                            <span>
+                            {{follower.fullname}}
+                        </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--END Followers Modal-->
+</div>
 </div>
