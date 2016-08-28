@@ -205,10 +205,10 @@ angular.module('myApp.home', ['ngRoute', 'infinite-scroll'])
                             console.log(followedUsersIds);
 
                             let query = new $kinvey.Query();
-                            query.equalTo("_id", {"$in":followedUsersIds});
+                            query.equalTo("_id", {"$in": followedUsersIds});
 
                             $kinvey.User.find(query, {
-                                relations:{ profilePicture:"pictures" }
+                                relations: {profilePicture: "pictures"}
                             })
                                 .then(function (followedUsers) {
                                     $scope.followedUsers = followedUsers;
@@ -221,7 +221,7 @@ angular.module('myApp.home', ['ngRoute', 'infinite-scroll'])
                                         .then(function (pictures) {
                                             let newsFeed = [];
                                             for (var picture of pictures) {
-                                                for(var user of $scope.followedUsers) {
+                                                for (var user of $scope.followedUsers) {
                                                     if (user._id === picture._acl.creator) {
                                                         newsFeed.push({picture: picture, user: user});
                                                         break;
@@ -235,7 +235,7 @@ angular.module('myApp.home', ['ngRoute', 'infinite-scroll'])
                                             console.log(error);
                                         })
                                 }, function (error) {
-                                   console.log(error);
+                                    console.log(error);
                                 });
                         }, function (error) {
                             console.log(error);

@@ -59,7 +59,7 @@
         border-radius: 50%;
         margin-right: 15px;
     }
-    
+
     .newsFeedProfilePic:hover {
         cursor: pointer;
     }
@@ -284,11 +284,11 @@
             </div>
             <div class="followersModalBody">
                 <div ng-repeat="follower in selectedUserFollowers">
-                    <div>
+                    <div ng-click="viewProfile(follower)" data-dismiss="modal">
                         <img ng-src="{{follower.profilePicture.image._downloadURL}}">
-                        <span ng-click="viewProfile(follower)">
+                        <span>
                             {{follower.fullname}}
-                            </span>
+                        </span>
                     </div>
                 </div>
             </div>

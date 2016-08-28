@@ -130,6 +130,33 @@
 
 </style>
 
+<style>
+    .followersModalHeader div, .followingModalHeader div {
+        border-bottom: 2px;
+    }
+
+    .followersModalBody img, span, .followingModalBody img {
+        cursor: pointer;
+    }
+
+    .followersModalBody img, .followingModalBody img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .followersModalBody span, .followingModalBody span {
+        color: grey;
+    }
+
+    .followersModalBody > div > div, .followingModalBody > div > div {
+        margin: 15px;
+    }
+
+    .followersModalBody, .followingModalBody {
+        margin-left: 2px;
+    }
+</style>
+
 <button ng-click="follow()" class="btn btn-primary btn-lg">Follow</button>
 
 <div>
@@ -139,6 +166,13 @@
     <div class="col-md-6">
         <h2>{{selectedUserProxy.fullname}}</h2>
         <h2>{{selectedUserProxy.username}}</h2>
+        <h2 ng-click="showFollowers(selectedUserProxy)" data-toggle="modal" data-target="#followersModal">
+            {{selectedUserProxy.followersCount}} followers
+        </h2>
+
+        <h2 ng-click="showFollowing(selectedUserProxy)" data-toggle="modal" data-target="#followingModal">
+            {{selectedUserProxy.followingCount}} following
+        </h2>
     </div>
 </div>
 <div class="container">
@@ -170,6 +204,7 @@
     </div>
 </div>
 </div>
+
 
 <div class="modal fade imageModal" id="viewProfileModal">
     <div class="modal-dialog">
@@ -225,3 +260,59 @@
         </div>
     </div>
 </div>
+
+<!--Following Modal-->
+<div class="modal fade imageModal" id="followingModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                        ng-click="cleanFollowing()">&times;</button>
+                <div class="followingModalHeader">
+                    <span>
+                        Following
+                    </span>
+                </div>
+            </div>
+            <div class="followingModalBody">
+                <div ng-repeat="following in selectedUserFollowing">
+                    <div ng-click="viewProfile(following)" data-dismiss="modal">
+                        <img ng-src="{{following.profilePicture.image._downloadURL}}">
+                        <span>
+                            {{following.fullname}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--END Following Modal-->
+
+<!--Followers Modal-->
+<div class="modal fade imageModal" id="followersModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                        ng-click="cleanFollowers()">&times;</button>
+                <div class="followersModalHeader">
+                    <span>
+                        Followers
+                    </span>
+                </div>
+            </div>
+            <div class="followersModalBody">
+                <div ng-repeat="follower in selectedUserFollowers">
+                    <div ng-click="viewProfile(follower)" data-dismiss="modal">
+                        <img ng-src="{{follower.profilePicture.image._downloadURL}}">
+                        <span>
+                            {{follower.fullname}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--END Followers Modal-->

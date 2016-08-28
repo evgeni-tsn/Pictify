@@ -33,8 +33,8 @@ angular.module('myApp.viewProfile', ['ngRoute'])
         // });
     }])
 
-    .controller("ViewProfileCtrl", ["$rootScope", "$scope", "kinveyConfig", '$kinvey', '$routeParams', '$location',
-        function ($rootScope, $scope, kinveyConfig, $kinvey, $routeParams, $location) {
+    .controller("ViewProfileCtrl", ["$rootScope", "$scope", "kinveyConfig", '$kinvey', '$routeParams', '$location', '$route',
+        function ($rootScope, $scope, kinveyConfig, $kinvey, $routeParams, $location, $route) {
             $scope.pageName = "Profile page of " + $rootScope.selectedUserProxy.username;
             $scope.getGallery = function () {
                 kinveyConfig.authorize
@@ -145,6 +145,80 @@ angular.module('myApp.viewProfile', ['ngRoute'])
                                 console.log(error);
                             });
                     });
+            };
+
+            $scope.showFollowers = function (user) {
+                console.log(user);
+                kinveyConfig.authorize
+                    .then(function () {
+                        $kinvey.DataStore.get("socials", user._id)
+                            .then(function (social) {
+                                let followersIds = [];
+
+                                for (let followerId in social.followers) {
+                                    followersIds.push(followerId);
+                                }
+
+                                let query = new $kinvey.Query();
+                                query.equalTo("_id", {"$in": followersIds}).limit(20);
+
+                                $kinvey.User.find(query, {
+                                    relations: {profilePicture: "pictures"}
+                                })
+                                    .then(function (users) {
+                                        $scope.selectedUserFollowers = users;
+                                    }, function (error) {
+                                        console.log(error);
+                                    })
+                            }, function (error) {
+                                console.log(error);
+                            })
+                    })
+            };
+
+            $scope.showFollowing = function (user) {
+                console.log(user);
+                kinveyConfig.authorize
+                    .then(function () {
+                        $kinvey.DataStore.get("socials", user._id)
+                            .then(function (social) {
+                                let followersIds = [];
+
+                                for (let followerId in social.following) {
+                                    followersIds.push(followerId);
+                                }
+
+                                let query = new $kinvey.Query();
+                                query.equalTo("_id", {"$in": followersIds}).limit(20);
+
+                                $kinvey.User.find(query, {
+                                    relations: {profilePicture: "pictures"}
+                                })
+                                    .then(function (users) {
+                                        $scope.selectedUserFollowing = users;
+                                    }, function (error) {
+                                        console.log(error);
+                                    })
+                            }, function (error) {
+                                console.log(error);
+                            })
+                    })
+            };
+
+            $scope.cleanFollowers = function () {
+                $scope.selectedUserFollowers = [];
+            };
+
+            $scope.cleanFollowing = function () {
+                $scope.selectedUserFollowing = [];
+            };
+
+            $scope.viewProfile = function (user) {
+                console.log(user);
+                $rootScope.selectedUserProxy = user;
+                $rootScope.selectedUserProxy.profile_picture = user.profilePicture._id;
+                $route.reload();
+                $location.path('/viewProfile');
             };
 
             let init = function () {
