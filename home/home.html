@@ -198,6 +198,15 @@
 
     div.comments {
         margin-top: 5px;
+
+    }
+
+    .comments p {
+        word-wrap: break-word;
+        -moz-hyphens:auto;
+        -webkit-hyphens:auto;
+        -o-hyphens:auto;
+        hyphens:auto;
     }
 </style>
 
@@ -255,7 +264,7 @@
                     </span>
                     <span class="dislike">{{feed.picture.votes.dislikes.length}}</span>
                     <div ng-repeat="comment in feed.picture.comments" class="comments">
-                        {{comment.username}}: {{comment.content}}
+                        <p>{{comment.username}}: {{comment.content}}</p>
                     </div>
                     <textarea title=""
                               class="form-control comment" rows="2"
