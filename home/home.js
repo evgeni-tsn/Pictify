@@ -32,7 +32,7 @@ angular.module('myApp.home', ['ngRoute', 'infinite-scroll'])
                 console.log(user);
                 $rootScope.selectedUserProxy = user;
                 $rootScope.selectedUserProxy.profile_picture = user.profilePicture._id;
-                $location.path('/viewProfile');
+                $location.path('/view/' + user.username);
             };
 
             $scope.selectPic = function (picture) {
@@ -156,7 +156,7 @@ angular.module('myApp.home', ['ngRoute', 'infinite-scroll'])
                       query.equalTo("_acl.creator", {"$in": followedUsersIds})
                           .lessThan("_kmd.lmt", $scope.newsFeed[$scope.newsFeed.length - 1].picture._kmd.lmt)
                           .descending("_kmd.lmt")
-                          .limit(10);
+                          .limit(5);
 
                       $kinvey.DataStore.find('pictures', query)
                           .then(function (pictures) {
@@ -215,7 +215,7 @@ angular.module('myApp.home', ['ngRoute', 'infinite-scroll'])
 
                                     let queryForFeed = new $kinvey.Query();
                                     queryForFeed.equalTo('_acl.creator', {"$in": followedUsersIds})
-                                        .descending("_kmd.lmt").limit(10);
+                                        .descending("_kmd.lmt").limit(5);
 
                                     $kinvey.DataStore.find("pictures", queryForFeed)
                                         .then(function (pictures) {

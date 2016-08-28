@@ -394,7 +394,7 @@ angular.module('myApp.profile', ['ngRoute'])
                 console.log(user);
                 $rootScope.selectedUserProxy = user;
                 $rootScope.selectedUserProxy.profile_picture = user.profilePicture._id;
-                $location.path('/viewProfile');
+                $location.path('/view/' + user.username);
             };
 
             $scope.editCaption = function (picture, caption) {
