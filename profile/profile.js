@@ -14,7 +14,7 @@ angular.module('myApp.profile', ['ngRoute'])
             }]
         };
 
-        $routeProvider.when('/profile/', {
+        $routeProvider.when('/profile', {
             templateUrl: 'profile/profile.html',
             controller: 'ProfileCtrl',
             activetab: 'profile',
@@ -46,27 +46,75 @@ angular.module('myApp.profile', ['ngRoute'])
             $scope.imageForUpload = null;
             $scope.croppedImage = null;
             $scope.croppedImageBlob = null;
+            $scope.selectedAlbum = null;
+
+            $scope.saveNewAlbum = function (albumName) {
+                console.log(albumName);
+                kinveyConfig.authorize
+                    .then(function () {
+                        $kinvey.DataStore.save('albums', {
+                            name: albumName,
+                            _acl: {
+                                gr:true
+                            },
+                            pictures: []
+                        }).then(function (album) {
+                            console.log(album)
+                        }, function (error) {
+                            console.log(error);
+                        })
+                    })
+            };
 
             $scope.getGallery = function () {
                 'use strict';
                 kinveyConfig.authorize
                     .then(function () {
+                        $scope.albums = [];
+
                         let user = $rootScope.currentUser;
                         if (!user) {
                             console.log("No active user");
                             return;
                         }
 
-                        let query = new $kinvey.Query();
-                        query.equalTo('_acl.creator', user._id);
-                        let promise = $kinvey.DataStore.find("pictures", query);
-                        promise.then(function (pictures) {
-                            console.log("fetched current user profile gallery");
-                            console.log(pictures);
-                            $scope.pictures = pictures;
-                        }, function (error) {
-                            console.log(error)
-                        });
+                        if (!$scope.showAll) {
+                            let query = new $kinvey.Query();
+                            query.equalTo('_acl.creator', user._id)
+                                .descending('_kmd.lmt');
+                            let promise = $kinvey.DataStore.find("albums", query);
+                            promise.then(function (albums) {
+                                console.log(albums);
+
+                                for(var album of albums) {
+                                    let albumProxy = album;
+                                    let queryForPicsInAlbum = new $kinvey.Query();
+                                    queryForPicsInAlbum.equalTo('_id', {'$in': albumProxy.pictures})
+                                        .descending('_kmd.lmt');
+                                    $kinvey.DataStore.find('pictures', queryForPicsInAlbum)
+                                        .then(function (pictures) {
+                                            albumProxy.pictures = pictures;
+                                            console.log("fetched album " + albumProxy.name);
+                                            console.log(albumProxy.pictures);
+                                            $scope.albums.push(albumProxy);
+                                        });
+                                };
+                            }, function (error) {
+                                console.log(error)
+                            });
+                        } else {
+                            let query = new $kinvey.Query();
+                            query.equalTo('_acl.creator', user._id)
+                                .descending('_kmd.lmt');
+                            let promise = $kinvey.DataStore.find("pictures", query);
+                            promise.then(function (pictures) {
+                                console.log("fetched current user profile gallery");
+                                console.log(pictures);
+                                $scope.pictures = pictures;
+                            }, function (error) {
+                                console.log(error)
+                            });
+                        }
                     })
             };
 
@@ -163,7 +211,24 @@ angular.module('myApp.profile', ['ngRoute'])
                                 })
                                     .then(function (success) {
                                         console.log(success);
-                                        $scope.getGallery();
+                                        if ($scope.selectedAlbum) {
+                                            let tempPicsIds = [];
+                                            for (let picture of $scope.selectedAlbum.pictures) {
+                                                tempPicsIds.push(picture._id);
+                                            }
+
+                                            $scope.selectedAlbum.pictures = tempPicsIds;
+                                            $scope.selectedAlbum.pictures.push(success._id);
+
+                                            $kinvey.DataStore.save('albums', $scope.selectedAlbum)
+                                                .then(function (album) {
+                                                    console.log(album);
+                                                    $scope.getGallery();
+                                                    $scope.selectedAlbum = null;
+                                                }, function (error) {
+                                                    console.log(error);
+                                                })
+                                        }
                                     }, function (error) {
                                         console.log(error);
                                     })

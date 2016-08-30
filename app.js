@@ -18,7 +18,8 @@ var app = angular.module('myApp', [
     'ngImgCrop',
     'myApp.facebook',
     'ngSanitize',
-    'infinite-scroll'
+    'infinite-scroll',
+    'nya.bootstrap.select'
 ]);
 
 app.config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {

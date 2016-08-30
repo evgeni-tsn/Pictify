@@ -36,19 +36,54 @@ angular.module('myApp.viewProfile', ['ngRoute'])
     .controller("ViewProfileCtrl", ["$rootScope", "$scope", "kinveyConfig", '$kinvey', '$routeParams', '$location', '$route',
         function ($rootScope, $scope, kinveyConfig, $kinvey, $routeParams, $location, $route) {
             $scope.getGallery = function () {
+                'use strict';
                 kinveyConfig.authorize
                     .then(function () {
-                        let query = new $kinvey.Query();
-                        query.equalTo('_acl.creator', $scope.selectedUserProxy._id);
+                        $scope.albums = [];
 
-                        let promise = $kinvey.DataStore.find("pictures", query);
-                        promise.then(function (pictures) {
-                            console.log("pictures in view profile gallery");
-                            console.log(pictures);
-                            $scope.pictures = pictures;
-                        }, function (error) {
-                            console.log(error)
-                        })
+                        let user = $scope.selectedUserProxy;
+                        if (!user) {
+                            console.log("No active user");
+                            return;
+                        }
+
+                        if (!$scope.showAll) {
+                            let query = new $kinvey.Query();
+                            query.equalTo('_acl.creator', user._id)
+                                .descending('_kmd.lmt');
+                            let promise = $kinvey.DataStore.find("albums", query);
+                            promise.then(function (albums) {
+                                console.log(albums);
+
+                                for(var album of albums) {
+                                    let albumProxy = album;
+                                    let queryForPicsInAlbum = new $kinvey.Query();
+                                    queryForPicsInAlbum.equalTo('_id', {'$in': albumProxy.pictures})
+                                        .descending('_kmd.lmt');
+                                    $kinvey.DataStore.find('pictures', queryForPicsInAlbum)
+                                        .then(function (pictures) {
+                                            albumProxy.pictures = pictures;
+                                            console.log("fetched album " + albumProxy.name);
+                                            console.log(albumProxy.pictures);
+                                            $scope.albums.push(albumProxy);
+                                        });
+                                };
+                            }, function (error) {
+                                console.log(error)
+                            });
+                        } else {
+                            let query = new $kinvey.Query();
+                            query.equalTo('_acl.creator', user._id)
+                                .descending('_kmd.lmt');
+                            let promise = $kinvey.DataStore.find("pictures", query);
+                            promise.then(function (pictures) {
+                                console.log("fetched current user profile gallery");
+                                console.log(pictures);
+                                $scope.pictures = pictures;
+                            }, function (error) {
+                                console.log(error)
+                            });
+                        }
                     })
             };
 
