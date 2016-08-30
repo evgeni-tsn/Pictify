@@ -270,6 +270,10 @@
 <div>{{selectedAlbum.name}}</div>
 
 <input type="button" value="Upload" ng-click="upload()" class="btn btn-danger btn-lg">
+<div class="alert alert-warning fade in" ng-show="alertPictureLimitReached" ng-click="alertPictureLimitReached = false">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    You have reached the limit of <strong>30</strong> pictures on our cheap server.
+</div>
 
 <input type="button" value="Crop Image" ng-click="showCrop()" class="btn btn-danger btn-lg">
 <div ng-show="shouldCrop">
