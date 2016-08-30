@@ -80,8 +80,8 @@ angular.module('myApp.profile', ['ngRoute'])
 
                         if (!$scope.showAll) {
                             let query = new $kinvey.Query();
-                            query.equalTo('_acl.creator', user._id)
-                                .descending('_kmd.lmt');
+                            query.equalTo('_acl.creator', user._id);
+
                             let promise = $kinvey.DataStore.find("albums", query);
                             promise.then(function (albums) {
                                 console.log(albums);
@@ -97,6 +97,11 @@ angular.module('myApp.profile', ['ngRoute'])
                                             console.log("fetched album " + albumProxy.name);
                                             console.log(albumProxy.pictures);
                                             $scope.albums.push(albumProxy);
+                                            $scope.albums.sort(function(a,b){
+                                                // Turn your strings into dates, and then subtract them
+                                                // to get a value that is either negative, positive, or zero.
+                                                return new Date(b._kmd.lmt) - new Date(a._kmd.lmt);
+                                            });
                                         });
                                 };
                             }, function (error) {
