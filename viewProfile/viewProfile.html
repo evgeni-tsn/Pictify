@@ -347,7 +347,16 @@
                 </span>
                     <div class="comments" ng-show="showComments"
                          ng-repeat="commentObj in selectedPicture.comments">
-                        <p>{{commentObj.username}}: {{commentObj.content}}</p>
+                        <p>
+                            <span ng-click="getProfileByUsername(commentObj.username)"
+                                  style="
+                                  cursor:pointer !important;
+                                  color: limegreen !important;"
+                                  data-dismiss="modal">
+                            {{commentObj.username}}
+                            </span>:
+                            {{commentObj.content}}
+                        </p>
                     </div>
                     <div class="form-group" ng-show="showCommentBox || showComments">
                 <textarea title="Comment:"
