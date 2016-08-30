@@ -36,6 +36,7 @@ body {
     -webkit-border-radius: 15px;
     -moz-border-radius: 15px;
     border-radius: 15px;
+    text-align: center;
 }
 
 .headerGroup > ul {
@@ -65,13 +66,13 @@ body {
     padding-top: 5px;
 }
 
-#searchBox {
-    text-align: center;
-
+#profileTabs, #profileTabs span {
+    margin: 0px;
+    padding: 0px;
 }
 
-#profileTabs {
-    margin-bottom: 0px;
+#fullnameProfileSpan {
+    padding-top: 5px;
 }
 /*.menu {*/
 /*text-align: center;*/
@@ -225,3 +226,11 @@ input[type="color"]:focus,
 }
 
 /* END OF Login Register and Settings FORMS*/
+
+#profile-header-href {
+    padding: 0;
+}
+
+.navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:focus, .navbar-inverse .navbar-nav > .active > a:hover {
+    background-color: transparent;
+}
