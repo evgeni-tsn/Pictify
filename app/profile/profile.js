@@ -47,6 +47,7 @@ angular.module('myApp.profile', ['ngRoute'])
             $scope.croppedImage = null;
             $scope.croppedImageBlob = null;
             $scope.selectedAlbum = null;
+            $scope.showAll = true;
 
             $scope.saveNewAlbum = function (albumName) {
                 console.log(albumName);

@@ -35,6 +35,8 @@ angular.module('myApp.viewProfile', ['ngRoute'])
 
     .controller("ViewProfileCtrl", ["$rootScope", "$scope", "kinveyConfig", '$kinvey', '$routeParams', '$location', '$route',
         function ($rootScope, $scope, kinveyConfig, $kinvey, $routeParams, $location, $route) {
+            $scope.showAll = true;
+
             $scope.getGallery = function () {
                 'use strict';
                 kinveyConfig.authorize

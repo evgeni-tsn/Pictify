@@ -248,7 +248,7 @@
     </div>
 
 <input type="button" class="btn btn-primary btn-sm" value="Show all" ng-click="showAll = true; getGallery()">
-<input type="button" value="Show by albums" class="btn btn-primary btn-sm" ng-click="showAll = falses; getGallery()">
+<input type="button" value="Show by albums" class="btn btn-primary btn-sm" ng-click="showAll = false; getGallery()">
 
     <!-- Gallery Content Albums -->
     <div class="container" ng-hide="showAll" ng-repeat="album in albums">
