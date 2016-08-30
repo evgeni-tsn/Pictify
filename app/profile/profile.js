@@ -79,46 +79,35 @@ angular.module('myApp.profile', ['ngRoute'])
                             return;
                         }
 
-                        let initialQueryForAlbums = new $kinvey.Query();
-                        initialQueryForAlbums.equalTo('_acl.creator', user._id);
-
-                        $kinvey.DataStore.find("albums", initialQueryForAlbums)
-                            .then(function (albums) {
-                                console.log(albums);
-                                $scope.albums = albums;
-                            }, function (error) {
-                                console.log(error)
-                            });
-
                         if (!$scope.showAll) {
-                            let query = new $kinvey.Query();
-                            query.equalTo('_acl.creator', user._id);
+                            let queryForAlbums = new $kinvey.Query();
+                            queryForAlbums.equalTo('_acl.creator', user._id);
 
-                            let promise = $kinvey.DataStore.find("albums", query);
-                            promise.then(function (albums) {
-                                console.log(albums);
-
-                                for(var album of albums) {
-                                    let albumProxy = album;
-                                    let queryForPicsInAlbum = new $kinvey.Query();
-                                    queryForPicsInAlbum.equalTo('_id', {'$in': albumProxy.pictures})
-                                        .descending('_kmd.lmt');
-                                    $kinvey.DataStore.find('pictures', queryForPicsInAlbum)
-                                        .then(function (pictures) {
-                                            albumProxy.pictures = pictures;
-                                            console.log("fetched album " + albumProxy.name);
-                                            console.log(albumProxy.pictures);
-                                            $scope.albums.push(albumProxy);
-                                            $scope.albums.sort(function(a,b){
-                                                // Turn your strings into dates, and then subtract them
-                                                // to get a value that is either negative, positive, or zero.
-                                                return new Date(b._kmd.lmt) - new Date(a._kmd.lmt);
+                            $kinvey.DataStore.find("albums", queryForAlbums)
+                                .then(function (albums) {
+                                    console.log(albums);
+                                    for (var album of albums) {
+                                        let albumProxy = album;
+                                        let queryForPicsInAlbum = new $kinvey.Query();
+                                        queryForPicsInAlbum.equalTo('_id', {'$in': albumProxy.pictures})
+                                            .descending('_kmd.lmt');
+                                        $kinvey.DataStore.find('pictures', queryForPicsInAlbum)
+                                            .then(function (pictures) {
+                                                albumProxy.pictures = pictures;
+                                                console.log("fetched album " + albumProxy.name);
+                                                console.log(albumProxy.pictures);
+                                                $scope.albums.push(albumProxy);
+                                                $scope.albums.sort(function (a, b) {
+                                                    // Turn your strings into dates, and then subtract them
+                                                    // to get a value that is either negative, positive, or zero.
+                                                    return new Date(b._kmd.lmt) - new Date(a._kmd.lmt);
+                                                });
                                             });
-                                        });
-                                };
-                            }, function (error) {
-                                console.log(error)
-                            });
+                                    }
+                                    ;
+                                }, function (error) {
+                                    console.log(error)
+                                });
                         } else {
                             let query = new $kinvey.Query();
                             query.equalTo('_acl.creator', user._id)
@@ -495,6 +484,15 @@ angular.module('myApp.profile', ['ngRoute'])
                     })
                         .then(function (user) {
                             $rootScope.currentUser = user;
+                            let query = new $kinvey.Query();
+                            query.equalTo('_acl.creator', user._id);
+
+                            $kinvey.DataStore.find('albums', query)
+                                .then(function (albums) {
+                                    $scope.albums = albums;
+                                }, function (error) {
+                                    console.log(error);
+                                })
                         }, function (error) {
                             console.log(error);
                         });
