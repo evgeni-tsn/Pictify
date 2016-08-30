@@ -1,7 +1,11 @@
 <style>
     #userProfImg {
-        width: 10%;
-        height: 10%;
+        width: 10vh;
+        height: 10vh;
+        border-radius: 50%;
+        float: left;
+        margin-right: 12px;
+        cursor: pointer;
     }
 
     /*div.galContainer {*/
@@ -183,15 +187,90 @@
     }
 </style>
 
-<div class="col-md-6">
-    <img ng-src="{{currentUser.profilePicture.image._downloadURL}}" class="img-circle" id="userProfImg">
-</div>
-<div class="col-md-6">
-    <h2>{{currentUser.fullname}}</h2>
-    <h3>({{currentUser.username}})</h3>
+<style>
+    .profileDataTextWrapper {
+        text-decoration: none;
+        font-size: 1.5em;
+    }
+
+    .profileDataTextWrapper > span {
+        color: lightgrey;
+        cursor: pointer;
+    }
+
+    .profileDataTextWrapper > span:hover {
+        color: darkgrey;
+    }
+
+    .userFullName {
+        font-size: 1.8em;
+        color: black;
+    }
+
+    .userUsername {
+        font-size: 1.6em;;
+        color: black;
+    }
+</style>
+
+<div class="container-fluid profileDataHolder">
+    <div class="row">
+        <div class="span3">
+            <img ng-src="{{currentUser.profilePicture.image._downloadURL}}"
+                 class="img-responsive"
+                 id="userProfImg"
+                 ng-click="selectPic(currentUser.profilePicture)"
+                 data-toggle="modal"
+                 data-target="#imageModal">
+        </div>
+        <div class="span9">
+            <div>
+                <span class="userFullName">{{currentUser.fullname}}</span>
+                <br>
+                <span class="userUsername">({{currentUser.username}})</span>
+            </div>
+            <div class="profileDataTextWrapper">
+                <span ng-click="showFollowers(currentUser)"
+                      data-toggle="modal"
+                      data-target="#followersModalProfile">
+                    {{currentUser.followersCount}} followers
+                </span>
+                <span>/</span>
+                <span ng-click="showFollowing(currentUser)"
+                      data-toggle="modal"
+                      data-target="#followingModalProfile">
+                    {{currentUser.followingCount}} followed
+                </span>
+            </div>
+        </div>
+    </div>
 </div>
 
-<input type="file" file-change handler="fileSelect(files)" class="btn btn-default btn-lg">
+<input type="button" value="Create New Album" ng-click="albumCreation = !albumCreation" class="btn btn-danger btn-large">
+<input type="text" id="albumTextBox" ng-show="albumCreation" ng-model="newAlbumName">
+<input type="button" value="Save"
+       ng-click="saveNewAlbum(newAlbumName)"
+       ng-show="albumCreation"
+       class="btn btn-primary">
+
+<input type="file" file-change handler="fileSelect(files)" class="btn btn-default">
+
+<ol class="nya-bs-select show-menu-arrow btn-primary"
+        title="Select Album"
+        ng-model="selectedAlbum">
+    <li nya-bs-option="album in albums">
+        <a>
+            {{album.name}}
+
+            <span class="glyphicon glyphicon-ok check-mark"></span>
+        </a>
+    </li>
+</ol>
+<input type="button" value="Deselect" class="btn btn-primary btn-sm" ng-click="selectedAlbum = null">
+<div>{{selectedAlbum.name}}</div>
+
+<input type="button" value="Upload" ng-click="upload()" class="btn btn-danger btn-lg">
+
 <input type="button" value="Crop Image" ng-click="showCrop()" class="btn btn-danger btn-lg">
 <div ng-show="shouldCrop">
     <div class="cropArea">
@@ -206,18 +285,49 @@
     <div>Cropped image</div>
     <div><img ng-src="{{croppedImage}}" alt=""></div>
 </div>
-<input type="button" value="Upload" ng-click="upload()" class="btn btn-danger btn-lg">
 
-<h2 ng-click="showFollowers(currentUser)" data-toggle="modal" data-target="#followersModalProfile">
-    {{currentUser.followersCount}} followers
-</h2>
+<input type="button" class="btn btn-primary btn-sm" value="Show by albums" ng-click="showAll = false; getGallery()">
+<input type="button" value="Show all" class="btn btn-primary btn-sm" ng-click="showAll = true; getGallery()">
 
-<h2 ng-click="showFollowing(currentUser)" data-toggle="modal" data-target="#followingModalProfile">
-    {{currentUser.followingCount}} following
-</h2>
+<!-- Gallery Content Albums -->
+<div class="container" ng-hide="showAll" ng-repeat="album in albums">
+    <div ng-show="album.pictures.length > 0">
+        <h1 class="page-header">{{album.name}}</h1>
+        <div class="galleryWrapper">
+            <div class="row">
+                <!--<div ng-repeat="picture in pictures">-->
+                <!--<div class="clearfix" ng-if="$index % 4 == 0"></div>-->
 
-<!-- Gallery Content -->
-<div class="container">
+                    <div ng-repeat="picture in album.pictures" class="col-lg-3 col-md-4 col-xs-6 thumb">
+                        <div class="imgWrap">
+                            <img class="img-responsive"
+                                 ng-src="{{picture.image._downloadURL}}">
+
+                            <div class="imgDescription"
+                                 ng-click="selectPic(picture)"
+                                 data-toggle="modal"
+                                 data-target="#imageModal">
+
+                                        <span class="glyphicon glyphicon-hand-up votes like"
+                                              ng-click="vote(picture, 'like')">
+                                        {{picture.votes.likes.length}}</span>
+                                <span class="glyphicon glyphicon-hand-down votes dislike"
+                                      ng-click="vote(picture, 'dislike')">
+                                        {{picture.votes.dislikes.length}}</span>
+                                <span class="glyphicon glyphicon-comment commentsToggler">
+                                        {{picture.comments.length}}</span>
+                            </div>
+                        </div>
+                    </div>
+                <!--</div>-->
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- /.container -->
+
+<!-- Gallery Content All -->
+<div class="container" ng-show="showAll">
     <div class="galleryWrapper">
         <h1 class="page-header">Gallery</h1>
         <div class="row">
@@ -247,7 +357,8 @@
             <!--</div>-->
         </div>
     </div>
-    <!-- /.container -->
+</div>
+<!-- /.container -->
 
     <!--IMAGE MODAL-->
     <div class="modal fade imageModal" id="imageModal">
@@ -269,21 +380,17 @@
                         <span class="commentsToggler"
                               ng-click="showCommentBox = !showCommentBox">
                                     Comment</span>
+                        <div class="form-group" ng-show="showCommentBox || showComments">
 
-                            <div class="comments" ng-show="showComments"
-                                 ng-repeat="commentObj in selectedPicture.comments">
-                                <p>{{commentObj.username}}: {{commentObj.content}}</p>
-                            </div>
-                            <div class="form-group" ng-show="showCommentBox || showComments">
                         <div class="comments" ng-show="showComments"
                              ng-repeat="commentObj in selectedPicture.comments">
-                            {{commentObj.username}}: {{commentObj.content}}
+                            <p>{{commentObj.username}}: {{commentObj.content}}</p>
                         </div>
                         <div class="form-group" ng-show="showCommentBox || showComments">
-                <textarea title="Comment:"
-                          class="form-control comment" rows="1"
-                          ng-model="commentBoxText">
-                </textarea>
+                        <textarea title="Comment:"
+                                  class="form-control comment" rows="1"
+                                  ng-model="commentBoxText">
+                        </textarea>
                             <button class="btn btn-info"
                                     ng-click="comment(selectedPicture, commentBoxText)">
                                 Submit
@@ -329,6 +436,7 @@
             </div>
         </div>
     </div>
+</div>
     <!--END IMAGE MODAL-->
 
     <!--Following Modal-->
@@ -386,7 +494,6 @@
         </div>
     </div>
     <!--END Followers Modal-->
-</div>
 
 
     <!--Following Modal-->
@@ -444,4 +551,3 @@
         </div>
     </div>
     <!--END Followers Modal-->
-</div>
