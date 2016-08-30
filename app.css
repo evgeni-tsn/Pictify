@@ -254,7 +254,27 @@ input[type="color"]:focus,
     background-color: transparent;
 }
 
-@media (max-width: 950px) {
+.navbar .divider-vertical {
+    height: 30px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    border-right: 1px solid darkgreen;
+    border-left: 1px solid darkgreen;
+}
+
+.navbar-inverse .divider-vertical {
+    border-right-color: darkgreen;
+    border-left-color: darkgreen;
+}
+
+@media (max-width: 1000px) {
+    .navbar-collapse .nav > .divider-vertical {
+        display: none;
+    }
+}
+
+@media (max-width: 1000px) {
     .navbar-header {
         float: none;
     }
