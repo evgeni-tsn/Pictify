@@ -61,8 +61,12 @@
 
 <style>
     #prof-img {
-        width: 10%;
-        height: 10%;
+        width: 10vh;
+        height: 10vh;
+        border-radius: 50%;
+        float: left;
+        margin-right: 12px;
+        cursor: pointer;
     }
 
     .thumb {
@@ -175,6 +179,32 @@
     }
 </style>
 
+<style>
+    .profileDataTextWrapper {
+        text-decoration: none;
+        font-size: 1.5em;
+    }
+
+    .profileDataTextWrapper > span {
+        color: lightgrey;
+        cursor: pointer;
+    }
+
+    .profileDataTextWrapper > span:hover {
+        color: darkgrey;
+    }
+
+    .userFullName {
+        font-size: 1.8em;
+        color: black;
+    }
+
+    .userUsername {
+        font-size: 1.6em;;
+        color: black;
+    }
+</style>
+
 <div class="pageDescription">
     <p>
         {{pageName}}
@@ -185,51 +215,112 @@
 
 <button ng-click="follow()" class="btn btn-primary btn-lg">Follow</button>
 
-<div>
-    <div class="col-md-6">
-        <img ng-src="{{selectedUserProxy.profilePicture.image._downloadURL}}" id="prof-img" alt="">
-    </div>
-    <div class="col-md-6">
-        <h2>{{selectedUserProxy.fullname}}</h2>
-        <h2>{{selectedUserProxy.username}}</h2>
-        <h2 ng-click="showFollowers(selectedUserProxy)" data-toggle="modal" data-target="#followersModal">
-            {{selectedUserProxy.followersCount}} followers
-        </h2>
-
-        <h2 ng-click="showFollowing(selectedUserProxy)" data-toggle="modal" data-target="#followingModal">
-            {{selectedUserProxy.followingCount}} following
-        </h2>
-    </div>
-</div>
-<div class="container">
-    <h1 class="page-header">Profile View Gallery</h1>
-    <div class="galleryWrapper">
+    <div class="container-fluid profileDataHolder">
         <div class="row">
-            <div ng-repeat="picture in pictures"
-                 class="col-lg-3 col-md-4 col-xs-6 thumb">
-
-                <div class="imgWrap">
-                    <img class="img-responsive"
-                         ng-src="{{picture.image._downloadURL}}">
-
-                    <div class="imgDescription"
-                         ng-click="selectPic(picture)"
-                         data-toggle="modal"
-                         data-target="#viewProfileModal">
-
-                            <span class="glyphicon glyphicon-hand-up votes like">
-                            {{picture.votes.likes.length}}</span>
-                        <span class="glyphicon glyphicon-hand-down votes dislike">
-                            {{picture.votes.dislikes.length}}</span>
-                        <span class="glyphicon glyphicon-comment commentsToggler">
-                            {{picture.comments.length}}</span>
-                    </div>
+            <div class="span3">
+                <img ng-src="{{selectedUserProxy.profilePicture.image._downloadURL}}"
+                     class="img-responsive"
+                     id="prof-img"
+                     ng-click="selectPic(selectedUserProxy.profilePicture)"
+                     data-toggle="modal"
+                     data-target="#viewProfileModal">
+            </div>
+            <div class="span9">
+                <div>
+                    <span class="userFullName">{{selectedUserProxy.fullname}}</span>
+                    <br>
+                    <span class="userUsername">({{selectedUserProxy.username}})</span>
+                </div>
+                <div class="profileDataTextWrapper">
+                <span ng-click="showFollowers(selectedUserProxy)"
+                      data-toggle="modal"
+                      data-target="#followersModal">
+                    {{selectedUserProxy.followersCount}} followers
+                </span>
+                    <span>/</span>
+                    <span ng-click="showFollowing(currentUser)"
+                          data-toggle="modal"
+                          data-target="#followingModal">
+                    {{selectedUserProxy.followingCount}} followed
+                </span>
                 </div>
             </div>
         </div>
     </div>
-</div>
-</div>
+
+    <input type="button" class="btn btn-primary btn-sm" value="Show by albums" ng-click="showAll = false; getGallery()">
+    <input type="button" value="Show all" class="btn btn-primary btn-sm" ng-click="showAll = true; getGallery()">
+
+    <!-- Gallery Content Albums -->
+    <div class="container" ng-hide="showAll" ng-repeat="album in albums">
+        <div ng-show="album.pictures.length > 0">
+            <h1 class="page-header">{{album.name}}</h1>
+            <div class="galleryWrapper">
+                <div class="row">
+                    <!--<div ng-repeat="picture in pictures">-->
+                    <!--<div class="clearfix" ng-if="$index % 4 == 0"></div>-->
+
+                    <div ng-repeat="picture in album.pictures" class="col-lg-3 col-md-4 col-xs-6 thumb">
+                        <div class="imgWrap">
+                            <img class="img-responsive"
+                                 ng-src="{{picture.image._downloadURL}}">
+
+                            <div class="imgDescription"
+                                 ng-click="selectPic(picture)"
+                                 data-toggle="modal"
+                                 data-target="#viewProfileModal">
+
+                                        <span class="glyphicon glyphicon-hand-up votes like"
+                                              ng-click="vote(picture, 'like')">
+                                        {{picture.votes.likes.length}}</span>
+                                <span class="glyphicon glyphicon-hand-down votes dislike"
+                                      ng-click="vote(picture, 'dislike')">
+                                        {{picture.votes.dislikes.length}}</span>
+                                <span class="glyphicon glyphicon-comment commentsToggler">
+                                        {{picture.comments.length}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!--</div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+
+    <!-- Gallery Content All -->
+    <div class="container" ng-show="showAll">
+        <div class="galleryWrapper">
+            <h1 class="page-header">Gallery</h1>
+            <div class="row">
+                <!--<div ng-repeat="picture in pictures">-->
+                <!--<div class="clearfix" ng-if="$index % 4 == 0"></div>-->
+                <div ng-repeat="picture in pictures" class="col-lg-3 col-md-4 col-xs-6 thumb">
+                    <div class="imgWrap">
+                        <img class="img-responsive"
+                             ng-src="{{picture.image._downloadURL}}">
+
+                        <div class="imgDescription"
+                             ng-click="selectPic(picture)"
+                             data-toggle="modal"
+                             data-target="#viewProfileModal">
+
+                                <span class="glyphicon glyphicon-hand-up votes like"
+                                      ng-click="vote(picture, 'like')">
+                                {{picture.votes.likes.length}}</span>
+                            <span class="glyphicon glyphicon-hand-down votes dislike"
+                                  ng-click="vote(picture, 'dislike')">
+                                {{picture.votes.dislikes.length}}</span>
+                            <span class="glyphicon glyphicon-comment commentsToggler">
+                                {{picture.comments.length}}</span>
+                        </div>
+                    </div>
+                </div>
+                <!--</div>-->
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
 
 
 <div class="modal fade imageModal" id="viewProfileModal">
@@ -342,5 +433,3 @@
     </div>
 </div>
 <!--END Followers Modal-->
-
-</div>

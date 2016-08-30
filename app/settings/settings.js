@@ -14,7 +14,7 @@ angular.module('myApp.settings', ['ngRoute'])
             }]
         };
 
-        $routeProvider.when('/settings/', {
+        $routeProvider.when('/settings', {
             templateUrl: 'settings/settings.html',
             controller: 'SettingsCtrl',
             activetab: 'settings',
