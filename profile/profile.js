@@ -71,8 +71,6 @@ angular.module('myApp.profile', ['ngRoute'])
                 'use strict';
                 kinveyConfig.authorize
                     .then(function () {
-                        $scope.albums = [];
-
                         let user = $rootScope.currentUser;
                         if (!user) {
                             console.log("No active user");
@@ -80,6 +78,8 @@ angular.module('myApp.profile', ['ngRoute'])
                         }
 
                         if (!$scope.showAll) {
+                            $scope.albums = [];
+
                             let queryForAlbums = new $kinvey.Query();
                             queryForAlbums.equalTo('_acl.creator', user._id);
 
