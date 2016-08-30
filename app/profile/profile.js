@@ -79,6 +79,17 @@ angular.module('myApp.profile', ['ngRoute'])
                             return;
                         }
 
+                        let initialQueryForAlbums = new $kinvey.Query();
+                        initialQueryForAlbums.equalTo('_acl.creator', user._id);
+
+                        $kinvey.DataStore.find("albums", initialQueryForAlbums)
+                            .then(function (albums) {
+                                console.log(albums);
+                                $scope.albums = albums;
+                            }, function (error) {
+                                console.log(error)
+                            });
+
                         if (!$scope.showAll) {
                             let query = new $kinvey.Query();
                             query.equalTo('_acl.creator', user._id);
@@ -237,6 +248,7 @@ angular.module('myApp.profile', ['ngRoute'])
                                         }
                                     }, function (error) {
                                         console.log(error);
+                                        $scope.alertPictureLimitReached = true;
                                     })
                             });
 
