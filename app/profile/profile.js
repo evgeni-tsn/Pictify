@@ -262,6 +262,18 @@ angular.module('myApp.profile', ['ngRoute'])
                     });
             };
 
+            $scope.getProfileByUsername = function (username) {
+                let query = new $kinvey.Query();
+                query.equalTo('username', username);
+
+                $kinvey.User.find(query)
+                    .then(function (userArr) {
+                        $scope.viewProfile(userArr[0]);
+                    }, function (error) {
+                        console.log(error)
+                    })
+            };
+
             $scope.setProfilePic = function (picture) {
                 kinveyConfig.authorize
                     .then(function () {

@@ -35,6 +35,18 @@ angular.module('myApp.home', ['ngRoute', 'infinite-scroll'])
                 $location.path('/view/' + user.username);
             };
 
+            $scope.getProfileByUsername = function (username) {
+                let query = new $kinvey.Query();
+                query.equalTo('username', username);
+
+                $kinvey.User.find(query)
+                    .then(function (userArr) {
+                        $scope.viewProfile(userArr[0]);
+                    }, function (error) {
+                        console.log(error)
+                    })
+            };
+
             $scope.selectPic = function (picture) {
                 if (!picture) {
                     console.log("No picture selected");
@@ -189,6 +201,8 @@ angular.module('myApp.home', ['ngRoute', 'infinite-scroll'])
             let init = function () {
                 kinveyConfig.authorize.then(function () {
                     $rootScope.currentUser = $kinvey.getActiveUser();
+
+                    followedUsersIds.push($rootScope.currentUser._id);
 
                     $kinvey.DataStore.get("socials", $rootScope.currentUser._id)
                         .then(function (response) {
