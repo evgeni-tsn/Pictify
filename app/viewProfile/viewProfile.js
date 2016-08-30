@@ -199,28 +199,20 @@ angular.module('myApp.viewProfile', ['ngRoute'])
                         console.log(social);
                         $kinvey.DataStore.save('socials', social)
                             .then(function (success) {
+                                var currentStatus = $scope.followStatus;
+                                if (currentStatus === "Follow") {
+                                    $scope.followStatus = "Unfollow";
+                                    $scope.selectedUserProxy.followersCount = $scope.selectedUserProxy.followersCount + 1;
+
+                                } else {
+                                    $scope.followStatus = "Follow";
+                                    $scope.selectedUserProxy.followersCount = $scope.selectedUserProxy.followersCount - 1;
+                                }
                                 console.log(success);
                             }, function (error) {
                                 console.log(error);
                             });
                     });
-            };
-
-            $scope.unfollow = function (user) {
-                //DOESNT WORK
-                // $kinvey.DataStore.get('socials', $scope.selectedUserProxy._id)
-                //     .then(function (social) {
-                //         $kinvey.DataStore.save('socials', social.followers._id)
-                //             .then(function onSuccess(result) {
-                //                 console.log(result);
-                //                 console.log("Successful UNFOLLOW");
-                //
-                //             })
-                //             .catch(function onError(error) {
-                //                 console.log(error);
-                //                 console.log("MAIKATA SI EBA");
-                //             });
-                //     });
             };
 
             $scope.showFollowers = function (user) {

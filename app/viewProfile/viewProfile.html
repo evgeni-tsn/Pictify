@@ -246,9 +246,9 @@
             </div>
         </div>
     </div>
-<button ng-click="unfollow(selectedUserProxy)">TESTING UNFOLLOW HERE</button>
-    <input type="button" class="btn btn-primary btn-sm" value="Show by albums" ng-click="showAll = false; getGallery()">
-    <input type="button" value="Show all" class="btn btn-primary btn-sm" ng-click="showAll = true; getGallery()">
+
+<input type="button" class="btn btn-primary btn-sm" value="Show all" ng-click="showAll = true; getGallery()">
+<input type="button" value="Show by albums" class="btn btn-primary btn-sm" ng-click="showAll = falses; getGallery()">
 
     <!-- Gallery Content Albums -->
     <div class="container" ng-hide="showAll" ng-repeat="album in albums">
