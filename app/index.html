@@ -63,8 +63,7 @@
                 <span class="icon-bar"></span>
             </button>
 
-            <a class="navbar-brand" href="#/">Pictify</a>
-
+            <a class="navbar-brand" href="#/">PICTIFY</a>
             <input id="searchBox"
                    class="form-control navbar-form"
                    type="text"
@@ -76,46 +75,49 @@
                    typeahead-template-url="typeaheadTemplate.html"
                    typeahead-editable="false"
                    typeahead-on-select="onSelect(); selectedUser = ''"/>
-
         </div>
         <span class="nav-divider"></span>
         <div class="collapse navbar-collapse navbar-right headerGroup" id="bs-example-navbar-collapse-2">
 
-            <ul id="profileTabs">
+            <ul id="navigationTabs" class="nav navbar-nav navbar-right">
+                <!--<li ng-show="currentUser" ng-class="{active: $route.current.activetab == 'home'}">-->
+                <!--<a href="#/">Home</a>-->
+                <!--</li>-->
+                <!--<li ng-show="currentUser" ng-class="{active: $route.current.activetab == 'profile'}">-->
+                <!--<a href="#/profile">Profile</a>-->
+                <!--</li>-->
                 <li ng-show="currentUser" ng-class="{active: $route.current.activetab == 'profile'}">
-                    <a href="#/profile">
+                    <a href="#/profile" data-toggle="collapse" data-target=".navbar-collapse">
                         <div>
+                            <span>{{currentUser.username}}</span>
+                        </div>
+                    </a>
+                </li>
+                <li ng-show="currentUser" ng-class="{active: $route.current.activetab == 'profile'}">
+                    <a href="#/profile" id="profile-header-href" data-toggle="collapse" data-target=".navbar-collapse">
+
+                        <div style="display:inline-flex;justify-content:center;align-items:center;">
                             <img id="profileThumbnail" class="img-responsive" ng-src="{{currentUser
                                                                                         .profilePicture
                                                                                         .image
                                                                                         ._downloadURL}}">
                         </div>
-                        <div>
-                            <span>{{currentUser.fullname}}</span><br>
-                            <span>({{currentUser.username}})</span>
-                        </div>
                     </a>
                 </li>
-            </ul>
 
-            <ul id="navigationTabs" class="nav navbar-nav navbar-right">
-                <li ng-show="currentUser" ng-class="{active: $route.current.activetab == 'home'}">
-                    <a href="#/">Home</a>
-                </li>
-                <li ng-show="currentUser" ng-class="{active: $route.current.activetab == 'profile'}">
-                    <a href="#/profile">Profile</a>
-                </li>
 
                 <li ng-show="!currentUser" ng-class="{active: $route.current.activetab == 'landing'}">
-                    <a href="#/landing">Login</a>
-                </li>
-                <li ng-show="currentUser">
-                    <a href="#/" ng-click="logout()">Logout</a>
+                    <a href="#/landing" data-toggle="collapse" data-target=".navbar-collapse">Login</a>
                 </li>
 
                 <li ng-show="currentUser">
-                    <a href="#/settings">Settings</a>
+                    <a href="#/settings" data-toggle="collapse" data-target=".navbar-collapse">Settings</a>
                 </li>
+
+                <li ng-show="currentUser">
+                    <a href="#/" ng-click="logout()" data-toggle="collapse" data-target=".navbar-collapse">Logout</a>
+                </li>
+
             </ul>
         </div>
     </div>
@@ -143,7 +145,6 @@
 <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
 <script type='text/javascript' src='bower_components/ngInfiniteScroll/build/ng-infinite-scroll.min.js'></script>
-
 
 
 <script type="text/ng-template" id="typeaheadTemplate.html">
