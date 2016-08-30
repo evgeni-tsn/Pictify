@@ -2,13 +2,13 @@
 
 angular.module('myApp.viewProfile', ['ngRoute'])
 
-    .config(['$routeProvider' , function ($routeProvider) {
+    .config(['$routeProvider', function ($routeProvider) {
         var routeChecks = {
             authenticated: ['$q', '$location', '$rootScope', function ($q, $location, $rootScope) {
                 if (localStorage.getItem("Kinvey.kid_BkwgJlt_.activeUser")
                     || $rootScope.currentUser) {
                     // if ($rootScope.selectedUserProxy) {
-                        return $q.when(true);
+                    return $q.when(true);
                     // } else {
                     //     return $q.reject($location.path('/'));
                     // }
@@ -55,7 +55,7 @@ angular.module('myApp.viewProfile', ['ngRoute'])
                             promise.then(function (albums) {
                                 console.log(albums);
 
-                                for(var album of albums) {
+                                for (var album of albums) {
                                     let albumProxy = album;
                                     let queryForPicsInAlbum = new $kinvey.Query();
                                     queryForPicsInAlbum.equalTo('_id', {'$in': albumProxy.pictures})
@@ -72,7 +72,8 @@ angular.module('myApp.viewProfile', ['ngRoute'])
                                                 return new Date(b._kmd.lmt) - new Date(a._kmd.lmt);
                                             });
                                         });
-                                };
+                                }
+                                ;
                             }, function (error) {
                                 console.log(error)
                             });
@@ -174,11 +175,44 @@ angular.module('myApp.viewProfile', ['ngRoute'])
                 })
             };
 
+            $scope.checkIsFollowed = function (user) {
+                kinveyConfig.authorize
+                    .then(function () {
+                        $kinvey.DataStore.get("socials", $rootScope.currentUser._id)
+                            .then(function (social) {
+                                let followersIds = [];
+                                for (let followerId in social.following) {
+                                    followersIds.push(followerId);
+                                }
+                                console.log(user);
+                                if (followersIds.indexOf(user._id) > -1) {
+                                    $scope.followStatus = "Unfollow";
+
+                                }
+                                else {
+                                    $scope.followStatus = "Follow";
+                                }
+                            }, function (error) {
+                                console.log(error);
+                            })
+                    })
+            };
+
             $scope.follow = function () {
                 $kinvey.DataStore.get('socials', $scope.selectedUserProxy._id)
                     .then(function (social) {
+                        console.log(social);
                         $kinvey.DataStore.save('socials', social)
                             .then(function (success) {
+                                var currentStatus = $scope.followStatus;
+                                if (currentStatus === "Follow") {
+                                    $scope.followStatus = "Unfollow";
+                                    $scope.selectedUserProxy.followersCount = $scope.selectedUserProxy.followersCount + 1;
+
+                                } else {
+                                    $scope.followStatus = "Follow";
+                                    $scope.selectedUserProxy.followersCount = $scope.selectedUserProxy.followersCount - 1;
+                                }
                                 console.log(success);
                             }, function (error) {
                                 console.log(error);
@@ -268,13 +302,14 @@ angular.module('myApp.viewProfile', ['ngRoute'])
                         }).then(function (userArr) {
                             let user = userArr[0];
 
-                            if(!user) {
+                            if (!user) {
                                 $scope.pageName = "User " + $routeParams.username + " does not exist";
                                 return;
                             }
                             $scope.selectedUserProxy = user;
                             $scope.pageName = "Profile page of " + user.username;
                             $scope.getGallery();
+                            $scope.checkIsFollowed(user);
                         }, function (error) {
                             console.log(error);
                         })
