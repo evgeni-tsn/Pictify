@@ -31,8 +31,9 @@ body {
 }
 
 #searchBox {
-    width: 200px;
+    width: 25vw;
     height: 30px;
+    max-width: 200px;
     -webkit-border-radius: 15px;
     -moz-border-radius: 15px;
     border-radius: 15px;
@@ -73,6 +74,23 @@ body {
 
 #fullnameProfileSpan {
     padding-top: 5px;
+}
+
+#navigationTabs a {
+    text-decoration: none;
+    color: #78787b;
+}
+
+#navigationTabs a:active {
+    color: white;
+}
+
+#navigationTabs a:hover {
+    color: white;
+}
+
+#navigationTabs a:focus {
+    color: white;
 }
 /*.menu {*/
 /*text-align: center;*/

@@ -89,35 +89,42 @@
                 <!--<a href="#/profile">Profile</a>-->
                 <!--</li>-->
                 <li ng-show="currentUser" ng-class="{active: $route.current.activetab == 'profile'}">
-                    <a href="#/profile" data-toggle="collapse" data-target=".navbar-collapse">
+                    <div style="display:inline-flex;justify-content:center;align-items:center;">
+                            <a href="#/profile" id="profile-header-href">
+                                    <img id="profileThumbnail" class="img-responsive" ng-src="{{currentUser
+                                                                                                .profilePicture
+                                                                                                .image
+                                                                                                ._downloadURL}}">
+                            </a>
+
+                            <a href="#/profile"
+                               ng-show="currentUser">
+                                <div>
+                                    <span>{{currentUser.fullname}}</span>
+                                </div>
+                            </a>
+                    </div>
+                </li>
+
+
+                <li ng-show="currentUser" ng-class="{active: $route.current.activetab == 'home'}">
+                    <a href="#/">
                         <div>
-                            <span>{{currentUser.username}}</span>
+                            <span>News Feed</span>
                         </div>
                     </a>
                 </li>
-                <li ng-show="currentUser" ng-class="{active: $route.current.activetab == 'profile'}">
-                    <a href="#/profile" id="profile-header-href" data-toggle="collapse" data-target=".navbar-collapse">
-
-                        <div style="display:inline-flex;justify-content:center;align-items:center;">
-                            <img id="profileThumbnail" class="img-responsive" ng-src="{{currentUser
-                                                                                        .profilePicture
-                                                                                        .image
-                                                                                        ._downloadURL}}">
-                        </div>
-                    </a>
-                </li>
-
 
                 <li ng-show="!currentUser" ng-class="{active: $route.current.activetab == 'landing'}">
-                    <a href="#/landing" data-toggle="collapse" data-target=".navbar-collapse">Login</a>
+                    <a href="#/landing">Login</a>
                 </li>
 
                 <li ng-show="currentUser">
-                    <a href="#/settings" data-toggle="collapse" data-target=".navbar-collapse">Settings</a>
+                    <a href="#/settings">Settings</a>
                 </li>
 
                 <li ng-show="currentUser">
-                    <a href="#/" ng-click="logout()" data-toggle="collapse" data-target=".navbar-collapse">Logout</a>
+                    <a href="#/" ng-click="logout()">Logout</a>
                 </li>
 
             </ul>
@@ -175,6 +182,8 @@
         .searchResultWrapper {
             display: inline-block;
             cursor: pointer;
+            width: 100%;
+            overflow: hidden;
         }
 
         .dropdown-menu {
