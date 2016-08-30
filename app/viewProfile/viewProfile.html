@@ -213,7 +213,7 @@
 
 <div ng-show="selectedUserProxy">
 
-<button ng-click="follow()" class="btn btn-primary btn-lg">Follow</button>
+    <button ng-click="follow()" class="btn btn-primary btn-lg">{{followStatus}}</button>
 
     <div class="container-fluid profileDataHolder">
         <div class="row">
@@ -231,7 +231,6 @@
                     <br>
                     <span class="userUsername">({{selectedUserProxy.username}})</span>
                 </div>
-                <div class="profileDataTextWrapper">
                 <span ng-click="showFollowers(selectedUserProxy)"
                       data-toggle="modal"
                       data-target="#followersModal">
@@ -247,7 +246,7 @@
             </div>
         </div>
     </div>
-
+<button ng-click="unfollow(selectedUserProxy)">TESTING UNFOLLOW HERE</button>
     <input type="button" class="btn btn-primary btn-sm" value="Show by albums" ng-click="showAll = false; getGallery()">
     <input type="button" value="Show all" class="btn btn-primary btn-sm" ng-click="showAll = true; getGallery()">
 
