@@ -106,6 +106,7 @@
                     </div>
                 </li>
 
+                <li class="divider-vertical"></li>
 
                 <li ng-show="currentUser" ng-class="{active: $route.current.activetab == 'home'}">
                     <a href="#/">
@@ -115,6 +116,8 @@
                     </a>
                 </li>
 
+                <li class="divider-vertical"></li>
+
                 <li ng-show="!currentUser" ng-class="{active: $route.current.activetab == 'landing'}">
                     <a href="#/landing">Login</a>
                 </li>
@@ -122,6 +125,8 @@
                 <li ng-show="currentUser">
                     <a href="#/settings">Settings</a>
                 </li>
+
+                <li class="divider-vertical"></li>
 
                 <li ng-show="currentUser">
                     <a href="#/" ng-click="logout()">Logout</a>
