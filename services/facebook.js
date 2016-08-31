@@ -1,4 +1,4 @@
-angular.module('myApp.facebook', [])
+angular.module('pictifyApp.facebook', [])
     .factory('facebook', ['$q', '$kinvey', '$location', '$rootScope', '$http', 'kinveyConfig', function ($q, $kinvey, $location, $rootScope, $http, kinveyConfig) {
 
         function getLoginStatus() {
@@ -31,7 +31,6 @@ angular.module('myApp.facebook', [])
 
         function updateUserInfo(key, value) {
             var user = $kinvey.getActiveUser();
-            // console.log(user);
             user[key] = value;
             var promise = $kinvey.User.update(user);
             promise.then(function (user) {
