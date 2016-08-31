@@ -57,15 +57,24 @@ angular.module('pictifyApp.viewProfile', ['ngRoute'])
                                                 albumProxy.pictures = pictures;
                                                 console.log("fetched album " + albumProxy.name);
                                                 console.log(albumProxy.pictures);
-                                                $scope.albums.push(albumProxy);
-                                                $scope.albums.sort(function (a, b) {
-                                                    // Turn your strings into dates, and then subtract them
-                                                    // to get a value that is either negative, positive, or zero.
-                                                    return new Date(b._kmd.lmt) - new Date(a._kmd.lmt);
-                                                });
+                                                let hasAlbum = false;
+                                                for(let album of $scope.albums) {
+                                                    if (album._id === albumProxy._id) {
+                                                        hasAlbum = true;
+                                                        break;
+                                                    }
+                                                }
+
+                                                if(!hasAlbum) {
+                                                    $scope.albums.push(albumProxy);
+                                                    $scope.albums.sort(function (a, b) {
+                                                        // Turn your strings into dates, and then subtract them
+                                                        // to get a value that is either negative, positive, or zero.
+                                                        return new Date(b._kmd.lmt) - new Date(a._kmd.lmt);
+                                                    });
+                                                }
                                             });
                                     }
-                                    ;
                                 }, function (error) {
                                     console.log(error)
                                 });

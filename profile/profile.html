@@ -222,6 +222,10 @@
         font-size: 1.6em;;
         color: black;
     }
+    
+    .labelFileSelect {
+        max-width: none;
+    }
 </style>
 
 <div class="container-fluid profileDataHolder">
@@ -236,18 +240,19 @@
                      data-target="#imageModal">
                 <div class="centeredProfileInfo">
                     <div>
-                        <span class="userFullName">{{currentUser.fullname}} / </span>
+                        <span class="userFullName">{{currentUser.fullname}} </span>
+                        <br>
                         <span class="userUsername">({{currentUser.username}})</span>
                     </div>
                     <div class="profileDataTextWrapper">
                         <span ng-click="showFollowers(currentUser)"
                               data-toggle="modal"
                               data-target="#followersModalProfile">
-                            {{currentUser.followersCount}} followers</span><br>
+                            {{currentUser.followersCount}} followers / </span>
                         <span ng-click="showFollowing(currentUser)"
                               data-toggle="modal"
                               data-target="#followingModalProfile">
-                    {{currentUser.followingCount}} following</span>
+                        {{currentUser.followingCount}} following</span>
                     </div>
                 </div>
             </div>
@@ -262,7 +267,7 @@
                        ng-show="albumCreation"
                        class="btn btn-sm">
                 <br>
-                <label class="btn btn-primary btn-file btn-sm">
+                <label class="btn btn-primary btn-file btn-sm labelFileSelect">
                     + Add Photos <input type="file" file-change handler="fileSelect(files)" style="display: none;">
                 </label>
                 <br>
@@ -300,10 +305,14 @@
             </div>
         </div>
 
-        <input type="button" class="btn btn-primary btn-md" value="Show all"
-               ng-click="showAll = true; getGallery()">
-        <input type="button" class="btn btn-primary btn-md" value="Show by albums"
-               ng-click="showAll = false; getGallery()">
+        <div>
+            <input type="button" class="btn btn-primary btn-md" value="Show all"
+                   ng-click="showAll = true; getGallery()" ng-disabled="showAll"
+                   style="cursor: pointer;">
+            <input type="button" class="btn btn-primary btn-md" value="Show by albums"
+                   ng-click="showAll = false; getGallery()" ng-disabled="!showAll"
+                   style="cursor: pointer;">
+        </div>
     </div>
 </div>
 

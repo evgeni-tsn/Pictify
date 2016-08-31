@@ -242,6 +242,16 @@
         justify-content: center;
         align-items: center;
     }
+
+    .followInfo {
+        margin: 0 auto;
+        color: lightgrey;
+        text-align: center;
+    }
+
+    .followInfo span:hover {
+        color: grey;
+    }
 </style>
 
 <div class="pageDescription">
@@ -267,17 +277,19 @@
                         <br>
                         <span class="userUsername">({{selectedUserProxy.username}})</span>
                     </div>
-                    <span ng-click="showFollowers(selectedUserProxy)"
-                          data-toggle="modal"
-                          data-target="#followersModal">
-                    {{selectedUserProxy.followersCount}} followers
-                </span>
-                    <span>/</span>
-                    <span ng-click="showFollowing(selectedUserProxy)"
-                          data-toggle="modal"
-                          data-target="#followingModal">
-                    {{selectedUserProxy.followingCount}} followed
-                </span>
+                    <div class="followInfo">
+                        <span ng-click="showFollowers(selectedUserProxy)"
+                              data-toggle="modal"
+                              data-target="#followersModal">
+                        {{selectedUserProxy.followersCount}} followers
+                        </span>
+                            <span>/</span>
+                            <span ng-click="showFollowing(selectedUserProxy)"
+                                  data-toggle="modal"
+                                  data-target="#followingModal">
+                            {{selectedUserProxy.followingCount}} followed
+                        </span>
+                    </div>
                 </div>
             </div>
             <div class="col-xs-7 col-sm-6 col-md-5 col-lg-6">
@@ -287,15 +299,17 @@
             </div>
             <div class="centerSimpleItem">
                 <input type="button" class="btn btn-primary btn-md" value="Show all"
-                       ng-click="showAll = true; getGallery()">
+                       ng-click="showAll = true; getGallery()" ng-disabled="showAll"
+                       style="cursor: pointer;">
                 <input type="button" class="btn btn-primary btn-md" value="Show by albums"
-                       ng-click="showAll = false; getGallery()">
+                       ng-click="showAll = false; getGallery()" ng-disabled="!showAll"
+                       style="cursor: pointer;">
             </div>
 
         </div>
 
     </div>
-</div>
+
 
 
 <!-- Gallery Content Albums -->
@@ -370,6 +384,7 @@
     </div>
 </div>
 <!-- /.container -->
+</div>
 
 
 <!--View Image Modal-->

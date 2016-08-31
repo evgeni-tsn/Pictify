@@ -90,14 +90,16 @@
                                                                                                 .image
                                                                                                 ._downloadURL}}">
                             </a>
-
-                            <a href="#/profile"
-                               ng-show="currentUser">
-                                <div>
-                                    <span>{{currentUser.fullname}}</span>
-                                </div>
-                            </a>
                     </div>
+                </li>
+
+                <li ng-show="currentUser" ng-class="{active: $route.current.activetab == 'profile'}">
+                    <a href="#/profile"
+                       ng-show="currentUser">
+                        <div>
+                            <span>{{currentUser.fullname}}</span>
+                        </div>
+                    </a>
                 </li>
 
                 <li class="divider-vertical"></li>
