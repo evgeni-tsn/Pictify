@@ -2,7 +2,7 @@ angular.module('pictifyApp.facebook', [])
     .factory('facebook', ['$q', '$kinvey', '$location', '$rootScope', '$http', 'kinveyConfig', function ($q, $kinvey, $location, $rootScope, $http, kinveyConfig) {
 
         function getLoginStatus() {
-            var deferred = $q.defer();
+            let deferred = $q.defer();
             FB.getLoginStatus(function (response) {
                 if (response.status === 'connected') {
                     return deferred.resolve(response.authResponse);
@@ -15,7 +15,7 @@ angular.module('pictifyApp.facebook', [])
         }
 
         function getProfilePicture(userId) {
-            var deferred = $q.defer();
+            let deferred = $q.defer();
             FB.api(
                 "/" + userId + "/picture?width=300&height=300",
                 function (response) {
@@ -30,9 +30,9 @@ angular.module('pictifyApp.facebook', [])
         }
 
         function updateUserInfo(key, value) {
-            var user = $kinvey.getActiveUser();
+            let user = $kinvey.getActiveUser();
             user[key] = value;
-            var promise = $kinvey.User.update(user);
+            let promise = $kinvey.User.update(user);
             promise.then(function (user) {
                 console.log("Update user info after:");
                 console.log(user);
@@ -46,8 +46,8 @@ angular.module('pictifyApp.facebook', [])
         function facebookLogin() {
             getLoginStatus()
                 .then(function (authResponse) {
-                    var provider = 'facebook';
-                    var tokens = {
+                    let provider = 'facebook';
+                    let tokens = {
                         'access_token': authResponse.accessToken,
                         'expires_in': authResponse.expiresIn
                     };
@@ -151,9 +151,10 @@ angular.module('pictifyApp.facebook', [])
 
                                                                                     return $kinvey.User.update(user, {
                                                                                         exclude: ['profilePicture'],
-                                                                                        relations:{
+                                                                                        relations: {
                                                                                             profilePicture: "pictures",
-                                                                                    }})
+                                                                                        }
+                                                                                    })
                                                                                         .then(function (updatedUser) {
                                                                                             $rootScope.currentUser = updatedUser;
                                                                                             console.log("updatedUser: ");

@@ -9,7 +9,7 @@ describe('pictifyApp.version module', function () {
         $provide.value('version', 'TEST_VER');
       });
       inject(function($compile, $rootScope) {
-        var element = $compile('<span app-version></span>')($rootScope);
+          let element = $compile('<span app-version></span>')($rootScope);
         expect(element.text()).toEqual('TEST_VER');
       });
     });

@@ -80,9 +80,7 @@
     .socialBox {
         margin: 5px;
     }
-</style>
 
-<style>
     .thumb {
         margin-bottom: 1.5%;
         display: flex;
@@ -90,12 +88,6 @@
         align-items: center;
     }
 
-    .thumbnail {
-        border: 0;
-    }
-</style>
-
-<style>
     .imgWrap {
         position: relative;
     }
@@ -140,10 +132,10 @@
 
     .comments p {
         word-wrap: break-word;
-        -moz-hyphens:auto;
-        -webkit-hyphens:auto;
-        -o-hyphens:auto;
-        hyphens:auto;
+        -moz-hyphens: auto;
+        -webkit-hyphens: auto;
+        -o-hyphens: auto;
+        hyphens: auto;
     }
 
     .row {
@@ -158,9 +150,7 @@
         display: flex;
         flex-direction: column;
     }
-</style>
 
-<style>
     .followersModalHeader div, .followingModalHeader div {
         border-bottom: 2px;
     }
@@ -185,9 +175,7 @@
     .followersModalBody, .followingModalBody {
         margin-left: 2px;
     }
-</style>
 
-<style>
     .profileDataTextWrapper {
         text-decoration: none;
         font-size: 1.5em;
@@ -246,7 +234,8 @@
     </div>
 </div>
 
-<input type="button" value="Create New Album" ng-click="albumCreation = !albumCreation" class="btn btn-danger btn-large">
+<input type="button" value="Create New Album" ng-click="albumCreation = !albumCreation"
+       class="btn btn-danger btn-large">
 <input type="text" id="albumTextBox" ng-show="albumCreation" ng-model="newAlbumName">
 <input type="button" value="Save"
        ng-click="saveNewAlbum(newAlbumName)"
@@ -256,8 +245,8 @@
 <input type="file" file-change handler="fileSelect(files)" class="btn btn-default">
 
 <ol class="nya-bs-select show-menu-arrow btn-primary"
-        title="Select Album"
-        ng-model="selectedAlbum">
+    title="Select Album"
+    ng-model="selectedAlbum">
     <li nya-bs-option="album in albums">
         <a>
             {{album.name}}
@@ -296,44 +285,46 @@
 <!-- Gallery Content Albums -->
 <div class="container" ng-hide="showAll" ng-repeat="album in albums">
     <div ng-show="album.pictures.length > 0">
-        <h1 class="page-header">{{album.name}}</h1>
+        <h1 class="galleryAlbumTitle">{{album.name}}</h1>
+        <hr class="colorgraph">
         <div class="galleryWrapper">
             <div class="row">
                 <!--<div ng-repeat="picture in pictures">-->
                 <!--<div class="clearfix" ng-if="$index % 4 == 0"></div>-->
 
-                    <div ng-repeat="picture in album.pictures" class="col-lg-3 col-md-4 col-xs-6 thumb">
-                        <div class="imgWrap">
-                            <img class="img-responsive"
-                                 ng-src="{{picture.image._downloadURL}}">
+                <div ng-repeat="picture in album.pictures" class="col-lg-3 col-md-4 col-xs-6 thumb">
+                    <div class="imgWrap">
+                        <img class="img-responsive"
+                             ng-src="{{picture.image._downloadURL}}">
 
-                            <div class="imgDescription"
-                                 ng-click="selectPic(picture)"
-                                 data-toggle="modal"
-                                 data-target="#imageModal">
+                        <div class="imgDescription"
+                             ng-click="selectPic(picture)"
+                             data-toggle="modal"
+                             data-target="#imageModal">
 
                                         <span class="glyphicon glyphicon-hand-up votes like"
                                               ng-click="vote(picture, 'like')">
                                         {{picture.votes.likes.length}}</span>
-                                <span class="glyphicon glyphicon-hand-down votes dislike"
-                                      ng-click="vote(picture, 'dislike')">
+                            <span class="glyphicon glyphicon-hand-down votes dislike"
+                                  ng-click="vote(picture, 'dislike')">
                                         {{picture.votes.dislikes.length}}</span>
-                                <span class="glyphicon glyphicon-comment commentsToggler">
+                            <span class="glyphicon glyphicon-comment commentsToggler">
                                         {{picture.comments.length}}</span>
-                            </div>
                         </div>
                     </div>
+                </div>
                 <!--</div>-->
             </div>
         </div>
     </div>
 </div>
-    <!-- /.container -->
+<!-- /.container -->
 
 <!-- Gallery Content All -->
 <div class="container" ng-show="showAll">
     <div class="galleryWrapper">
-        <h1 class="page-header">Gallery</h1>
+        <h1 class="galleryAlbumTitle">All Photos</h1>
+        <hr class="colorgraph">
         <div class="row">
             <!--<div ng-repeat="picture in pictures">-->
             <!--<div class="clearfix" ng-if="$index % 4 == 0"></div>-->
@@ -364,27 +355,27 @@
 </div>
 <!-- /.container -->
 
-    <!--IMAGE MODAL-->
-    <div class="modal fade imageModal" id="imageModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <div class="socialBox">
+<!--IMAGE MODAL-->
+<div class="modal fade imageModal" id="imageModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <div class="socialBox">
                             <span class="glyphicon glyphicon-hand-up votes like"
                                   ng-click="vote(selectedPicture, 'like')">
                                     {{selectedPicture.votes.likes.length}}</span>
-                        <span class="glyphicon glyphicon-hand-down votes dislike"
-                              ng-click="vote(selectedPicture, 'dislike')">
+                    <span class="glyphicon glyphicon-hand-down votes dislike"
+                          ng-click="vote(selectedPicture, 'dislike')">
                                     {{selectedPicture.votes.dislikes.length}}</span>
-                        <span class="glyphicon glyphicon-comment commentsToggler"
-                              ng-click="showComments = !showComments">
+                    <span class="glyphicon glyphicon-comment commentsToggler"
+                          ng-click="showComments = !showComments">
                                     {{selectedPicture.comments.length}}</span>
-                        <br>
-                        <span class="commentsToggler"
-                              ng-click="showCommentBox = !showCommentBox">
+                    <br>
+                    <span class="commentsToggler"
+                          ng-click="showCommentBox = !showCommentBox">
                                     Comment</span>
-                        <div class="form-group" ng-show="showCommentBox || showComments">
+                    <div class="form-group" ng-show="showCommentBox || showComments">
 
                         <div class="comments"
                              ng-show="showComments"
@@ -452,117 +443,60 @@
         </div>
     </div>
 </div>
-    <!--END IMAGE MODAL-->
+<!--END IMAGE MODAL-->
 
-    <!--Following Modal-->
-    <div class="modal fade imageModal" id="followingModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                            ng-click="cleanFollowing()">&times;</button>
-                    <div class="followingModalHeader">
+<!--Following Modal-->
+<div class="modal fade imageModal" id="followingModalProfile">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                        ng-click="cleanFollowing()">&times;</button>
+                <div class="followingModalHeader">
                     <span>
                         Following
                     </span>
-                    </div>
                 </div>
-                <div class="followingModalBody">
-                    <div ng-repeat="following in selectedUserFollowing">
-                        <div ng-click="viewProfile(following)" data-dismiss="modal">
-                            <img ng-src="{{following.profilePicture.image._downloadURL}}">
-                            <span>
+            </div>
+            <div class="followingModalBody">
+                <div ng-repeat="following in selectedUserFollowing">
+                    <div ng-click="viewProfile(following)" data-dismiss="modal">
+                        <img ng-src="{{following.profilePicture.image._downloadURL}}">
+                        <span>
                             {{following.fullname}}
                         </span>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!--END Following Modal-->
+</div>
+<!--END Following Modal-->
 
-    <!--Followers Modal-->
-    <div class="modal fade imageModal" id="followersModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                            ng-click="cleanFollowers()">&times;</button>
-                    <div class="followersModalHeader">
+<!--Followers Modal-->
+<div class="modal fade imageModal" id="followersModalProfile">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                        ng-click="cleanFollowers()">&times;</button>
+                <div class="followersModalHeader">
                     <span>
                         Followers
                     </span>
-                    </div>
                 </div>
-                <div class="followersModalBody">
-                    <div ng-repeat="follower in selectedUserFollowers">
-                        <div ng-click="viewProfile(follower)" data-dismiss="modal">
-                            <img ng-src="{{follower.profilePicture.image._downloadURL}}">
-                            <span>
+            </div>
+            <div class="followersModalBody">
+                <div ng-repeat="follower in selectedUserFollowers">
+                    <div ng-click="viewProfile(follower)" data-dismiss="modal">
+                        <img ng-src="{{follower.profilePicture.image._downloadURL}}">
+                        <span>
                             {{follower.fullname}}
                         </span>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!--END Followers Modal-->
-
-
-    <!--Following Modal-->
-    <div class="modal fade imageModal" id="followingModalProfile">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                            ng-click="cleanFollowing()">&times;</button>
-                    <div class="followingModalHeader">
-                    <span>
-                        Following
-                    </span>
-                    </div>
-                </div>
-                <div class="followingModalBody">
-                    <div ng-repeat="following in selectedUserFollowing">
-                        <div ng-click="viewProfile(following)" data-dismiss="modal">
-                            <img ng-src="{{following.profilePicture.image._downloadURL}}">
-                            <span>
-                            {{following.fullname}}
-                        </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--END Following Modal-->
-
-    <!--Followers Modal-->
-    <div class="modal fade imageModal" id="followersModalProfile">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                            ng-click="cleanFollowers()">&times;</button>
-                    <div class="followersModalHeader">
-                    <span>
-                        Followers
-                    </span>
-                    </div>
-                </div>
-                <div class="followersModalBody">
-                    <div ng-repeat="follower in selectedUserFollowers">
-                        <div ng-click="viewProfile(follower)" data-dismiss="modal">
-                            <img ng-src="{{follower.profilePicture.image._downloadURL}}">
-                            <span>
-                            {{follower.fullname}}
-                        </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--END Followers Modal-->
+</div>
+<!--END Followers Modal-->

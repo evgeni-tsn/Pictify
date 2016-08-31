@@ -20,6 +20,10 @@ body {
     text-align: center;
 }
 
+.galleryAlbumTitle {
+    text-align: center;
+}
+
 #login-form {
     background-color: #ffffff;
 }

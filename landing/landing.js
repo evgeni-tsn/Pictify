@@ -3,7 +3,7 @@
 angular.module('pictifyApp.landing', ['ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
-        var routeChecks = {
+        let routeChecks = {
             authenticated: ['$q', '$location', '$rootScope', function ($q, $location, $rootScope) {
                 if (!localStorage.getItem("Kinvey.kid_BkwgJlt_.activeUser")
                     || !$rootScope.currentUser) {

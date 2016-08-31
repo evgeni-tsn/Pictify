@@ -253,7 +253,8 @@
 <!-- Gallery Content Albums -->
 <div class="container" ng-hide="showAll" ng-repeat="album in albums">
     <div ng-show="album.pictures.length > 0">
-        <h1 class="page-header">{{album.name}}</h1>
+        <h1 class="galleryAlbumTitle">{{album.name}}</h1>
+        <hr class="colorgraph">
         <div class="galleryWrapper">
             <div class="row">
                 <!--<div ng-repeat="picture in pictures">-->
@@ -290,7 +291,8 @@
 <!-- Gallery Content All -->
 <div class="container" ng-show="showAll">
     <div class="galleryWrapper">
-        <h1 class="page-header">Gallery</h1>
+        <h1 class="galleryAlbumTitle">All Photos</h1>
+        <hr class="colorgraph">
         <div class="row">
             <!--<div ng-repeat="picture in pictures">-->
             <!--<div class="clearfix" ng-if="$index % 4 == 0"></div>-->
@@ -322,6 +324,7 @@
 <!-- /.container -->
 
 
+<!--View Image Modal-->
 <div class="modal fade imageModal" id="viewProfileModal">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -385,6 +388,7 @@
         </div>
     </div>
 </div>
+<!--View Image Modal-->
 
 <!--Following Modal-->
 <div class="modal fade imageModal" id="followingModal">

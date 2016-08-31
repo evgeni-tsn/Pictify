@@ -3,7 +3,7 @@
 angular.module('pictifyApp.viewProfile', ['ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
-        var routeChecks = {
+        let routeChecks = {
             authenticated: ['$q', '$location', '$rootScope', function ($q, $location, $rootScope) {
                 if (localStorage.getItem("Kinvey.kid_BkwgJlt_.activeUser")
                     || $rootScope.currentUser) {
@@ -47,7 +47,7 @@ angular.module('pictifyApp.viewProfile', ['ngRoute'])
                                 promise.then(function (albums) {
                                     console.log(albums);
 
-                                    for (var album of albums) {
+                                    for (let album of albums) {
                                         let albumProxy = album;
                                         let queryForPicsInAlbum = new $kinvey.Query();
                                         queryForPicsInAlbum.equalTo('_id', {'$in': albumProxy.pictures})
@@ -196,7 +196,7 @@ angular.module('pictifyApp.viewProfile', ['ngRoute'])
                             console.log(social);
                             $kinvey.DataStore.save('socials', social)
                                 .then(function (success) {
-                                    var currentStatus = $scope.followStatus;
+                                    let currentStatus = $scope.followStatus;
                                     if (currentStatus === "Follow") {
                                         $scope.followStatus = "Unfollow";
                                         $scope.selectedUserProxy.followersCount = $scope.selectedUserProxy.followersCount + 1;
