@@ -206,6 +206,10 @@ input[type="password"] {
     background-image: linear-gradient(to right, #27AE60, #c4e17f 50%, #27AE60);
 }
 
+.btn {
+    cursor: pointer;
+}
+
 .btn-primary {
     background-color: #27AE60;
     color: #fff;

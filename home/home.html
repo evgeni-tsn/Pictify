@@ -377,7 +377,8 @@
             </div>
             <div class="followersModalBody">
                 <div ng-repeat="follower in selectedUserFollowers">
-                    <div ng-click="viewProfile(follower)" data-dismiss="modal">
+                    <div ng-click="viewProfile(follower)"
+                         data-dismiss="modal">
                         <img ng-src="{{follower.profilePicture.image._downloadURL}}">
                         <span>
                             {{follower.fullname}}
@@ -436,6 +437,11 @@
                         </button>
                     </div>
                 </div>
+
+                <a class="btn btn-warning btn-sm" download=""
+                   href="{{selectedPicture.image._downloadURL}}">
+                    Download
+                </a>
 
 
                 <div class="row">

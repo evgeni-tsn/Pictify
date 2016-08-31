@@ -446,7 +446,10 @@
                         {{selectedPicture.caption}}
                     </h4>
                 </div>
-                <a class="btn btn-warning" download="" href="{{selectedPicture.image._downloadURL}}">Download</a>
+                <a class="btn btn-warning" download=""
+                   href="{{selectedPicture.image._downloadURL}}">
+                    Download
+                </a>
             </div>
             <div class="modal-body" id="modalImageContainter">
                 <img ng-src="{{selectedPicture.image._downloadURL}}" alt="Wtf">
