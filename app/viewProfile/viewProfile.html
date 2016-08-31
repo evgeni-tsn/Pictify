@@ -205,6 +205,45 @@
     }
 </style>
 
+<style>
+
+    #prof-img {
+        width: 20vh;
+        height: 20vh;
+        min-width: 150px;
+        min-height: 150px;
+        border-radius: 50%;
+        /*float: left;*/
+        margin-right: 12px;
+        cursor: pointer;
+    }
+
+    .span3 {
+        margin: 0 auto;
+    }
+
+    .span4 {
+        margin: 0 auto;
+        width: 50%;
+    }
+
+    .centeredProfileInfo {
+        text-align: center;
+    }
+
+    .centerSimpleItem {
+        margin: 0 auto;
+    }
+
+    .profileHeader {
+        width: 90%;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+
 <div class="pageDescription">
     <p>
         {{pageName}}
@@ -213,42 +252,51 @@
 
 <div ng-show="selectedUserProxy">
 
-    <button ng-click="follow()" class="btn btn-primary btn-lg">{{followStatus}}</button>
-
     <div class="container-fluid profileDataHolder">
         <div class="row">
-            <div class="span3">
-                <img ng-src="{{selectedUserProxy.profilePicture.image._downloadURL}}"
-                     class="img-responsive"
-                     id="prof-img"
-                     ng-click="selectPic(selectedUserProxy.profilePicture)"
-                     data-toggle="modal"
-                     data-target="#viewProfileModal">
-            </div>
-            <div class="span9">
-                <div>
-                    <span class="userFullName">{{selectedUserProxy.fullname}}</span>
-                    <br>
-                    <span class="userUsername">({{selectedUserProxy.username}})</span>
-                </div>
-                <span ng-click="showFollowers(selectedUserProxy)"
-                      data-toggle="modal"
-                      data-target="#followersModal">
+            <div class="col-xs-7 col-sm-6 col-md-5 col-lg-6">
+                <div class="span3">
+                    <img ng-src="{{selectedUserProxy.profilePicture.image._downloadURL}}"
+                         class="img-responsive"
+                         id="prof-img"
+                         ng-click="selectPic(selectedUserProxy.profilePicture)"
+                         data-toggle="modal"
+                         data-target="#viewProfileModal">
+                    <div class="centeredProfileInfo">
+                        <span class="userFullName">{{selectedUserProxy.fullname}}</span>
+                        <br>
+                        <span class="userUsername">({{selectedUserProxy.username}})</span>
+                    </div>
+                    <span ng-click="showFollowers(selectedUserProxy)"
+                          data-toggle="modal"
+                          data-target="#followersModal">
                     {{selectedUserProxy.followersCount}} followers
                 </span>
-                <span>/</span>
-                <span ng-click="showFollowing(selectedUserProxy)"
-                      data-toggle="modal"
-                      data-target="#followingModal">
+                    <span>/</span>
+                    <span ng-click="showFollowing(selectedUserProxy)"
+                          data-toggle="modal"
+                          data-target="#followingModal">
                     {{selectedUserProxy.followingCount}} followed
                 </span>
+                </div>
             </div>
+            <div class="col-xs-7 col-sm-6 col-md-5 col-lg-6">
+                <div class="span4">
+                    <button ng-click="follow()" class="btn btn-primary btn-lg">{{followStatus}}</button>
+                </div>
+            </div>
+            <div class="centerSimpleItem">
+                <input type="button" class="btn btn-primary btn-md" value="Show all"
+                       ng-click="showAll = true; getGallery()">
+                <input type="button" class="btn btn-primary btn-md" value="Show by albums"
+                       ng-click="showAll = false; getGallery()">
+            </div>
+
         </div>
+
     </div>
 </div>
 
-<input type="button" class="btn btn-primary btn-sm" value="Show all" ng-click="showAll = true; getGallery()">
-<input type="button" value="Show by albums" class="btn btn-primary btn-sm" ng-click="showAll = false; getGallery()">
 
 <!-- Gallery Content Albums -->
 <div class="container" ng-hide="showAll" ng-repeat="album in albums">
@@ -256,7 +304,7 @@
         <h1 class="galleryAlbumTitle">{{album.name}}</h1>
         <hr class="colorgraph">
         <div class="galleryWrapper">
-            <div class="row">
+            <div class="row profileHeader">
                 <!--<div ng-repeat="picture in pictures">-->
                 <!--<div class="clearfix" ng-if="$index % 4 == 0"></div>-->
 
