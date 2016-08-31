@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp.home', ['ngRoute', 'infinite-scroll'])
+angular.module('pictifyApp.home', ['ngRoute', 'infinite-scroll'])
     .config(['$routeProvider', function ($routeProvider) {
         var routeChecks = {
             authenticated: ['$q', '$location', '$rootScope', function ($q, $location, $rootScope) {

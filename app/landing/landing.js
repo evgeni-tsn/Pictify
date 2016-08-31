@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp.landing', ['ngRoute'])
+angular.module('pictifyApp.landing', ['ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
         var routeChecks = {

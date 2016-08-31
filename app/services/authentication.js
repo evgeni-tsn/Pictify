@@ -1,4 +1,4 @@
-angular.module('myApp.authentication', [])
+angular.module('pictifyApp.authentication', [])
     .factory('authentication', ['$rootScope', '$kinvey', 'kinveyConfig', '$route', '$location',
         function ($rootScope, $kinvey, kinveyConfig, $route, $location) {
 

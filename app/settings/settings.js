@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp.settings', ['ngRoute'])
+angular.module('pictifyApp.settings', ['ngRoute'])
 
     .config(['$routeProvider', function ($routeProvider) {
         var routeChecks = {
