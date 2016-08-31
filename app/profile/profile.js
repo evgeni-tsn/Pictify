@@ -338,7 +338,12 @@ angular.module('pictifyApp.profile', ['ngRoute'])
                             return;
                         }
 
-                        $kinvey.File.destroy(picture.image._id);
+                        $kinvey.File.destroy(picture.image._id)
+                            .then(function (success) {
+                                console.log(success._filename + ' deleted successfully')
+                            }, function (error) {
+                                console.log(error);
+                            });
 
                         let promise = $kinvey.DataStore.destroy("pictures", picture._id);
                         promise.then(function (success) {

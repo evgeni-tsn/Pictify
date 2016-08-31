@@ -76,6 +76,7 @@
                    uib-typeahead="user as '' for user in searchUsers($viewValue)"
                    typeahead-template-url="typeaheadTemplate.html"
                    typeahead-editable="false"
+                   typeahead-wait-ms="300"
                    typeahead-on-select="onSelect(); selectedUser = ''"/>
         </div>
         <span class="nav-divider"></span>
@@ -85,10 +86,12 @@
                 <li ng-show="currentUser" ng-class="{active: $route.current.activetab == 'profile'}">
                     <div style="display:inline-flex;justify-content:center;align-items:center;">
                             <a href="#/profile" id="profile-header-href">
-                                    <img id="profileThumbnail" class="img-responsive" ng-src="{{currentUser
-                                                                                                .profilePicture
-                                                                                                .image
-                                                                                                ._downloadURL}}">
+                                    <img id="profileThumbnail"
+                                         class="img-responsive"
+                                         ng-src="{{currentUser
+                                                    .profilePicture
+                                                    .image
+                                                    ._downloadURL}}">
                             </a>
                     </div>
                 </li>
@@ -133,6 +136,7 @@
     </div>
 </nav>
 <div ng-view ng-cloak class="container-fluid"></div>
+
 
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
 
