@@ -181,6 +181,7 @@ angular.module('myApp.home', ['ngRoute', 'infinite-scroll'])
 
                               let newsFeed = [];
                               for (var picture of pictures) {
+                                  picture.date = new Date(picture._kmd.lmt);
                                   for(var user of $scope.followedUsers) {
                                       if (user._id === picture._acl.creator) {
                                           newsFeed.push({picture: picture, user: user});
@@ -235,6 +236,8 @@ angular.module('myApp.home', ['ngRoute', 'infinite-scroll'])
                                         .then(function (pictures) {
                                             let newsFeed = [];
                                             for (var picture of pictures) {
+                                                picture.date = new Date(picture._kmd.lmt);
+                                                console.log(picture.date);
                                                 for (var user of $scope.followedUsers) {
                                                     if (user._id === picture._acl.creator) {
                                                         newsFeed.push({picture: picture, user: user});

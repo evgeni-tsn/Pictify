@@ -19,7 +19,8 @@ var app = angular.module('myApp', [
     'myApp.facebook',
     'ngSanitize',
     'infinite-scroll',
-    'nya.bootstrap.select'
+    'nya.bootstrap.select',
+    'angularMoment'
 ]);
 
 app.config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
