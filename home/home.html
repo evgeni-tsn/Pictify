@@ -1,4 +1,17 @@
 <style>
+    @media (max-width: 500px)
+    {
+        #newsFeedContainer {
+            margin-left: 0px !important;
+            margin-right: 0px !important;
+        }
+
+        .newsFeedProfilePic {
+            width: 40px !important;
+            height: 40px !important;
+        }
+
+    }
     .contentSection {
         align-content: center;
         /*max-width: 470px;*/
@@ -14,6 +27,7 @@
 
     .profileDataHolder {
         height: auto;
+        min-width: 250px;
         overflow: hidden;
     }
 
@@ -47,6 +61,7 @@
 
     .contentSection {
         width: 100%;
+        min-width: 250px;
     }
 
     .newsFeedProfilePic {
@@ -54,6 +69,12 @@
         /*max-height: 60px;*/
         width: 6vw;
         height: 6vw;
+        border-radius: 50%;
+    }
+    
+    .socialSection {
+        width: 100%;
+        min-width: 250px;
     }
 
     .newsFeedProfilePic:hover {
@@ -217,10 +238,10 @@
         padding: 0px;
     }
 
-    /*.col-xs-10, .col-sm-10, .col-md-10, .col-lg-10 {*/
-        /*margin: 0px;*/
-        /*padding: 0px;*/
-    /*}*/
+    .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10 {
+        margin: 0px;
+        padding: 0px;
+    }
 
     .row {
         padding-left: 5px;
@@ -244,20 +265,26 @@
                                 <a ng-click="viewProfile(feed.user)">
                                     {{feed.user.fullname}} <br> ({{feed.user.username}})
                                 </a>
-                                <div class="row">
-                                    <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
-                                        <span ng-click="showFollowers(feed.user)"
-                                          data-toggle="modal"
-                                          data-target="#followersModal">
+                                <br>
+                                <span ng-click="showFollowers(feed.user)"
+                                      data-toggle="modal"
+                                      data-target="#followersModal">
                                         {{feed.user.followersCount}} followers
                                         </span>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
-                                        <span class="time" am-time-ago="feed.picture.date"></span>
-                                    </div>
-                                </div>
+                                <br>
+                                <span class="time" am-time-ago="feed.picture.date"></span>
+                                <!--<div class="row">-->
+                                    <!--<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>-->
+                                    <!--<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">-->
+                                        <!---->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="row">-->
+                                    <!--<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1"></div>-->
+                                    <!--<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">-->
+                                        <!---->
+                                    <!--</div>-->
+                                <!--</div>-->
                             </div>
                         </div>
 
