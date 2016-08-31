@@ -30,8 +30,6 @@ angular.module('pictifyApp.home', ['ngRoute', 'infinite-scroll'])
 
             $scope.viewProfile = function (user) {
                 console.log(user);
-                $rootScope.selectedUserProxy = user;
-                $rootScope.selectedUserProxy.profile_picture = user.profilePicture._id;
                 $location.path('/view/' + user.username);
             };
 
