@@ -1,11 +1,34 @@
 <style>
     #userProfImg {
-        width: 10vh;
-        height: 10vh;
+        width: 20vh;
+        height: 20vh;
+        min-width: 150px;
+        min-height: 150px;
         border-radius: 50%;
-        float: left;
+        /*float: left;*/
         margin-right: 12px;
         cursor: pointer;
+    }
+
+    .span3 {
+        margin: 0 auto;
+    }
+
+    .span4 {
+        margin: 0 auto;
+        width: 50%;
+    }
+
+    .centeredProfileInfo {
+        text-align: center;
+    }
+
+    .profileHeader {
+        width: 90%;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     /*div.galContainer {*/
@@ -202,85 +225,94 @@
 </style>
 
 <div class="container-fluid profileDataHolder">
-    <div class="row">
-        <div class="span3">
-            <img ng-src="{{currentUser.profilePicture.image._downloadURL}}"
-                 class="img-responsive"
-                 id="userProfImg"
-                 ng-click="selectPic(currentUser.profilePicture)"
-                 data-toggle="modal"
-                 data-target="#imageModal">
+    <div class="row profileHeader">
+        <div class="col-xs-7 col-sm-6 col-md-5 col-lg-6">
+            <div class="span3">
+                <img ng-src="{{currentUser.profilePicture.image._downloadURL}}"
+                     class="img-responsive"
+                     id="userProfImg"
+                     ng-click="selectPic(currentUser.profilePicture)"
+                     data-toggle="modal"
+                     data-target="#imageModal">
+                <div class="centeredProfileInfo">
+                    <div>
+                        <span class="userFullName">{{currentUser.fullname}} / </span>
+                        <span class="userUsername">({{currentUser.username}})</span>
+                    </div>
+                    <div class="profileDataTextWrapper">
+                        <span ng-click="showFollowers(currentUser)"
+                              data-toggle="modal"
+                              data-target="#followersModalProfile">
+                            {{currentUser.followersCount}} followers</span><br>
+                        <span ng-click="showFollowing(currentUser)"
+                              data-toggle="modal"
+                              data-target="#followingModalProfile">
+                    {{currentUser.followingCount}} following</span>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="span9">
-            <div>
-                <span class="userFullName">{{currentUser.fullname}}</span>
+        <div class="col-xs-7 col-sm-6 col-md-5 col-lg-6">
+            <div class="span4">
+                <input type="button" value="Create New Album" ng-click="albumCreation = !albumCreation"
+                       class="btn btn-danger btn-sm">
+                <input type="text" id="albumTextBox" ng-show="albumCreation" ng-model="newAlbumName">
+                <input type="button" value="Save"
+                       ng-click="saveNewAlbum(newAlbumName)"
+                       ng-show="albumCreation"
+                       class="btn btn-sm">
                 <br>
-                <span class="userUsername">({{currentUser.username}})</span>
-            </div>
-            <div class="profileDataTextWrapper">
-                <span ng-click="showFollowers(currentUser)"
-                      data-toggle="modal"
-                      data-target="#followersModalProfile">
-                    {{currentUser.followersCount}} followers
-                </span>
-                <span>/</span>
-                <span ng-click="showFollowing(currentUser)"
-                      data-toggle="modal"
-                      data-target="#followingModalProfile">
-                    {{currentUser.followingCount}} followed
-                </span>
+                <label class="btn btn-primary btn-file btn-sm">
+                    + Add Photos <input type="file" file-change handler="fileSelect(files)" style="display: none;">
+                </label>
+                <br>
+                <ol class="nya-bs-select show-menu-arrow btn-primary"
+                    title="Select Album"
+                    ng-model="selectedAlbum">
+                    <li nya-bs-option="album in albums">
+                        <a>
+                            {{album.name}}
+
+                            <span class="glyphicon glyphicon-ok check-mark"></span>
+                        </a>
+                    </li>
+                </ol>
+                <input type="button" value="Deselect" class="btn btn-primary btn-sm" ng-click="selectedAlbum = null">
+                <br>
+
+                <input type="button" value="Upload" ng-click="upload()" class="btn btn-danger btn-sm">
+                <br>
+                <input type="button" value="Crop Image" ng-click="showCrop()" class="btn btn-danger btn-sm">
+                <br>
+                <div ng-show="shouldCrop">
+                    <div class="cropArea">
+                        <img-crop image="imageForUpload"
+                                  result-image="croppedImage"
+                                  result-blob="croppedImageBlob"
+                                  area-type="square"
+                                  result-image-size="400">
+                        </img-crop>
+                    </div>
+
+                    <div>Cropped image</div>
+                    <div><img ng-src="{{croppedImage}}" alt=""></div>
+                </div>
             </div>
         </div>
+
+        <input type="button" class="btn btn-primary btn-md" value="Show all"
+               ng-click="showAll = true; getGallery()">
+        <input type="button" class="btn btn-primary btn-md" value="Show by albums"
+               ng-click="showAll = false; getGallery()">
     </div>
 </div>
 
-<input type="button" value="Create New Album" ng-click="albumCreation = !albumCreation"
-       class="btn btn-danger btn-large">
-<input type="text" id="albumTextBox" ng-show="albumCreation" ng-model="newAlbumName">
-<input type="button" value="Save"
-       ng-click="saveNewAlbum(newAlbumName)"
-       ng-show="albumCreation"
-       class="btn btn-primary">
-
-<input type="file" file-change handler="fileSelect(files)" class="btn btn-default">
-
-<ol class="nya-bs-select show-menu-arrow btn-primary"
-    title="Select Album"
-    ng-model="selectedAlbum">
-    <li nya-bs-option="album in albums">
-        <a>
-            {{album.name}}
-
-            <span class="glyphicon glyphicon-ok check-mark"></span>
-        </a>
-    </li>
-</ol>
-<input type="button" value="Deselect" class="btn btn-primary btn-sm" ng-click="selectedAlbum = null">
-<br>
-
-<input type="button" value="Upload" ng-click="upload()" class="btn btn-danger btn-lg">
-<div class="alert alert-warning fade in" ng-show="alertPictureLimitReached" ng-click="alertPictureLimitReached = false">
+<div class="alert alert-warning fade in" ng-show="alertPictureLimitReached"
+     ng-click="alertPictureLimitReached = false">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
     You have reached the limit of <strong>30</strong> pictures on our cheap server.
 </div>
 
-<input type="button" value="Crop Image" ng-click="showCrop()" class="btn btn-danger btn-lg">
-<div ng-show="shouldCrop">
-    <div class="cropArea">
-        <img-crop image="imageForUpload"
-                  result-image="croppedImage"
-                  result-blob="croppedImageBlob"
-                  area-type="square"
-                  result-image-size="400">
-        </img-crop>
-    </div>
-
-    <div>Cropped image</div>
-    <div><img ng-src="{{croppedImage}}" alt=""></div>
-</div>
-
-<input type="button" class="btn btn-primary btn-sm" value="Show by albums" ng-click="showAll = false; getGallery()">
-<input type="button" value="Show all" class="btn btn-primary btn-sm" ng-click="showAll = true; getGallery()">
 
 <!-- Gallery Content Albums -->
 <div class="container" ng-hide="showAll" ng-repeat="album in albums">
@@ -432,7 +464,8 @@
                                     id="profilePictureSetter">
                                 Set as profile picture
                             </button>
-                            <a class="btn btn-warning btn-sm" download="" href="{{selectedPicture.image._downloadURL}}">Download</a>
+                            <a class="btn btn-warning btn-sm" download=""
+                               href="{{selectedPicture.image._downloadURL}}">Download</a>
                         </div>
                     </div>
                 </div>

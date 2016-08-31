@@ -310,6 +310,7 @@ angular.module('pictifyApp.viewProfile', ['ngRoute'])
                                     $scope.pageName = "User " + $routeParams.username + " does not exist";
                                     return;
                                 }
+                                $scope.followStatus = "Checking";
                                 $scope.selectedUserProxy = user;
                                 $scope.pageName = "Profile page of " + user.username;
                                 $scope.getGallery();
