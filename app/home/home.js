@@ -26,7 +26,7 @@ angular.module('pictifyApp.home', ['ngRoute', 'infinite-scroll'])
 
             $scope.disableScroll = false;
 
-            var followedUsersIds = [];
+            let followedUsersIds = [];
 
             $scope.viewProfile = function (user) {
                 console.log(user);
@@ -127,27 +127,27 @@ angular.module('pictifyApp.home', ['ngRoute', 'infinite-scroll'])
                 kinveyConfig.authorize
                     .then(function () {
                         $kinvey.DataStore.get("socials", user._id)
-                             .then(function (social) {
-                                 let followersIds = [];
+                            .then(function (social) {
+                                let followersIds = [];
 
-                                 for (let followerId in social.followers) {
-                                     followersIds.push(followerId);
-                                 }
+                                for (let followerId in social.followers) {
+                                    followersIds.push(followerId);
+                                }
 
-                                 let query = new $kinvey.Query();
-                                 query.equalTo("_id", {"$in": followersIds}).limit(20);
+                                let query = new $kinvey.Query();
+                                query.equalTo("_id", {"$in": followersIds}).limit(20);
 
-                                 $kinvey.User.find(query, {
-                                     relations: {profilePicture: "pictures"}
-                                 })
-                                     .then(function (users) {
+                                $kinvey.User.find(query, {
+                                    relations: {profilePicture: "pictures"}
+                                })
+                                    .then(function (users) {
                                         $scope.selectedUserFollowers = users;
-                                     }, function (error) {
-                                         console.log(error);
-                                     })
-                             }, function (error) {
-                                 console.log(error);
-                             })
+                                    }, function (error) {
+                                        console.log(error);
+                                    })
+                            }, function (error) {
+                                console.log(error);
+                            })
                     })
             };
 
@@ -156,45 +156,45 @@ angular.module('pictifyApp.home', ['ngRoute', 'infinite-scroll'])
             };
 
             $scope.loadMorePosts = function () {
-              kinveyConfig.authorize
-                  .then(function () {
-                      if (!$scope.newsFeed) {
-                          return;
-                      }
+                kinveyConfig.authorize
+                    .then(function () {
+                        if (!$scope.newsFeed) {
+                            return;
+                        }
 
-                      let query = new $kinvey.Query();
-                      query.equalTo("_acl.creator", {"$in": followedUsersIds})
-                          .lessThan("_kmd.lmt", $scope.newsFeed[$scope.newsFeed.length - 1].picture._kmd.lmt)
-                          .descending("_kmd.lmt")
-                          .limit(5);
+                        let query = new $kinvey.Query();
+                        query.equalTo("_acl.creator", {"$in": followedUsersIds})
+                            .lessThan("_kmd.lmt", $scope.newsFeed[$scope.newsFeed.length - 1].picture._kmd.lmt)
+                            .descending("_kmd.lmt")
+                            .limit(5);
 
-                      $kinvey.DataStore.find('pictures', query)
-                          .then(function (pictures) {
+                        $kinvey.DataStore.find('pictures', query)
+                            .then(function (pictures) {
 
-                              if (pictures.length === 0) {
-                                  $scope.disableScroll = true;
-                                  console.log("no more pictures posted from followed users");
-                                  return;
-                              }
+                                if (pictures.length === 0) {
+                                    $scope.disableScroll = true;
+                                    console.log("no more pictures posted from followed users");
+                                    return;
+                                }
 
-                              let newsFeed = [];
-                              for (var picture of pictures) {
-                                  picture.date = new Date(picture._kmd.lmt);
-                                  for(var user of $scope.followedUsers) {
-                                      if (user._id === picture._acl.creator) {
-                                          newsFeed.push({picture: picture, user: user});
-                                          break;
-                                      }
-                                  }
-                              }
+                                let newsFeed = [];
+                                for (let picture of pictures) {
+                                    picture.date = new Date(picture._kmd.lmt);
+                                    for (let user of $scope.followedUsers) {
+                                        if (user._id === picture._acl.creator) {
+                                            newsFeed.push({picture: picture, user: user});
+                                            break;
+                                        }
+                                    }
+                                }
 
-                              for (var feed of newsFeed) {
-                                  $scope.newsFeed.push(feed);
-                              }
-                          }, function (error) {
-                              console.log(error);
-                          })
-                  });
+                                for (let feed of newsFeed) {
+                                    $scope.newsFeed.push(feed);
+                                }
+                            }, function (error) {
+                                console.log(error);
+                            })
+                    });
             };
 
             let init = function () {
@@ -209,7 +209,7 @@ angular.module('pictifyApp.home', ['ngRoute', 'infinite-scroll'])
                             console.log(response.following);
                             $scope.followedUsers = [];
 
-                            for (var id in response.following) {
+                            for (let id in response.following) {
                                 let idProxy = id;
 
                                 followedUsersIds.push(idProxy);
@@ -233,10 +233,10 @@ angular.module('pictifyApp.home', ['ngRoute', 'infinite-scroll'])
                                     $kinvey.DataStore.find("pictures", queryForFeed)
                                         .then(function (pictures) {
                                             let newsFeed = [];
-                                            for (var picture of pictures) {
+                                            for (let picture of pictures) {
                                                 picture.date = new Date(picture._kmd.lmt);
                                                 console.log(picture.date);
-                                                for (var user of $scope.followedUsers) {
+                                                for (let user of $scope.followedUsers) {
                                                     if (user._id === picture._acl.creator) {
                                                         newsFeed.push({picture: picture, user: user});
                                                         break;

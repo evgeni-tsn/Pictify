@@ -110,9 +110,9 @@ angular.module('pictifyApp.authentication', [])
             }
 
             function changePassword(newPass) {
-                var user = $rootScope.currentUser;
+                let user = $rootScope.currentUser;
                 user.password = newPass;
-                var promise = $kinvey.User.update(user);
+                let promise = $kinvey.User.update(user);
                 promise.then(function (user) {
                     console.log("Password changed")
                     console.log(user);
@@ -124,9 +124,9 @@ angular.module('pictifyApp.authentication', [])
             }
 
             function changeFullName(fullname) {
-                var user = $rootScope.currentUser;
+                let user = $rootScope.currentUser;
                 user.fullname = fullname;
-                var promise = $kinvey.User.update(user);
+                let promise = $kinvey.User.update(user);
                 promise.then(function (user) {
                     console.log("Fullname changed")
                     console.log(user);
@@ -137,9 +137,9 @@ angular.module('pictifyApp.authentication', [])
             }
 
             function changeUserName(username) {
-                var user = $rootScope.currentUser;
+                let user = $rootScope.currentUser;
                 user.username = username;
-                var promise = $kinvey.User.update(user);
+                let promise = $kinvey.User.update(user);
                 promise.then(function (user) {
                     console.log("Username changed")
                     console.log(user);

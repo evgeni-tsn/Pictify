@@ -56,7 +56,7 @@ angular.module('pictifyApp.profile', ['ngRoute'])
                         $kinvey.DataStore.save('albums', {
                             name: albumName,
                             _acl: {
-                                gr:true
+                                gr: true
                             },
                             pictures: []
                         }).then(function (album) {
@@ -86,7 +86,7 @@ angular.module('pictifyApp.profile', ['ngRoute'])
                             $kinvey.DataStore.find("albums", queryForAlbums)
                                 .then(function (albums) {
                                     console.log(albums);
-                                    for (var album of albums) {
+                                    for (let album of albums) {
                                         let albumProxy = album;
                                         let queryForPicsInAlbum = new $kinvey.Query();
                                         queryForPicsInAlbum.equalTo('_id', {'$in': albumProxy.pictures})
@@ -328,7 +328,7 @@ angular.module('pictifyApp.profile', ['ngRoute'])
 
                         $kinvey.File.destroy(picture.image._id);
 
-                        var promise = $kinvey.DataStore.destroy("pictures", picture._id);
+                        let promise = $kinvey.DataStore.destroy("pictures", picture._id);
                         promise.then(function (success) {
                             console.log(success);
                         }, function (error) {
