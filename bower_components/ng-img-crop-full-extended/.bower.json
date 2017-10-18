@@ -1,0 +1,69 @@
+{
+  "name": "ng-img-crop-full-extended",
+  "prettyName": "ngImgCropFullExtended",
+  "version": "0.5.7",
+  "authors": [
+    {
+      "name": "Alex Kaul",
+      "email": "alexkaul@googlemail.com"
+    },
+    {
+      "name": "Jodonnell-broadsoft"
+    },
+    {
+      "name": "Marcio Sena",
+      "email": "marciosena.inf@gmail.com"
+    },
+    {
+      "name": "Jonas Eriksson",
+      "email": "jonas.eriksson@interactivesolutions.se"
+    },
+    {
+      "name": "Vincent Ogloblinsky",
+      "email": "vincent.ogloblinsky@gmail.com"
+    },
+    {
+      "name": "Honchar Denys",
+      "email": "crackeraki@gmail.com"
+    },
+    {
+      "name": "Rick de Graaff",
+      "email": "info@rickdegraaff.nl"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CrackerakiUA/ngImgCropExtended"
+  },
+  "description": "Image crop directive for AngularJS, square, circle and rectangle areas. Working aspect.",
+  "main": [
+    "compile/minified/ng-img-crop.js",
+    "compile/minified/ng-img-crop.css"
+  ],
+  "keywords": [
+    "angular",
+    "image",
+    "crop",
+    "aspect",
+    "cropper"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/CrackerakiUA/ngImgCropExtended/",
+  "ignore": [
+    "node_modules",
+    "bower_components",
+    "test"
+  ],
+  "dependencies": {
+    "angular": "1.4.0"
+  },
+  "_release": "0.5.7",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.5.7",
+    "commit": "5b10e2b7a625cc12a4408f3d064468cd38a54130"
+  },
+  "_source": "https://github.com/CrackerakiUA/ngImgCropExtended.git",
+  "_target": "^0.5.5",
+  "_originalSource": "ngImgCropFullExtended"
+}
