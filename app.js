@@ -9,7 +9,6 @@ var app = angular.module('pictifyApp', [
     'pictifyApp.profile',
     'pictifyApp.viewProfile',
     'pictifyApp.settings',
-    'pictifyApp.version',
     'pictifyApp.facebook',
     'pictifyApp.authentication',
     'ui.bootstrap',
