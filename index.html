@@ -8,23 +8,21 @@
 <!--[if gt IE 8]><!-->
 <html lang="en" ng-app="pictifyApp" class="no-js"> <!--<![endif]-->
 <head>
+    <title>Pictify</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Pictify</title>
     <meta name="description" content="">
-    <link href='http://fonts.googleapis.com/css?family=Lato:400,700|Kaushan+Script|Montserrat' rel='stylesheet'
-          type='text/css'>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
-    <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
-    <link rel="stylesheet" href="bower_components/angular-bootstrap/ui-bootstrap-csp.css">
-    <link rel="stylesheet" href="app.css">
-    <link rel="stylesheet" href="bower_components/ng-img-crop-full-extended/compile/unminified/ng-img-crop.css">
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,700|Kaushan+Script|Montserrat' rel='stylesheet' type='text/css'>
     <link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
-    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.0/css/bootstrap-select.min.css">-->
-    <link rel="stylesheet" href="bower_components/nya-bootstrap-select/dist/css/nya-bs-select.min.css">
-    <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/html5-boilerplate@5.3.0/dist/css/normalize.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/html5-boilerplate@5.3.0/dist/css/main.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/angular-bootstrap@0.12.2/ui-bootstrap.min.js">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ng-img-crop-full-extended@0.5.4/compile/unminified/ng-img-crop.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nya-bootstrap-select@2.0.11/dist/js/nya-bs-select.min.js">
+    <link rel="stylesheet" href="./app.css">
+    <script src="https://cdn.jsdelivr.net/npm/html5-boilerplate@5.3.0/dist/js/vendor/modernizr-2.8.3.min.js"></script>
 </head>
 <body ng-controller="MainCtrl" ng-cloak ng-show="initialized">
 
@@ -131,7 +129,6 @@
                 <li ng-show="currentUser">
                     <a href="#/" ng-click="logout()">Logout</a>
                 </li>
-
             </ul>
         </div>
     </div>
@@ -139,27 +136,23 @@
 <div ng-view ng-cloak class="container-fluid"></div>
 
 
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
-
-
-<!--<script src="bower_components/angular/angular.js"></script>-->
-<script src="bower_components/angular-route/angular-route.js"></script>
-<script src="bower_components/angular-animate/angular-animate.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular-route.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular-animate.min.js"></script>
 <script src="//da189i1jfloii.cloudfront.net/js/kinvey-angular-1.6.10.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-filter/0.5.9/angular-filter.min.js"></script>
-<script src="bower_components/ng-img-crop-full-extended/compile/unminified/ng-img-crop.js"></script>
-<script src="bower_components/jquery/dist/jquery.min.js"></script>
-<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-<script src="bower_components/angular-strap/dist/angular-strap.js"></script>
-<script src="bower_components/angular-strap/dist/angular-strap.tpl.js"></script>
-<script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
-<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-<script type='text/javascript' src='bower_components/ngInfiniteScroll/build/ng-infinite-scroll.min.js'></script>
-<script src="bower_components/nya-bootstrap-select/dist/js/nya-bs-select.min.js"></script>
-<script src="bower_components/moment/min/moment.min.js"></script>
-<script src="bower_components/angular-moment/angular-moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ng-img-crop-full-extended@0.5.4/compile/minified/ng-img-crop.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/angular-strap@2.3.9/dist/angular-strap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/angular-strap@2.3.9/dist/angular-strap.tpl.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/angular-bootstrap@0.12.2/ui-bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/angular-bootstrap@0.12.2/ui-bootstrap-tpls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/angular-sanitize@1.6.2/angular-sanitize.min.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/ng-infinite-scroll@1.3.0/build/ng-infinite-scroll.min.js'></script>
+<script src="https://cdn.jsdelivr.net/npm/nya-bootstrap-select@2.0.11/dist/js/nya-bs-select.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.20.1/min/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/angular-moment@1.2.0/angular-moment.min.js"></script>
 
 
 <script type="text/ng-template" id="typeaheadTemplate.html">
