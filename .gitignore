@@ -4,3 +4,4 @@ tmp
 .DS_Store
 .idea
 *.sublime*
+./node_modules
