@@ -1,3 +1,6 @@
-# Pictify-Maybe
+# Pictify
 Software University Tech Module Teamwork
-http://pictify.cloudvps.bg
+https://evgenitsn.com/Pictify
+
+First time building a JS project.
+I know it's awful and super outdated but it's legacy! :D
