@@ -5,6 +5,8 @@
 
 body {
     background: linear-gradient(125.09deg, #395a63 0%, rgb(132, 176, 179) 100%);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     height: 100vh;
 }
 
