@@ -161,7 +161,9 @@ body {
     padding: 20px 28px 30px;
     margin: 0 auto;
     /*background-color: #eee;*/
-    border: 1px solid #27AE60;
+    /* border: 1px solid #27AE60; */
+    background: rgba(158, 158, 158, 0.3215686274509804);
+    border-radius: 5px;
     margin-top: 5%;
 }
 
