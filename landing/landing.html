@@ -17,8 +17,8 @@
                 <button class="btn btn-lg btn-primary " ng-disabled="loginForm.$invalid" ng-click="login(loginUser)"
                         value="Login">Login
                 </button>
-                <button class="btn btn-lg btn-primary " ng-click="loginFbk()">via Facebook</button>
-                <button class="btn btn-primary btn-lg " ng-click="toggle()">Register?</button>
+                <button class="btn btn-lg btn-primary " ng-click="loginFbk()">Facebook</button>
+                <button class="btn btn-primary btn-lg " ng-click="toggle()">Register</button>
             </div>
         </form>
 
@@ -43,8 +43,8 @@
                 <button class="btn btn-lg btn-primary " ng-disabled="registerForm.$invalid"
                         ng-click="register(registerUser)" value="Register">Register
                 </button>
-                <button class="btn btn-lg btn-primary " ng-click="loginFbk()">via Facebook</button>
-                <button class="btn btn-primary btn-lg " ng-click="toggle()">Login?</button>
+                <button class="btn btn-lg btn-primary " ng-click="loginFbk()">Facebook</button>
+                <button class="btn btn-primary btn-lg " ng-click="toggle()">Go To Login</button>
             </div>
             <span ng-show="IsMatch">Passwords have to match!</span>
         </form>
