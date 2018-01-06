@@ -34,8 +34,6 @@ angular.module('pictifyApp.facebook', [])
             user[key] = value;
             let promise = $kinvey.User.update(user);
             promise.then(function (user) {
-                console.log("Update user info after:");
-                console.log(user);
             }, function (err) {
                 console.log(err);
             });
@@ -53,31 +51,21 @@ angular.module('pictifyApp.facebook', [])
                     };
                     return $kinvey.User.loginWithProvider(provider, tokens).then(
                         function (success) {
-                            console.log(success);
-                            console.log("successful login with facebook");
-
                             $rootScope.currentUser = $kinvey.getActiveUser();
-                            console.log($rootScope.currentUser);
-
                             return $rootScope.currentUser;
 
                         }, function (err) {
                             // Attempt to signup as a new user if no user with the identity exists.
                             if ($kinvey.Error.USER_NOT_FOUND === err.name) {
-                                console.log("first login with facebook -> registration procedure");
 
                                 return $kinvey.User.signupWithProvider(provider, tokens)
                                     .then(function (user) {
                                             return getProfilePicture(user._socialIdentity.facebook.id)
                                                 .then(function (imageData) {
-                                                    console.log(imageData);
                                                     let profilePicUrl = imageData.data.url;
-                                                    console.log(profilePicUrl);
 
                                                     return $http.get(profilePicUrl, {responseType: "blob"})
                                                         .then(function (response) {
-                                                            console.log("https response");
-                                                            console.log(response);
                                                             let profImageBlob = response.data;
                                                             return kinveyConfig.authorize
                                                                 .then(function () {
@@ -90,8 +78,6 @@ angular.module('pictifyApp.facebook', [])
                                                                         }
                                                                     }, {public: true})
                                                                         .then(function (success) {
-                                                                            console.log("upload success");
-                                                                            console.log(success);
                                                                             return success._id;
                                                                         }, function (error) {
                                                                             console.log(error);
@@ -115,8 +101,6 @@ angular.module('pictifyApp.facebook', [])
                                                                                 caption: ''
                                                                             }, {public: true})
                                                                                 .then(function (picture) {
-                                                                                    console.log("picture");
-                                                                                    console.log(picture);
                                                                                     // Update user and return him
                                                                                     let rawFacebookName = user._socialIdentity.facebook.name;
                                                                                     let facebookUsernameParts = rawFacebookName.toLowerCase().split(' ');
@@ -144,7 +128,6 @@ angular.module('pictifyApp.facebook', [])
 
                                                                                     $kinvey.DataStore.save("socials", social)
                                                                                         .then(function (success) {
-                                                                                            console.log(success);
                                                                                         }, function (error) {
                                                                                             console.log(error);
                                                                                         });
@@ -157,9 +140,6 @@ angular.module('pictifyApp.facebook', [])
                                                                                     })
                                                                                         .then(function (updatedUser) {
                                                                                             $rootScope.currentUser = updatedUser;
-                                                                                            console.log("updatedUser: ");
-                                                                                            console.log(updatedUser);
-                                                                                            console.log("finished successfully");
                                                                                             return updatedUser;
                                                                                         }, function (error) {
                                                                                             console.log(error)
@@ -171,7 +151,6 @@ angular.module('pictifyApp.facebook', [])
                                                                 });
                                                         })
                                                 }, function (error) {
-                                                    console.log("http response error!:");
                                                     console.log(error);
                                                 });
                                         }
@@ -182,13 +161,8 @@ angular.module('pictifyApp.facebook', [])
                 })
                 .then(function (user) {
                         if (user) {
-                            console.log("user before path change");
-                            console.log(user);
                             $rootScope.currentUser = user;
-                            console.log("changing path to profile from landing");
                             $location.path("/profile");
-                        } else {
-                            console.log("no user passed down so fuck off")
                         }
                     },
                     function (error) {

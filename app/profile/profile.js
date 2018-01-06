@@ -50,7 +50,6 @@ angular.module('pictifyApp.profile', ['ngRoute'])
             $scope.showAll = true;
 
             $scope.saveNewAlbum = function (albumName) {
-                console.log(albumName);
                 kinveyConfig.authorize
                     .then(function () {
                         $kinvey.DataStore.save('albums', {
@@ -60,7 +59,6 @@ angular.module('pictifyApp.profile', ['ngRoute'])
                             },
                             pictures: []
                         }).then(function (album) {
-                            console.log(album);
                             $scope.albums.push(album);
                         }, function (error) {
                             console.log(error);
@@ -74,7 +72,6 @@ angular.module('pictifyApp.profile', ['ngRoute'])
                     .then(function () {
                         let user = $rootScope.currentUser;
                         if (!user) {
-                            console.log("No active user");
                             return;
                         }
 
@@ -86,7 +83,6 @@ angular.module('pictifyApp.profile', ['ngRoute'])
 
                             $kinvey.DataStore.find("albums", queryForAlbums)
                                 .then(function (albums) {
-                                    console.log(albums);
                                     for (let album of albums) {
                                         let albumProxy = album;
                                         let queryForPicsInAlbum = new $kinvey.Query();
@@ -95,8 +91,6 @@ angular.module('pictifyApp.profile', ['ngRoute'])
                                         $kinvey.DataStore.find('pictures', queryForPicsInAlbum)
                                             .then(function (pictures) {
                                                 albumProxy.pictures = pictures;
-                                                console.log("fetched album " + albumProxy.name);
-                                                console.log(albumProxy.pictures);
                                                 let hasAlbum = false;
                                                 for(let album of $scope.albums) {
                                                     if (album._id === albumProxy._id) {
@@ -124,8 +118,6 @@ angular.module('pictifyApp.profile', ['ngRoute'])
                                 .descending('_kmd.lmt');
                             let promise = $kinvey.DataStore.find("pictures", query);
                             promise.then(function (pictures) {
-                                console.log("fetched current user profile gallery");
-                                console.log(pictures);
                                 $scope.pictures = pictures;
                             }, function (error) {
                                 console.log(error)
@@ -176,12 +168,10 @@ angular.module('pictifyApp.profile', ['ngRoute'])
                     .then(function () {
                         let user = $rootScope.currentUser;
                         if (!user) {
-                            console.log("No active user");
                             return;
                         }
 
                         if (!$scope.imageForUpload) {
-                            console.log("No image to upload");
                             return;
                         }
 
@@ -203,7 +193,6 @@ angular.module('pictifyApp.profile', ['ngRoute'])
                             }
                         }, {public: true})
                             .then(function (response) {
-                                console.log(response);
                                 return response;
                             }, function (error) {
                                 console.log(error);
@@ -226,7 +215,6 @@ angular.module('pictifyApp.profile', ['ngRoute'])
                                     caption: ''
                                 })
                                     .then(function (success) {
-                                        console.log(success);
                                         if ($scope.selectedAlbum) {
                                             let tempPicsIds = [];
                                             for (let picture of $scope.selectedAlbum.pictures) {
@@ -238,7 +226,6 @@ angular.module('pictifyApp.profile', ['ngRoute'])
 
                                             $kinvey.DataStore.save('albums', $scope.selectedAlbum)
                                                 .then(function (album) {
-                                                    console.log(album);
                                                     $scope.getGallery();
                                                     $scope.selectedAlbum = null;
                                                 }, function (error) {
@@ -291,12 +278,10 @@ angular.module('pictifyApp.profile', ['ngRoute'])
                     .then(function () {
                         let user = $rootScope.currentUser;
                         if (!user) {
-                            console.log("No active user");
                             return;
                         }
 
                         if (!picture) {
-                            console.log("No picture selected");
                             return;
                         }
 
@@ -318,7 +303,6 @@ angular.module('pictifyApp.profile', ['ngRoute'])
 
             $scope.selectPic = function (picture) {
                 if (!picture) {
-                    console.log("No picture selected");
                 }
 
                 $scope.selectedPicture = picture;
@@ -329,25 +313,21 @@ angular.module('pictifyApp.profile', ['ngRoute'])
                     .then(function () {
                         $rootScope.currentUser = $kinvey.getActiveUser();
                         if (!$rootScope.currentUser) {
-                            console.log("No active user");
                             return;
                         }
 
                         if (!picture) {
-                            console.log("No picture selected");
                             return;
                         }
 
                         $kinvey.File.destroy(picture.image._id)
                             .then(function (success) {
-                                console.log(success._filename + ' deleted successfully')
                             }, function (error) {
                                 console.log(error);
                             });
 
                         let promise = $kinvey.DataStore.destroy("pictures", picture._id);
                         promise.then(function (success) {
-                            console.log(success);
                             if(!$scope.showAll) {
                                 $scope.getGallery();
                             }
@@ -393,8 +373,6 @@ angular.module('pictifyApp.profile', ['ngRoute'])
                             like: true
                         })
                             .then(function (response) {
-                                console.log("liked picture");
-                                console.log(response);
                                 picture.votes.likes.push(response);
 
                             })
@@ -404,8 +382,6 @@ angular.module('pictifyApp.profile', ['ngRoute'])
                             dislike: true
                         })
                             .then(function (response) {
-                                console.log("disliked picture");
-                                console.log(response);
                                 picture.votes.dislikes.push(response);
                             })
                     }
@@ -419,7 +395,6 @@ angular.module('pictifyApp.profile', ['ngRoute'])
                     content: text
                 });
                 promise.then(function (response) {
-                    console.log(response);
                     picture.comments.push(response);
                 }, function (error) {
                     console.log(error);
@@ -428,7 +403,6 @@ angular.module('pictifyApp.profile', ['ngRoute'])
 
 
             $scope.showFollowers = function (user) {
-                console.log(user);
                 kinveyConfig.authorize
                     .then(function () {
                         $kinvey.DataStore.get("socials", user._id)
@@ -457,7 +431,6 @@ angular.module('pictifyApp.profile', ['ngRoute'])
             };
 
             $scope.showFollowing = function (user) {
-                console.log(user);
                 kinveyConfig.authorize
                     .then(function () {
                         $kinvey.DataStore.get("socials", user._id)
@@ -495,7 +468,6 @@ angular.module('pictifyApp.profile', ['ngRoute'])
 
 
             $scope.viewProfile = function (user) {
-                console.log(user);
                 $location.path('/view/' + user.username);
             };
 

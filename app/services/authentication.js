@@ -14,8 +14,6 @@ angular.module('pictifyApp.authentication', [])
                             followingCount: 0
                         });
                         promise.then(function (user) {
-                            console.log("Hello, your name is: " + user.username);
-                            console.log(user);
                             $rootScope.currentUser = $kinvey.getActiveUser();
 
                             let profilePicture = {
@@ -36,7 +34,6 @@ angular.module('pictifyApp.authentication', [])
 
                             $kinvey.DataStore.save('socials', social)
                                 .then(function (success) {
-                                    console.log(success);
                                 }, function (error) {
                                     console.log(error);
                                 });
@@ -61,11 +58,9 @@ angular.module('pictifyApp.authentication', [])
                             password: user.password
                         });
                         promise.then(function (user) {
-                            console.log(user);
                             $rootScope.currentUser = $kinvey.getActiveUser();
                             let promise = $kinvey.DataStore.get("pictures", $rootScope.currentUser.profile_picture);
                             promise.then(function (pic) {
-                                console.log(pic);
                                 $rootScope.profPic = pic;
                                 $location.path("/profile")
                             }, function (error) {
@@ -85,8 +80,6 @@ angular.module('pictifyApp.authentication', [])
                         if (user !== null) {
                             let promise = $kinvey.User.logout();
                             promise.then(function (success) {
-                                console.log("Successfully Logout");
-                                console.log(success);
                                 $rootScope.currentUser = null;
                                 $rootScope.profPic = null;
                                 localStorage.removeItem("Kinvey.kid_BkwgJlt_.activeUser");
@@ -101,8 +94,6 @@ angular.module('pictifyApp.authentication', [])
             function isLogged() {
                 let user = $rootScope.currentUser;
                 if (!user) {
-                    console.log("No active user");
-                    console.log("Redirected to landing");
                     $location.path("/login");
                     return false;
                 }
@@ -114,10 +105,7 @@ angular.module('pictifyApp.authentication', [])
                 user.password = newPass;
                 let promise = $kinvey.User.update(user);
                 promise.then(function (user) {
-                    console.log("Password changed")
-                    console.log(user);
                 }, function (err) {
-                    console.log("Error occured")
                     console.log(err);
                 });
 
@@ -128,10 +116,7 @@ angular.module('pictifyApp.authentication', [])
                 user.fullname = fullname;
                 let promise = $kinvey.User.update(user);
                 promise.then(function (user) {
-                    console.log("Fullname changed")
-                    console.log(user);
                 }, function (err) {
-                    console.log("Error occured")
                     console.log(err);
                 });
             }
@@ -141,10 +126,7 @@ angular.module('pictifyApp.authentication', [])
                 user.username = username;
                 let promise = $kinvey.User.update(user);
                 promise.then(function (user) {
-                    console.log("Username changed")
-                    console.log(user);
                 }, function (err) {
-                    console.log("Error occured")
                     console.log(err);
                 });
             }
