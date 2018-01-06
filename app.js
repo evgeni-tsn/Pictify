@@ -43,7 +43,6 @@ app.controller('MainCtrl', ['$rootScope', '$scope', '$route', '$location', '$sce
             .then(function () {
                 $rootScope.currentUser = $kinvey.getActiveUser();
                 if (!$rootScope.currentUser) {
-                    console.log('no active user during maincontroller init');
                     $location.path('/login');
                     return;
                 }
@@ -54,7 +53,6 @@ app.controller('MainCtrl', ['$rootScope', '$scope', '$route', '$location', '$sce
                     relations: {profilePicture: "pictures"}
                 })
                     .then(function (user) {
-                        console.log("fetched current user with embedded profile picture");
                         $rootScope.currentUser = user;
                     }, function (error) {
                         console.log(error);
@@ -80,7 +78,6 @@ app.controller('MainCtrl', ['$rootScope', '$scope', '$route', '$location', '$sce
                         relations: {profilePicture: "pictures"}
                     })
                         .then(function (users) {
-                                console.log(users);
                                 return users;
                             }, function (error) {
                                 console.log(error);

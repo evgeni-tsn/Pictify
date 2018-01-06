@@ -41,13 +41,11 @@ angular.module('pictifyApp.home', ['ngRoute', 'infinite-scroll'])
                     .then(function (userArr) {
                         $scope.viewProfile(userArr[0]);
                     }, function (error) {
-                        console.log(error)
                     })
             };
 
             $scope.selectPic = function (picture) {
                 if (!picture) {
-                    console.log("No picture selected");
                 }
 
                 $scope.selectedPicture = picture;
@@ -85,8 +83,6 @@ angular.module('pictifyApp.home', ['ngRoute', 'infinite-scroll'])
                             like: true
                         })
                             .then(function (response) {
-                                console.log("liked picture");
-                                console.log(response);
                                 picture.votes.likes.push(response);
 
                             })
@@ -96,8 +92,6 @@ angular.module('pictifyApp.home', ['ngRoute', 'infinite-scroll'])
                             dislike: true
                         })
                             .then(function (response) {
-                                console.log("disliked picture");
-                                console.log(response);
                                 picture.votes.dislikes.push(response);
                             })
                     }
@@ -116,7 +110,6 @@ angular.module('pictifyApp.home', ['ngRoute', 'infinite-scroll'])
                     content: text
                 });
                 promise.then(function (response) {
-                    console.log(response);
                     picture.comments.push(response);
                 }, function (error) {
                     console.log(error);
@@ -173,7 +166,6 @@ angular.module('pictifyApp.home', ['ngRoute', 'infinite-scroll'])
 
                                 if (pictures.length === 0) {
                                     $scope.disableScroll = true;
-                                    console.log("no more pictures posted from followed users");
                                     return;
                                 }
 
@@ -205,8 +197,6 @@ angular.module('pictifyApp.home', ['ngRoute', 'infinite-scroll'])
 
                     $kinvey.DataStore.get("socials", $rootScope.currentUser._id)
                         .then(function (response) {
-                            console.log(response);
-                            console.log(response.following);
                             $scope.followedUsers = [];
 
                             for (let id in response.following) {
@@ -214,8 +204,6 @@ angular.module('pictifyApp.home', ['ngRoute', 'infinite-scroll'])
 
                                 followedUsersIds.push(idProxy);
                             }
-
-                            console.log(followedUsersIds);
 
                             let query = new $kinvey.Query();
                             query.equalTo("_id", {"$in": followedUsersIds});
@@ -235,7 +223,6 @@ angular.module('pictifyApp.home', ['ngRoute', 'infinite-scroll'])
                                             let newsFeed = [];
                                             for (let picture of pictures) {
                                                 picture.date = new Date(picture._kmd.lmt);
-                                                console.log(picture.date);
                                                 for (let user of $scope.followedUsers) {
                                                     if (user._id === picture._acl.creator) {
                                                         newsFeed.push({picture: picture, user: user});
@@ -245,7 +232,6 @@ angular.module('pictifyApp.home', ['ngRoute', 'infinite-scroll'])
                                             }
 
                                             $scope.newsFeed = newsFeed;
-                                            console.log($scope.newsFeed);
                                         }, function (error) {
                                             console.log(error);
                                         })
