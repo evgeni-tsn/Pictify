@@ -236,7 +236,7 @@
     <div class="row profileHeader">
         <div class="col-xs-7 col-sm-6 col-md-5 col-lg-6">
             <div class="span3">
-                <img ng-src="{{currentUser.profilePicture.image._downloadURL}}"
+                <img ng-src="https{{currentUser.profilePicture.image._downloadURL.substring(4)}}"
                      class="img-responsive"
                      id="userProfImg"
                      ng-click="selectPic(currentUser.profilePicture)"
