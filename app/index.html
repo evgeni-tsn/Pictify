@@ -84,7 +84,7 @@
                 <li ng-show="currentUser" ng-class="{active: $route.current.activetab == 'profile'}">
                     <div style="display:inline-flex;justify-content:center;align-items:center;">
                         <a href="#/profile" id="profile-header-href">
-                            <img id="profileThumbnail" class="img-responsive" ng-src="{{currentUser.profilePicture.image._downloadURL}}">
+                            <img id="profileThumbnail" class="img-responsive" ng-src="https{{currentUser.profilePicture.image._downloadURL.substring(4)}}">
                         </a>
                     </div>
                 </li>
